@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Angular 2 Localization";
+}
+
+<my-app>Loading...</my-app>
+
+<!-- IE required polyfills, in this exact order -->
+<script src="libs/es6-shim.min.js"></script>
+<script src="libs/system-polyfills.js"></script>
+<script src="libs/shims_for_ie.js"></script>
+<script src="libs/angular2-polyfills.js"></script>
+<script src="libs/system.js"></script>
+<script src="libs/Rx.js"></script>
+<script src="libs/angular2.dev.js"></script>
+<script src="libs/jquery.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="libs/router.dev.js"></script>
+<script src="libs/http.dev.js"></script>
+
+<script>
+        System.config({
+            meta: {
+                '*.js' : {
+                    scriptLoad: true
+                }
+            },
+            packages: {
+                app: {
+                    defaultExtension: 'js'
+                }
+            }
+        });
+        System.import('app/boot')
+            .then(null, console.error.bind(console));
+</script>
