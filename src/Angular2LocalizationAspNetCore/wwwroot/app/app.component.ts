@@ -14,14 +14,12 @@ import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from './ng2-tran
 })
 
 export class AppComponent {
-    name: string = 'World';
 
     constructor(public translate: TranslateService) {
-        // use navigator lang if available
-        var userLang = navigator.language.split('-')[0];
-        userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
 
-        // this trigger the use of the french or english language after setting the translations
+        // var userLang = navigator.language.split('-')[0];
+        var userLang = /(fr-ch|en-US|de-CH|it-CH)/gi.test(userLang) ? userLang : 'en-US';
+
         translate.use(userLang);
     }
 }

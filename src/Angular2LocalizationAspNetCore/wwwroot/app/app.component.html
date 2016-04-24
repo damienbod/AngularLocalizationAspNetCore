@@ -11,23 +11,23 @@
                 </button>
                 <!--<a [routerLink]="['/Overview']" class="navbar-brand">
                 <img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>-->
+                <select (change)="translate.use($event.target.value)" class="span2 navbar-btn">
+                    <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
+                </select>
             </div>
-            <div class="navbar-collapse collapse" id="navbar">
+            <!--<div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
                     <li>yep</li>
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>--><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
 
     <!--<router-outlet></router-outlet>-->
-    <h1>Hello, {{name}}!</h1>
-    Say "<b>{{ 'HELLO' | translate:'{value: "world"}' }}</b>" to: <input [value]="name" (input)="name = $event.target.value">
-    <br />
-    Change language:
-    <select (change)="translate.use($event.target.value)">
-        <option *ngFor="#lang of ['fr', 'en']" [selected]="lang === translate.currentLang">{{lang}}</option>
-    </select>
+
+    "<b>{{ 'HELLO' | translate:'{value: "Angular2"}' }}</b>"
+
+   
 
 </div>
 

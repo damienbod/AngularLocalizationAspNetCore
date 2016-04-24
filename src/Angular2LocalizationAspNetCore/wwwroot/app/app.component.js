@@ -27,9 +27,7 @@ System.register(['angular2/core', 'angular2/router', './ng2-translate/ng2-transl
             AppComponent = (function () {
                 function AppComponent(translate) {
                     this.translate = translate;
-                    this.name = 'World';
-                    var userLang = navigator.language.split('-')[0];
-                    userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
+                    var userLang = /(fr-ch|en-US|de-CH|it-CH)/gi.test(userLang) ? userLang : 'en-US';
                     translate.use(userLang);
                 }
                 AppComponent = __decorate([
