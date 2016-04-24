@@ -2,8 +2,6 @@
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from './ng2-translate/ng2-translate';
 
-import {Observable, Observer} from 'rxjs/Rx';
-
 @Component({
     selector: 'my-app',
     templateUrl: 'app/app.component.html',
