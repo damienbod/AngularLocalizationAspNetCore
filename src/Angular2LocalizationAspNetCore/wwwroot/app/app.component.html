@@ -20,7 +20,14 @@
         </div><!--/.container-fluid -->
     </nav>
 
-    <router-outlet></router-outlet>
+    <!--<router-outlet></router-outlet>-->
+    <h1>Hello, {{name}}!</h1>
+    Say "<b>{{ 'HELLO' | translate:'{value: "world"}' }}</b>" to: <input [value]="name" (input)="name = $event.target.value">
+    <br />
+    Change language:
+    <select (change)="translate.use($event.target.value)">
+        <option *ngFor="#lang of ['fr', 'en']" [selected]="lang === translate.currentLang">{{lang}}</option>
+    </select>
 
 </div>
 

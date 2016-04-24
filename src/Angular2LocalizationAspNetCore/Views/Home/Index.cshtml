@@ -16,24 +16,24 @@
 <script src="js/bootstrap.js"></script>
 <script src="libs/router.dev.js"></script>
 <script src="libs/http.dev.js"></script>
-<script src="libs/ng2-translate/bundles/ng2-translate.js"></script>
 
 <script>
-        System.config({
-            meta: {
-                '*.js' : {
-                    scriptLoad: true
-                }
-            },
-            packages: {
-                app: {
-                    defaultExtension: 'js'
-                }
-            },
-            map: {
-                'ng2-translate': 'node_modules/ng2-translate',
+    System.config({
+        meta: {
+            '*.js' : {
+                scriptLoad: true
             }
-        });
-        System.import('app/boot')
-            .then(null, console.error.bind(console));
+        },
+        packages: {
+            app: {
+                defaultExtension: 'js'
+            },
+            rxjs: {defaultExtension: 'js'}
+        },
+        map: {
+            'rxjs': 'libs/rxjs'
+        }
+    });
+    System.import('app/boot')
+        .then(null, console.error.bind(console));
 </script>

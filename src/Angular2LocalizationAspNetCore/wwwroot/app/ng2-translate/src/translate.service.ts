@@ -2,11 +2,17 @@ import {Injectable, EventEmitter, Optional} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable'
 import {Observer} from "rxjs/Observer";
+
+// changes from the node module
+//--------------------------------
+//import {of} from 'rxjs/observable/of';
+
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/toArray';
+//--------------------------------
 
 import {Parser} from './translate.parser';
 

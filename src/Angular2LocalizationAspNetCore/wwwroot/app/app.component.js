@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './ng2-translate/ng2-translate'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1, contex
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1;
+    var core_1, router_1, ng2_translate_1;
     var AppComponent;
     return {
         setters:[
@@ -19,10 +19,18 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1, contex
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (ng2_translate_1_1) {
+                ng2_translate_1 = ng2_translate_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent() {
+                function AppComponent(translate) {
+                    this.translate = translate;
+                    this.name = 'World';
+                    var userLang = navigator.language.split('-')[0];
+                    userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
+                    translate.use(userLang);
                 }
                 AppComponent = __decorate([
                     core_1.Component({
@@ -32,9 +40,10 @@ System.register(['angular2/core', 'angular2/router'], function(exports_1, contex
                         directives: [router_1.ROUTER_DIRECTIVES],
                         providers: [
                             router_1.ROUTER_PROVIDERS
-                        ]
+                        ],
+                        pipes: [ng2_translate_1.TranslatePipe]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [ng2_translate_1.TranslateService])
                 ], AppComponent);
                 return AppComponent;
             }());

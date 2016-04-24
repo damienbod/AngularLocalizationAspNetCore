@@ -1,6 +1,13 @@
 ﻿import { Component } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from 'ng2-translate/ng2-translate';
+import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from './ng2-translate/ng2-translate';
+
+import {Observable} from 'rxjs/Observable'
+import {Observer} from "rxjs/Observer";
+import {share} from 'rxjs/operator/share';
+import {map} from 'rxjs/operator/map';
+import {merge} from 'rxjs/operator/merge';
+import {toArray} from 'rxjs/operator/toArray';
 
 @Component({
     selector: 'my-app',
@@ -9,9 +16,19 @@ import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from 'ng2-transl
     directives: [ROUTER_DIRECTIVES],
     providers: [
         ROUTER_PROVIDERS
-    ]
+    ],
+    pipes: [TranslatePipe]
 })
 
 export class AppComponent {
+    name: string = 'World';
 
+    constructor(public translate: TranslateService) {
+        // use navigator lang if available
+        var userLang = navigator.language.split('-')[0];
+        userLang = /(fr|en)/gi.test(userLang) ? userLang : 'en';
+
+        // this trigger the use of the french or english language after setting the translations
+        translate.use(userLang);
+    }
 }
