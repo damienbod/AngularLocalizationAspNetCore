@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/observable/of', 'rxjs/add/operator/share', 'rxjs/add/operator/map', 'rxjs/add/operator/merge', 'rxjs/add/operator/toArray', './translate.parser'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', './translate.parser'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -13,7 +13,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, http_1, Observable_1, translate_parser_1;
+    var core_1, http_1, Rx_1, translate_parser_1;
     var MissingTranslationHandler, TranslateLoader, TranslateStaticLoader, TranslateService;
     return {
         setters:[
@@ -23,14 +23,9 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (Observable_1_1) {
-                Observable_1 = Observable_1_1;
+            function (Rx_1_1) {
+                Rx_1 = Rx_1_1;
             },
-            function (_1) {},
-            function (_2) {},
-            function (_3) {},
-            function (_4) {},
-            function (_5) {},
             function (translate_parser_1_1) {
                 translate_parser_1 = translate_parser_1_1;
             }],
@@ -56,6 +51,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
                     this.suffix = suffix;
                 }
                 TranslateStaticLoader.prototype.getTranslation = function (lang) {
+                    console.log(this.prefix + "/" + lang + this.suffix);
                     return this.http.get(this.prefix + "/" + lang + this.suffix)
                         .map(function (res) { return res.json(); });
                 };
@@ -89,7 +85,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
                     }
                     else {
                         this.changeLang(lang);
-                        return Observable_1.Observable.of(this.translations[lang]);
+                        return Rx_1.Observable.of(this.translations[lang]);
                     }
                 };
                 TranslateService.prototype.getTranslation = function (lang) {
@@ -130,7 +126,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
                             var mergedObs;
                             for (var _a = 0, key_2 = key; _a < key_2.length; _a++) {
                                 var k = key_2[_a];
-                                var obs = typeof result[k].subscribe === 'function' ? result[k] : Observable_1.Observable.of(result[k]);
+                                var obs = typeof result[k].subscribe === 'function' ? result[k] : Rx_1.Observable.of(result[k]);
                                 if (typeof mergedObs === 'undefined') {
                                     mergedObs = obs;
                                 }
@@ -165,7 +161,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
                         throw new Error('Parameter "key" required');
                     }
                     if (this.pending) {
-                        return Observable_1.Observable.create(function (observer) {
+                        return Rx_1.Observable.create(function (observer) {
                             var onComplete = function (res) {
                                 observer.next(res);
                                 observer.complete();
@@ -187,7 +183,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/add/
                             return res;
                         }
                         else {
-                            return Observable_1.Observable.of(res);
+                            return Rx_1.Observable.of(res);
                         }
                     }
                 };

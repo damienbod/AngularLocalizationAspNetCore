@@ -2,12 +2,7 @@
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from './ng2-translate/ng2-translate';
 
-import {Observable} from 'rxjs/Observable'
-import {Observer} from "rxjs/Observer";
-import {share} from 'rxjs/operator/share';
-import {map} from 'rxjs/operator/map';
-import {merge} from 'rxjs/operator/merge';
-import {toArray} from 'rxjs/operator/toArray';
+import {Observable, Observer} from 'rxjs/Rx';
 
 @Component({
     selector: 'my-app',
