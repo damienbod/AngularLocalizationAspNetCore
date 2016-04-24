@@ -3,15 +3,9 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <!--<a [routerLink]="['/Overview']" class="navbar-brand">
                 <img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>-->
-                <select (change)="translate.use($event.target.value)" class="span2 navbar-btn">
+                <select (change)="translate.use($event.target.value)" class="form-control navbar-btn" >
                     <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
                 </select>
             </div>
@@ -25,7 +19,7 @@
 
     <!--<router-outlet></router-outlet>-->
 
-    "<b>{{ 'HELLO' | translate:'{value: "Angular2"}' }}</b>"
+    <b>{{ 'HELLO' | translate:'{value: "Angular2"}' }}</b>
 
    
 
