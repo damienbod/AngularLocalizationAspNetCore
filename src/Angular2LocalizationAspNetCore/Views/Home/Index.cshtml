@@ -16,6 +16,7 @@
 <script src="js/bootstrap.js"></script>
 <script src="libs/router.dev.js"></script>
 <script src="libs/http.dev.js"></script>
+<script src="libs/ng2-translate/bundles/ng2-translate.js"></script>
 
 <script>
         System.config({
@@ -28,6 +29,9 @@
                 app: {
                     defaultExtension: 'js'
                 }
+            },
+            map: {
+                'ng2-translate': 'node_modules/ng2-translate',
             }
         });
         System.import('app/boot')
