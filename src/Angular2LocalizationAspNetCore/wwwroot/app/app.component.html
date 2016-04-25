@@ -9,20 +9,20 @@
             </div>
 
             <div class="navbar-collapse collapse" id="navbar">
-                <select (change)="translate.use($event.target.value)" class="navbar-btn">
+                <select (change)="translate.use($event.target.value)" class="form-control navbar-btn">
                     <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
                 </select>
             </div>
 
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li  class="navbar-btn" [routerLink]="['/Home']">Home</li>
+                    <li  class="form-control navbar-btn" [routerLink]="['/Home']">{{ 'HOME' | translate }}</li>
                 </ul>
             </div>
 
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li class="navbar-btn" [routerLink]="['/Shop']">Shop</li>
+                    <li class="form-control navbar-btn" [routerLink]="['/Shop']">{{ 'SHOP' | translate }}</li>
                 </ul>
             </div>
         <!--/.nav-collapse -->
