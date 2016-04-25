@@ -5,23 +5,31 @@
             <div class="navbar-header">
                 <!--<a [routerLink]="['/Overview']" class="navbar-brand">
                 <img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>-->
-                <select (change)="translate.use($event.target.value)" class="form-control navbar-btn" >
+                
+            </div>
+
+            <div class="navbar-collapse collapse" id="navbar">
+                <select (change)="translate.use($event.target.value)" class="navbar-btn">
                     <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
                 </select>
             </div>
-            <!--<div class="navbar-collapse collapse" id="navbar">
+
+            <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
-                    <li>yep</li>
+                    <li  class="navbar-btn" [routerLink]="['/Home']">Home</li>
                 </ul>
-            </div>--><!--/.nav-collapse -->
+            </div>
+
+            <div class="navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="navbar-btn" [routerLink]="['/Shop']">Shop</li>
+                </ul>
+            </div>
+        <!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
 
-    <!--<router-outlet></router-outlet>-->
-
-    <b>{{ 'HELLO' | translate:'{value: "Angular2"}' }}</b>
-
-   
+    <router-outlet></router-outlet>
 
 </div>
 
