@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22C08BB8-213A-4748-A51D-EFC2A8E74B4E}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Angular2LocalizationAspNetCore", "src\Angular2LocalizationAspNetCore\Angular2LocalizationAspNetCore.xproj", "{36339A2E-DED1-4CEC-8CE9-AFB4C3CF9D1F}"
