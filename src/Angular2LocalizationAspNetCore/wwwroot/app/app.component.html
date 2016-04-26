@@ -18,8 +18,15 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a (click)="ChangeCurrency('CHF')">CHF</a></li>
-                <li><a (click)="ChangeCurrency('EUR')">EUR</a></li>
+                <li>
+                    <div class="navbar" style="margin-bottom:0;">
+                        <form class="navbar-form pull-left">
+                            <select (change)="ChangeCurrency($event.target.value)" class="form-control">
+                                <option *ngFor="#currency of ['CHF', 'EUR']">{{currency}}</option>
+                            </select>
+                        </form>
+                    </div>
+                </li>             
             </ul>
         </div>
     </nav>

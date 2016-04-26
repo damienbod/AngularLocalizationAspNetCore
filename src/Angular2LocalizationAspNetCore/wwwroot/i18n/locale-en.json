@@ -1,5 +1,5 @@
 {
-    "HELLO": "Hello {{value}}",
+    "HELLO": "Hello",
     "NAV_MENU_HOME": "News",
     "NAV_MENU_SHOP": "Online-Shop"
 }
