@@ -78,8 +78,12 @@ System.register(['angular2/core', './translate.service', "angular2/src/facade/la
                         _this._ref.markForCheck();
                     });
                 };
-                TranslatePipe.prototype.transform = function (query, args) {
+                TranslatePipe.prototype.transform = function (query) {
                     var _this = this;
+                    var args = [];
+                    for (var _i = 1; _i < arguments.length; _i++) {
+                        args[_i - 1] = arguments[_i];
+                    }
                     if (!query || query.length === 0) {
                         return query;
                     }
