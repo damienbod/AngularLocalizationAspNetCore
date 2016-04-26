@@ -1,32 +1,30 @@
 <div class="container" style="margin-top: 15px;">
-    <!-- Static navbar -->
-    <nav class="navbar navbar-default">
+   
+    <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <!--<a [routerLink]="['/Overview']" class="navbar-brand">
-                <img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>-->
-                
+                <a [routerLink]="['/Home']" class="navbar-brand"><img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>
             </div>
+            <ul class="nav navbar-nav">
+                <li><a [routerLink]="['/Home']">{{ 'HOME' | translate }}</a></li>
+                <li><a [routerLink]="['/Shop']">{{ 'SHOP' | translate }}</a></li>
+            </ul>
 
-            <div class="navbar-collapse collapse" id="navbar">
-                <select (change)="translate.use($event.target.value)" class="form-control navbar-btn">
-                    <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
-                </select>
-            </div>
 
-            <div class="navbar-collapse collapse" id="navbar">
-                <ul class="nav navbar-nav">
-                    <li  class="form-control navbar-btn" [routerLink]="['/Home']">{{ 'HOME' | translate }}</li>
-                </ul>
-            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <div class="navbar" style="margin-bottom:0;">
+                        <form class="navbar-form pull-left">
+                            <select (change)="translate.use($event.target.value)" class="form-control">
+                                <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
+                            </select>
+                        </form>
+                    </div>
 
-            <div class="navbar-collapse collapse" id="navbar">
-                <ul class="nav navbar-nav">
-                    <li class="form-control navbar-btn" [routerLink]="['/Shop']">{{ 'SHOP' | translate }}</li>
-                </ul>
-            </div>
-        <!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
+                    
+                </li>
+            </ul>
+        </div>
     </nav>
 
     <router-outlet></router-outlet>
