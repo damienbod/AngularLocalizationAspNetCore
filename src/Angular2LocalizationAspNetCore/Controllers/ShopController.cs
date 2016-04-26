@@ -6,12 +6,12 @@ using Microsoft.AspNet.Mvc;
 
 namespace Angular2LocalizationAspNetCore.Controllers
 {
-    public class I18nController : Controller
+    public class ShopController : Controller
     {
         [HttpGet("ResouceData")]
-        public I18nResourceData GetResouceData()
+        public string GetResouceData()
         {
-            return new I18nResourceData();
+            return "great data";
         }
 
 
