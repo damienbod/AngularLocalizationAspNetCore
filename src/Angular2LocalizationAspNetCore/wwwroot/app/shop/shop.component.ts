@@ -3,14 +3,12 @@ import { CORE_DIRECTIVES } from 'angular2/common';
 import { Observable }       from 'rxjs/Observable';
 import { Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from '../ng2-translate/ng2-translate';
 
 
 @Component({
     selector: 'shopcomponent',
     templateUrl: 'app/shop/shop.component.html',
-    directives: [CORE_DIRECTIVES, ROUTER_DIRECTIVES],
-    pipes: [TranslatePipe]
+    directives: [CORE_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 
 export class ShopComponent implements OnInit {

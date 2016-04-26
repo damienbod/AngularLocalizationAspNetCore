@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router', '../ng2-translate/ng2-translate'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/router'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../ng2-
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, ng2_translate_1;
+    var core_1, common_1, router_1;
     var HomeComponent;
     return {
         setters:[
@@ -22,9 +22,6 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../ng2-
             },
             function (router_1_1) {
                 router_1 = router_1_1;
-            },
-            function (ng2_translate_1_1) {
-                ng2_translate_1 = ng2_translate_1_1;
             }],
         execute: function() {
             HomeComponent = (function () {
@@ -39,8 +36,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../ng2-
                     core_1.Component({
                         selector: 'homecomponent',
                         templateUrl: 'app/home/home.component.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
-                        pipes: [ng2_translate_1.TranslatePipe]
+                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router])
                 ], HomeComponent);

@@ -6,20 +6,20 @@
                 <a [routerLink]="['/Home']" class="navbar-brand"><img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a [routerLink]="['/Home']">{{ 'HOME' | translate }}</a></li>
-                <li><a [routerLink]="['/Shop']">{{ 'SHOP' | translate }}</a></li>
+                <li><a [routerLink]="['/Home']">{{ 'NAV_MENU_HOME' | translate }}</a></li>
+                <li><a [routerLink]="['/Shop']">{{ 'NAV_MENU_SHOP' | translate }}</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <div class="navbar" style="margin-bottom:0;">
-                        <form class="navbar-form pull-left">
-                            <select (change)="translate.use($event.target.value)" class="form-control">
-                                <option *ngFor="#lang of ['fr-CH', 'en-US', 'de-CH', 'it-CH']" [selected]="lang === translate.currentLang">{{lang}}</option>
-                            </select>
-                        </form>
-                    </div>
-                </li>
+                <li><a (click)="ChangeCulture('de','CH', 'CHF')">de</a></li>
+                <li><a (click)="ChangeCulture('fr','CH', 'CHF')">fr</a></li>
+                <li><a (click)="ChangeCulture('it','CH', 'CHF')">it</a></li>
+                <li><a (click)="ChangeCulture('en','US', 'CHF')">en</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a (click)="ChangeCurrency('CHF')">CHF</a></li>
+                <li><a (click)="ChangeCurrency('EUR')">EUR</a></li>
             </ul>
         </div>
     </nav>

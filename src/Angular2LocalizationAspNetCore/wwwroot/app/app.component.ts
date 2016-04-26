@@ -1,6 +1,14 @@
-﻿import { Component } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { TranslateService, TranslatePipe, TRANSLATE_PROVIDERS } from './ng2-translate/ng2-translate';
+﻿
+import {Component} from 'angular2/core';
+import {NgClass} from 'angular2/common';
+import {Location} from 'angular2/platform/common';
+
+import {LocaleService, LocalizationService } from 'angular2localization/angular2localization';
+// Pipes.
+import {TranslatePipe} from 'angular2localization/angular2localization';
+// Components.
+
+import { RouteConfig, AsyncRoute, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component'; 
 
@@ -9,9 +17,8 @@ import { ShopComponent } from './shop/shop.component';
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [
-        ROUTER_PROVIDERS
-    ],
+    providers: [ROUTER_PROVIDERS, LocaleService, LocalizationService], // Inherited by all descendants.
+
     pipes: [TranslatePipe]
 })
 
@@ -20,14 +27,27 @@ import { ShopComponent } from './shop/shop.component';
         { path: '/shop', name: 'Shop', component: ShopComponent },
 ])
 
-
 export class AppComponent {
 
-    constructor(public translate: TranslateService) {
+    constructor(public locale: LocaleService, public localization: LocalizationService, public location: Location) {
+        // Adds a new language (ISO 639 two-letter code).
+        this.locale.addLanguage('de');
+        this.locale.addLanguage('fr');
+        this.locale.addLanguage('it');
+        this.locale.addLanguage('en');
 
-        // var userLang = navigator.language.split('-')[0];
-        var userLang = /(fr-ch|en-US|de-CH|it-CH)/gi.test(userLang) ? userLang : 'en-US';
+        this.locale.definePreferredLocale('en', 'US', 30);
 
-        translate.use(userLang);
+        this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
+    }
+
+    public ChangeCulture(language: string, country: string, currency: string) {
+        this.locale.setCurrentLocale(language, country);
+        this.locale.setCurrentcurrency(currency);
+
+    }
+
+    public ChangeCurrency(currency: string) {
+        this.locale.setCurrentcurrency(currency);
     }
 }
