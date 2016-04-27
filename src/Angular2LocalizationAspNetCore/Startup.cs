@@ -32,8 +32,11 @@ namespace Angular2LocalizationAspNetCore
         {
             services.AddTransient<IProductProvider, ProductProvider>();
 
-            // Add framework services.
-            services.AddMvc();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +62,6 @@ namespace Angular2LocalizationAspNetCore
                     new CultureInfo("en-US"),
                     new CultureInfo("de-CH"),
                     new CultureInfo("fr-CH"),
-
                     new CultureInfo("it-CH")
                 },
                 SupportedUICultures = new List<CultureInfo>

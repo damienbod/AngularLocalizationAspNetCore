@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Angular2LocalizationAspNetCore.Models;
+using Angular2LocalizationAspNetCore.ViewModels;
 
 namespace Angular2LocalizationAspNetCore.Providers
 {
     public interface IProductProvider
     {
-        List<Product> GetAvailableProducts();
+        List<ProductDto> GetAvailableProducts();
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Angular2LocalizationAspNetCore.Models
+namespace Angular2LocalizationAspNetCore.ViewModels
 {
-    public class Product
+    public class ProductDto
     {
         public long Id { get; set; }
 
