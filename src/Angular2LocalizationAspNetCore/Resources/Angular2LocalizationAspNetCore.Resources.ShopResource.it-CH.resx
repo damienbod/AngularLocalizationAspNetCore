@@ -117,31 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BoxLengthRange" xml:space="preserve">
-    <value>The box length should be between 1 and a 100 it-CH</value>
-  </data>
-  <data name="BoxLengthRequired" xml:space="preserve">
-    <value>The Box length in required it-CH</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description it-CH</value>
-  </data>
-  <data name="DescriptionRequired" xml:space="preserve">
-    <value>Description is required it-CH</value>
-  </data>
-  <data name="IdDoesNotExistException" xml:space="preserve">
-    <value>Id does not exist it-CH</value>
-  </data>
   <data name="Name" xml:space="preserve">
     <value>Name it-CH</value>
-  </data>
-  <data name="NameRequired" xml:space="preserve">
-    <value>Name is required it-CH</value>
-  </data>
-  <data name="Timestamp" xml:space="preserve">
-    <value>Timestamp it-CH</value>
-  </data>
-  <data name="TimestampRequired" xml:space="preserve">
-    <value>Timestamp is required it-CH</value>
   </data>
 </root>
