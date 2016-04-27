@@ -13,6 +13,10 @@ namespace Angular2LocalizationAspNetCore.Models
 
         public long Description { get; set; }
 
-        public string FilePath { get; set; }
+        public string ImagePath { get; set; }
+
+        public double PriceEUR { get; set; }
+
+        public double PriceCHF { get; set; }
     }
 }

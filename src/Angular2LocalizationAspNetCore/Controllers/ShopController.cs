@@ -1,4 +1,5 @@
-﻿using Angular2LocalizationAspNetCore.Resources;
+﻿using Angular2LocalizationAspNetCore.Providers;
+using Angular2LocalizationAspNetCore.Resources;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Localization;
 
@@ -6,17 +7,17 @@ namespace Angular2LocalizationAspNetCore.Controllers
 {
     public class ShopController : Controller
     {
-        private IHtmlLocalizer<ShopResource> _htmlLocalizer;
+        private readonly IProductProvider _productProvider;
 
-        public ShopController(IHtmlLocalizer<ShopResource> localizer)
+        public ShopController(IProductProvider productProvider)
         {
-            _htmlLocalizer = localizer;
+            _productProvider = productProvider;
         }
 
         [HttpGet("ResouceData")]
         public string GetResouceData()
         {
-            // return _htmlLocalizer["Name"];
+            
             return "great data";
         }
 
