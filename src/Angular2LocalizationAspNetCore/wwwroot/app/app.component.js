@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/platform/common', 'angular2localization/angular2localization', 'angular2/router', './home/home.component', './shop/shop.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/platform/common', 'angular2localization/angular2localization', 'angular2/router', './home/home.component', './shop/shop.component', './services/ProductService'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/platform/common', 'angular2localizat
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, angular2localization_1, angular2localization_2, router_1, home_component_1, shop_component_1;
+    var core_1, common_1, angular2localization_1, angular2localization_2, router_1, home_component_1, shop_component_1, ProductService_1;
     var AppComponent;
     return {
         setters:[
@@ -32,23 +32,29 @@ System.register(['angular2/core', 'angular2/platform/common', 'angular2localizat
             },
             function (shop_component_1_1) {
                 shop_component_1 = shop_component_1_1;
+            },
+            function (ProductService_1_1) {
+                ProductService_1 = ProductService_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent(locale, localization, location) {
+                function AppComponent(locale, localization, location, _productService) {
                     this.locale = locale;
                     this.localization = localization;
                     this.location = location;
+                    this._productService = _productService;
                     this.locale.addLanguage('de');
                     this.locale.addLanguage('fr');
                     this.locale.addLanguage('it');
                     this.locale.addLanguage('en');
                     this.locale.definePreferredLocale('en', 'US', 30);
                     this.localization.translationProvider('./i18n/locale-');
+                    this._productService.GetProducts();
                 }
                 AppComponent.prototype.ChangeCulture = function (language, country, currency) {
                     this.locale.setCurrentLocale(language, country);
                     this.locale.setCurrentcurrency(currency);
+                    this._productService.GetProducts();
                 };
                 AppComponent.prototype.ChangeCurrency = function (currency) {
                     this.locale.setCurrentcurrency(currency);
@@ -59,14 +65,14 @@ System.register(['angular2/core', 'angular2/platform/common', 'angular2localizat
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css'],
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        providers: [router_1.ROUTER_PROVIDERS, angular2localization_1.LocaleService, angular2localization_1.LocalizationService],
+                        providers: [router_1.ROUTER_PROVIDERS, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService],
                         pipes: [angular2localization_2.TranslatePipe]
                     }),
                     router_1.RouteConfig([
                         { path: '/home', name: 'Home', component: home_component_1.HomeComponent, useAsDefault: true },
                         { path: '/shop', name: 'Shop', component: shop_component_1.ShopComponent },
                     ]), 
-                    __metadata('design:paramtypes', [angular2localization_1.LocaleService, angular2localization_1.LocalizationService, common_1.Location])
+                    __metadata('design:paramtypes', [angular2localization_1.LocaleService, angular2localization_1.LocalizationService, common_1.Location, ProductService_1.ProductService])
                 ], AppComponent);
                 return AppComponent;
             }());

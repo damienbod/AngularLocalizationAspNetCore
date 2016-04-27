@@ -10,6 +10,8 @@ import { LocaleService } from 'angular2localization/angular2localization';
 @Injectable()
 export class ProductService {
 
+    public Products: Product[];
+
     private actionUrl: string;
     private headers: Headers;
     private isoCode: string;
@@ -38,6 +40,14 @@ export class ProductService {
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
             headers: this.headers
         }).map(res => res.json());
+    }
+
+    public GetProducts() {
+        console.log('ShopComponent:getProducts starting...');
+        this.GetAvailableProducts()
+            .subscribe(data => this.Products = data,
+            error => console.log(error),
+            () => console.log('ShopComponent:getProducts:Get all completed'));
     }
     
 }

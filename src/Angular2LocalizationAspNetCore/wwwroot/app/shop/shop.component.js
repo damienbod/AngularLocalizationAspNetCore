@@ -35,20 +35,13 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
                 }
                 ShopComponent.prototype.ngOnInit = function () {
                     console.log("ngOnInit ShopComponent");
-                    this.getProducts();
-                };
-                ShopComponent.prototype.getProducts = function () {
-                    var _this = this;
-                    console.log('ShopComponent:getProducts starting...');
-                    this._productService.GetAvailableProducts()
-                        .subscribe(function (data) { return _this.Products = data; }, function (error) { return console.log(error); }, function () { return console.log('ShopComponent:getProducts:Get all completed'); });
+                    this.Products = this._productService.Products;
                 };
                 ShopComponent = __decorate([
                     core_1.Component({
                         selector: 'shopcomponent',
                         templateUrl: 'app/shop/shop.component.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
-                        providers: [ProductService_1.ProductService]
+                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [ProductService_1.ProductService, router_1.Router])
                 ], ShopComponent);

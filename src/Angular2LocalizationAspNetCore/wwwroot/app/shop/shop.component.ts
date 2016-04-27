@@ -3,14 +3,14 @@ import { CORE_DIRECTIVES } from 'angular2/common';
 import { Observable }       from 'rxjs/Observable';
 import { Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { Http } from 'angular2/http';
-import { ProductService } from '../services/ProductService';
 import { Product } from '../services/Product';
+import { LocaleService } from 'angular2localization/angular2localization';
+import { ProductService } from '../services/ProductService';
 
 @Component({
     selector: 'shopcomponent',
     templateUrl: 'app/shop/shop.component.html',
-    directives: [CORE_DIRECTIVES, ROUTER_DIRECTIVES],
-    providers: [ ProductService ]
+    directives: [CORE_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 
 export class ShopComponent implements OnInit {
@@ -26,14 +26,10 @@ export class ShopComponent implements OnInit {
 
     ngOnInit() {
         console.log("ngOnInit ShopComponent");
-        this.getProducts();
+        this.Products = this._productService.Products;
+        // TODO use EventEmitter for the products
     }
 
-    private getProducts() {
-        console.log('ShopComponent:getProducts starting...');
-        this._productService.GetAvailableProducts()
-            .subscribe(data => this.Products = data,
-            error => console.log(error),
-            () => console.log('ShopComponent:getProducts:Get all completed'));
-    }
+    
+   
 }
