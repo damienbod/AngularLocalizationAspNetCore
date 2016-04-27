@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/router', '../services/ProductService'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1;
+    var core_1, common_1, router_1, ProductService_1;
     var ShopComponent;
     return {
         setters:[
@@ -22,23 +22,35 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (ProductService_1_1) {
+                ProductService_1 = ProductService_1_1;
             }],
         execute: function() {
             ShopComponent = (function () {
-                function ShopComponent(_router) {
+                function ShopComponent(_productService, _router) {
+                    this._productService = _productService;
                     this._router = _router;
                     this.message = "shop.component";
                 }
                 ShopComponent.prototype.ngOnInit = function () {
                     console.log("ngOnInit ShopComponent");
+                    this.getProducts();
+                };
+                ShopComponent.prototype.getProducts = function () {
+                    var _this = this;
+                    console.log('ShopComponent:getProducts starting...');
+                    this._productService.GetAvailableProducts()
+                        .subscribe(function (data) { return _this.Products = data; }, function (error) { return console.log(error); }, function () { return console.log('ShopComponent:getProducts:Get all completed'); });
                 };
                 ShopComponent = __decorate([
                     core_1.Component({
                         selector: 'shopcomponent',
                         templateUrl: 'app/shop/shop.component.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+                        providers: [ProductService_1.ProductService]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router])
+                    __metadata('design:paramtypes', [ProductService_1.ProductService, router_1.Router])
                 ], ShopComponent);
                 return ShopComponent;
             }());

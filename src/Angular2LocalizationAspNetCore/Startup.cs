@@ -77,8 +77,8 @@ namespace Angular2LocalizationAspNetCore
             app.UseIISPlatformHandler();
 
             var angularRoutes = new[] {
-                "/overview",
-                "/region",
+                "/home",
+                "/shop",
             };
 
             app.Use(async (context, next) =>

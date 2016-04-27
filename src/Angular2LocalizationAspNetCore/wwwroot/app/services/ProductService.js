@@ -29,14 +29,17 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map', '../
             }],
         execute: function() {
             ProductService = (function () {
-                function ProductService(_http, _configuration, locale) {
+                function ProductService(_http, _configuration, _locale) {
                     var _this = this;
                     this._http = _http;
                     this._configuration = _configuration;
-                    this.locale = locale;
+                    this._locale = _locale;
                     this.GetAvailableProducts = function () {
+                        console.log(_this._locale.getCurrentLanguage());
+                        console.log(_this._locale.getCurrentCountry());
+                        _this.isoCode = _this._locale.getCurrentLanguage() + "-" + _this._locale.getCurrentCountry();
                         _this.setHeaders();
-                        return _this._http.get(_this.actionUrl + "AvailableProducts", {
+                        return _this._http.get(_this.actionUrl + "AvailableProducts?culture=" + _this.isoCode, {
                             headers: _this.headers
                         }).map(function (res) { return res.json(); });
                     };

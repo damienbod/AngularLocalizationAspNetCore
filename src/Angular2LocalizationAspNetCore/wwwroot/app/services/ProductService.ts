@@ -16,7 +16,7 @@ export class ProductService {
 
     constructor(private _http: Http, private _configuration: Configuration, public _locale: LocaleService) {
         this.actionUrl = `${_configuration.Server}api/Shop/`; 
-        this.isoCode = `${_locale.getCurrentLanguage}-${_locale.getCurrentCountry}`; 
+       
     }
 
     private setHeaders() {
@@ -30,6 +30,10 @@ export class ProductService {
     // http://localhost:5000/api/Shop/AvailableProducts?culture=fr-CH
     // http://localhost:5000/api/Shop/AvailableProducts?culture=en-US
     public GetAvailableProducts = (): Observable<Product[]> => {
+        console.log(this._locale.getCurrentLanguage());
+        console.log(this._locale.getCurrentCountry());
+        this.isoCode = `${this._locale.getCurrentLanguage()}-${this._locale.getCurrentCountry()}`; 
+
         this.setHeaders();
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
             headers: this.headers
