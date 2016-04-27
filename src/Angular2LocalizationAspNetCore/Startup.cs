@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,6 +49,26 @@ namespace Angular2LocalizationAspNetCore
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            var requestLocalizationOptions = new RequestLocalizationOptions
+            {
+                SupportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("de-CH"),
+                    new CultureInfo("fr-CH"),
+
+                    new CultureInfo("it-CH")
+                },
+                SupportedUICultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("de-CH"),
+                    new CultureInfo("fr-CH"),
+                    new CultureInfo("it-CH")
+                }
+            };
+
+            app.UseRequestLocalization(requestLocalizationOptions, new RequestCulture("en-US"));
             app.UseIISPlatformHandler();
 
             var angularRoutes = new[] {
