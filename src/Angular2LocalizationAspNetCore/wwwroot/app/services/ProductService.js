@@ -34,6 +34,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map', '../
                     this._http = _http;
                     this._configuration = _configuration;
                     this._locale = _locale;
+                    this.changed = new core_1.EventEmitter();
                     this.GetAvailableProducts = function () {
                         console.log(_this._locale.getCurrentLanguage());
                         console.log(_this._locale.getCurrentCountry());
@@ -54,8 +55,15 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map', '../
                     var _this = this;
                     console.log('ShopComponent:getProducts starting...');
                     this.GetAvailableProducts()
-                        .subscribe(function (data) { return _this.Products = data; }, function (error) { return console.log(error); }, function () { return console.log('ShopComponent:getProducts:Get all completed'); });
+                        .subscribe(function (data) {
+                        _this.Products = data;
+                        _this.changed.emit(data);
+                    }, function (error) { return console.log(error); }, function () { return console.log('ShopComponent:getProducts:Get all completed'); });
                 };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], ProductService.prototype, "changed", void 0);
                 ProductService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http, app_constants_1.Configuration, angular2localization_1.LocaleService])

@@ -1,4 +1,4 @@
-﻿import { Injectable } from 'angular2/core';
+﻿import { Injectable, EventEmitter, Output } from 'angular2/core';
 import { Http, Response, Headers } from 'angular2/http';
 import 'rxjs/add/operator/map'
 import { Observable } from 'rxjs/Observable';
@@ -6,10 +6,10 @@ import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { LocaleService } from 'angular2localization/angular2localization';
 
-
 @Injectable()
 export class ProductService {
 
+    @Output() changed = new EventEmitter<Product[]>();
     public Products: Product[];
 
     private actionUrl: string;
@@ -17,8 +17,7 @@ export class ProductService {
     private isoCode: string;
 
     constructor(private _http: Http, private _configuration: Configuration, public _locale: LocaleService) {
-        this.actionUrl = `${_configuration.Server}api/Shop/`; 
-       
+        this.actionUrl = `${_configuration.Server}api/Shop/`;       
     }
 
     private setHeaders() {
@@ -45,7 +44,10 @@ export class ProductService {
     public GetProducts() {
         console.log('ShopComponent:getProducts starting...');
         this.GetAvailableProducts()
-            .subscribe(data => this.Products = data,
+            .subscribe( (data) => {
+                this.Products = data;
+                this.changed.emit(data);
+            },               
             error => console.log(error),
             () => console.log('ShopComponent:getProducts:Get all completed'));
     }

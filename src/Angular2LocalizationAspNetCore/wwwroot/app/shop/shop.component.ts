@@ -1,6 +1,6 @@
 import { Component, OnInit } from 'angular2/core';
 import { CORE_DIRECTIVES } from 'angular2/common';
-import { Observable }       from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { Http } from 'angular2/http';
 import { Product } from '../services/Product';
@@ -29,7 +29,4 @@ export class ShopComponent implements OnInit {
         this.Products = this._productService.Products;
         // TODO use EventEmitter for the products
     }
-
-    
-   
 }
