@@ -9,7 +9,7 @@ import { LocaleService } from 'angular2localization/angular2localization';
 @Injectable()
 export class ProductService {
 
-    @Output() changed = new EventEmitter<Product[]>();
+    @Output() changedProductData = new EventEmitter<Product[]>();
     public Products: Product[];
 
     private actionUrl: string;
@@ -49,7 +49,7 @@ export class ProductService {
             },
             error => console.log(error),
             () => {
-                this.changed.emit(this.Products);
+                this.changedProductData.emit(this.Products);
                 console.log('ProductService:GetProducts completed');
             }
         );

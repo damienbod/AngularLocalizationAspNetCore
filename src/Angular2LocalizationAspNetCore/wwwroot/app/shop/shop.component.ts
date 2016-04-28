@@ -22,15 +22,19 @@ export class ShopComponent implements OnInit {
         private _productService: ProductService,
         private _router: Router) {
         this.message = "shop.component";
+
+        this._productService.changedProductData.subscribe(item => this.onProductDataRecieved(item));
     }
 
     ngOnInit() {
         console.log("ngOnInit ShopComponent");
         this.Products = this._productService.Products;
-        // TODO use EventEmitter for the products
-        this._productService.changed.subscribe(
-            data => this.Products = data,
-            error => console.log(error),
-            () => console.log('recieved event from service'));
     }
+
+    private onProductDataRecieved(products) {
+        this.Products = products;
+        console.log("onProductDataRecieved");
+        console.log(this.Products);
+    }
+
 }

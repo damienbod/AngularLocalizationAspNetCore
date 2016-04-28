@@ -29,15 +29,20 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
         execute: function() {
             ShopComponent = (function () {
                 function ShopComponent(_productService, _router) {
+                    var _this = this;
                     this._productService = _productService;
                     this._router = _router;
                     this.message = "shop.component";
+                    this._productService.changedProductData.subscribe(function (item) { return _this.onProductDataRecieved(item); });
                 }
                 ShopComponent.prototype.ngOnInit = function () {
-                    var _this = this;
                     console.log("ngOnInit ShopComponent");
                     this.Products = this._productService.Products;
-                    this._productService.changed.subscribe(function (data) { return _this.Products = data; }, function (error) { return console.log(error); }, function () { return console.log('recieved event from service'); });
+                };
+                ShopComponent.prototype.onProductDataRecieved = function (products) {
+                    this.Products = products;
+                    console.log("onProductDataRecieved");
+                    console.log(this.Products);
                 };
                 ShopComponent = __decorate([
                     core_1.Component({
