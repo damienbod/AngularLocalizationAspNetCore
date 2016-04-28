@@ -28,5 +28,9 @@ export class ShopComponent implements OnInit {
         console.log("ngOnInit ShopComponent");
         this.Products = this._productService.Products;
         // TODO use EventEmitter for the products
+        this._productService.changed.subscribe(
+            data => this.Products = data,
+            error => console.log(error),
+            () => console.log('recieved event from service'));
     }
 }

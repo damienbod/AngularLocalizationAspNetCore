@@ -34,8 +34,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
                     this.message = "shop.component";
                 }
                 ShopComponent.prototype.ngOnInit = function () {
+                    var _this = this;
                     console.log("ngOnInit ShopComponent");
                     this.Products = this._productService.Products;
+                    this._productService.changed.subscribe(function (data) { return _this.Products = data; }, function (error) { return console.log(error); }, function () { return console.log('recieved event from service'); });
                 };
                 ShopComponent = __decorate([
                     core_1.Component({
