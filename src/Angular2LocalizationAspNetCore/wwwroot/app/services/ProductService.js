@@ -57,8 +57,10 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map', '../
                     this.GetAvailableProducts()
                         .subscribe(function (data) {
                         _this.Products = data;
-                        _this.changed.emit(data);
-                    }, function (error) { return console.log(error); }, function () { return console.log('ShopComponent:getProducts:Get all completed'); });
+                    }, function (error) { return console.log(error); }, function () {
+                        _this.changed.emit(_this.Products);
+                        console.log('ShopComponent:getProducts:Get all completed');
+                    });
                 };
                 __decorate([
                     core_1.Output(), 

@@ -42,14 +42,17 @@ export class ProductService {
     }
 
     public GetProducts() {
-        console.log('ShopComponent:getProducts starting...');
+        console.log('ProductService:GetProducts starting...');
         this.GetAvailableProducts()
-            .subscribe( (data) => {
+            .subscribe((data) => {
                 this.Products = data;
-                this.changed.emit(data);
-            },               
+            },
             error => console.log(error),
-            () => console.log('ShopComponent:getProducts:Get all completed'));
+            () => {
+                this.changed.emit(this.Products);
+                console.log('ProductService:GetProducts completed');
+            }
+        );
     }
     
 }

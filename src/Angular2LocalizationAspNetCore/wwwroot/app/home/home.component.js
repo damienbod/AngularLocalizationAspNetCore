@@ -30,7 +30,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
                     this.message = "home.component";
                 }
                 HomeComponent.prototype.ngOnInit = function () {
-                    console.log("ngOnInit ShopComponent");
+                    console.log("ngOnInit HomeComponent");
                 };
                 HomeComponent = __decorate([
                     core_1.Component({
