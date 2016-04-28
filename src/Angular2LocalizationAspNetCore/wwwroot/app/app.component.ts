@@ -19,7 +19,6 @@ import { ProductService } from './services/ProductService';
     styleUrls: ['app/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
     providers: [ROUTER_PROVIDERS, LocaleService, LocalizationService, ProductService], // Inherited by all descendants.
-
     pipes: [TranslatePipe]
 })
 
@@ -46,6 +45,7 @@ export class AppComponent {
 
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
         this._productService.GetProducts();
+        this._productService.UpdateCurrency("CHF");
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
@@ -56,5 +56,6 @@ export class AppComponent {
 
     public ChangeCurrency(currency: string) {
         this.locale.setCurrentcurrency(currency);
+        this._productService.UpdateCurrency(currency);
     }
 }

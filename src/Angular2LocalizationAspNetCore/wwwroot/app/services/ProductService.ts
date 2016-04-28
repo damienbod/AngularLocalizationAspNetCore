@@ -12,6 +12,9 @@ export class ProductService {
     @Output() changedProductData = new EventEmitter<Product[]>();
     public Products: Product[];
 
+    @Output() changedCurrency = new EventEmitter<string>();
+    public SelectedCurrency: string;
+
     private actionUrl: string;
     private headers: Headers;
     private isoCode: string;
@@ -53,6 +56,11 @@ export class ProductService {
                 console.log('ProductService:GetProducts completed');
             }
         );
+    }
+
+    public UpdateCurrency(currency: string) {
+        this.SelectedCurrency = currency;
+        this.changedCurrency.emit(currency);
     }
     
 }

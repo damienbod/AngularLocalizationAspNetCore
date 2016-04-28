@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router', '../services/ProductService'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/router', '../services/ProductService', 'angular2localization/angular2localization'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, ProductService_1;
+    var core_1, common_1, router_1, ProductService_1, angular2localization_1;
     var ShopComponent;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
             },
             function (ProductService_1_1) {
                 ProductService_1 = ProductService_1_1;
+            },
+            function (angular2localization_1_1) {
+                angular2localization_1 = angular2localization_1_1;
             }],
         execute: function() {
             ShopComponent = (function () {
@@ -34,21 +37,29 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
                     this._router = _router;
                     this.message = "shop.component";
                     this._productService.changedProductData.subscribe(function (item) { return _this.onProductDataRecieved(item); });
+                    this._productService.changedCurrency.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
                 }
                 ShopComponent.prototype.ngOnInit = function () {
                     console.log("ngOnInit ShopComponent");
                     this.Products = this._productService.Products;
+                    this.Currency = this._productService.SelectedCurrency;
                 };
                 ShopComponent.prototype.onProductDataRecieved = function (products) {
                     this.Products = products;
                     console.log("onProductDataRecieved");
                     console.log(this.Products);
                 };
+                ShopComponent.prototype.onChangedCurrencyRecieved = function (currency) {
+                    this.Currency = currency;
+                    console.log("onChangedCurrencyRecieved");
+                    console.log(currency);
+                };
                 ShopComponent = __decorate([
                     core_1.Component({
                         selector: 'shopcomponent',
                         templateUrl: 'app/shop/shop.component.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+                        pipes: [angular2localization_1.TranslatePipe]
                     }), 
                     __metadata('design:paramtypes', [ProductService_1.ProductService, router_1.Router])
                 ], ShopComponent);

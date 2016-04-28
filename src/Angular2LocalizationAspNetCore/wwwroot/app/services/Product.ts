@@ -1,3 +1,8 @@
 ﻿export class Product {
-    Y: number[];
+    Id: number[];
+    Name: string;
+    Description: string;
+    ImagePath: string;
+    PriceEUR: number;
+    PriceCHF: number;
 }

@@ -50,6 +50,7 @@ System.register(['angular2/core', 'angular2/platform/common', 'angular2localizat
                     this.locale.definePreferredLocale('en', 'US', 30);
                     this.localization.translationProvider('./i18n/locale-');
                     this._productService.GetProducts();
+                    this._productService.UpdateCurrency("CHF");
                 }
                 AppComponent.prototype.ChangeCulture = function (language, country, currency) {
                     this.locale.setCurrentLocale(language, country);
@@ -58,6 +59,7 @@ System.register(['angular2/core', 'angular2/platform/common', 'angular2localizat
                 };
                 AppComponent.prototype.ChangeCurrency = function (currency) {
                     this.locale.setCurrentcurrency(currency);
+                    this._productService.UpdateCurrency(currency);
                 };
                 AppComponent = __decorate([
                     core_1.Component({
