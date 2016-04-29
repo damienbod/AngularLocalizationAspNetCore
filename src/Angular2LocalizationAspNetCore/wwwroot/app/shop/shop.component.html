@@ -2,7 +2,7 @@
 
     <div class="panel-group" *ngIf="Products">
 
-        <div class="mcbutton col-md-4" style="margin-left: -15px; margin-bottom: 10px;" *ngFor="#product of Products">
+        <div class="mcbutton col-md-4" style="margin-left: -15px; margin-bottom: 10px;" *ngFor="let product of Products">
             <div class="panel panel-default" >
                 <div class="panel-heading" style="color: #9d9d9d;background-color: #222;">
                     {{product.Name}}

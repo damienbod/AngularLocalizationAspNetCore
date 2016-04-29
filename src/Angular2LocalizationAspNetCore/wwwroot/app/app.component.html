@@ -22,7 +22,7 @@
                     <div class="navbar" style="margin-bottom:0;">
                         <form class="navbar-form pull-left">
                             <select (change)="ChangeCurrency($event.target.value)" class="form-control">
-                                <option *ngFor="#currency of ['CHF', 'EUR']">{{currency}}</option>
+                                <option *ngFor="let currency of ['CHF', 'EUR']">{{currency}}</option>
                             </select>
                         </form>
                     </div>

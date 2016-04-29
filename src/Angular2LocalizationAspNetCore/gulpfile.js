@@ -20,7 +20,8 @@ var packagesToMove = [
    paths.npmSrc + '/es6-shim/es6-shim.min.js',
    paths.npmSrc + '/reflect-metadata/Reflect.js',
    paths.npmSrc + '/zone.js/dist/zone.js',
-   paths.npmSrc + '/jquery/dist/jquery.min.js'
+   paths.npmSrc + '/jquery/dist/jquery.min.js',
+   paths.npmSrc + '/angular2localization/bundles/angular2localization.min.js'
 
 ];
 
