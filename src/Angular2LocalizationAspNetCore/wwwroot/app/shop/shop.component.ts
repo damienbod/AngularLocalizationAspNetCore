@@ -23,25 +23,40 @@ export class ShopComponent implements OnInit {
     public Price: string;
 
     constructor(
+        public _locale: LocaleService,
         private _productService: ProductService,
         private _router: Router) {
         this.message = "shop.component";
 
-        this._productService.changedProductData.subscribe(item => this.onProductDataRecieved(item));
-        this._productService.changedCurrency.subscribe(currency => this.onChangedCurrencyRecieved(currency));
+        this._locale.countryCodeChanged.subscribe(item => this.onCountryChangedDataRecieved(item));
+        this._locale.currencyCodeChanged.subscribe(currency => this.onChangedCurrencyRecieved(currency));
         
     }
 
     ngOnInit() {
         console.log("ngOnInit ShopComponent");
-        this.Products = this._productService.Products;
-        this.Currency = this._productService.SelectedCurrency;
+        this.GetProducts();
+
+        this.Currency = this._locale.getCurrentCurrency();
     }
 
-    private onProductDataRecieved(products) {
-        this.Products = products;
+    public GetProducts() {
+        console.log('ShopComponent:GetProducts starting...');
+        this._productService.GetAvailableProducts()
+            .subscribe((data) => {
+                this.Products = data;
+            },
+            error => console.log(error),
+            () => {
+                console.log('ProductService:GetProducts completed');
+            }
+            );
+    } 
+
+    private onCountryChangedDataRecieved(item) {
+        this.GetProducts();
         console.log("onProductDataRecieved");
-        console.log(this.Products);
+        console.log(item);
     }
 
     private onChangedCurrencyRecieved(currency) {

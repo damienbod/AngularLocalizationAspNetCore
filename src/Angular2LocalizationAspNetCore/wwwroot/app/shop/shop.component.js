@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router', '../services/ProductService', 'angular2localization/angular2localization'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/common', 'angular2/router', 'angular2localization/angular2localization', '../services/ProductService'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, ProductService_1, angular2localization_1;
+    var core_1, common_1, router_1, angular2localization_1, ProductService_1, angular2localization_2;
     var ShopComponent;
     return {
         setters:[
@@ -23,31 +23,43 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (ProductService_1_1) {
-                ProductService_1 = ProductService_1_1;
-            },
             function (angular2localization_1_1) {
                 angular2localization_1 = angular2localization_1_1;
+                angular2localization_2 = angular2localization_1_1;
+            },
+            function (ProductService_1_1) {
+                ProductService_1 = ProductService_1_1;
             }],
         execute: function() {
             ShopComponent = (function () {
-                function ShopComponent(_productService, _router) {
+                function ShopComponent(_locale, _productService, _router) {
                     var _this = this;
+                    this._locale = _locale;
                     this._productService = _productService;
                     this._router = _router;
                     this.message = "shop.component";
-                    this._productService.changedProductData.subscribe(function (item) { return _this.onProductDataRecieved(item); });
-                    this._productService.changedCurrency.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
+                    this._locale.countryCodeChanged.subscribe(function (item) { return _this.onCountryChangedDataRecieved(item); });
+                    this._locale.currencyCodeChanged.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
                 }
                 ShopComponent.prototype.ngOnInit = function () {
                     console.log("ngOnInit ShopComponent");
-                    this.Products = this._productService.Products;
-                    this.Currency = this._productService.SelectedCurrency;
+                    this.GetProducts();
+                    this.Currency = this._locale.getCurrentCurrency();
                 };
-                ShopComponent.prototype.onProductDataRecieved = function (products) {
-                    this.Products = products;
+                ShopComponent.prototype.GetProducts = function () {
+                    var _this = this;
+                    console.log('ShopComponent:GetProducts starting...');
+                    this._productService.GetAvailableProducts()
+                        .subscribe(function (data) {
+                        _this.Products = data;
+                    }, function (error) { return console.log(error); }, function () {
+                        console.log('ProductService:GetProducts completed');
+                    });
+                };
+                ShopComponent.prototype.onCountryChangedDataRecieved = function (item) {
+                    this.GetProducts();
                     console.log("onProductDataRecieved");
-                    console.log(this.Products);
+                    console.log(item);
                 };
                 ShopComponent.prototype.onChangedCurrencyRecieved = function (currency) {
                     this.Currency = currency;
@@ -59,9 +71,9 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', '../serv
                         selector: 'shopcomponent',
                         templateUrl: 'app/shop/shop.component.html',
                         directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
-                        pipes: [angular2localization_1.TranslatePipe]
+                        pipes: [angular2localization_2.TranslatePipe]
                     }), 
-                    __metadata('design:paramtypes', [ProductService_1.ProductService, router_1.Router])
+                    __metadata('design:paramtypes', [angular2localization_1.LocaleService, ProductService_1.ProductService, router_1.Router])
                 ], ShopComponent);
                 return ShopComponent;
             }());

@@ -1,4 +1,4 @@
-﻿import { Injectable, EventEmitter, Output } from 'angular2/core';
+﻿import { Injectable } from 'angular2/core';
 import { Http, Response, Headers } from 'angular2/http';
 import 'rxjs/add/operator/map'
 import { Observable } from 'rxjs/Observable';
@@ -8,13 +8,6 @@ import { LocaleService } from 'angular2localization/angular2localization';
 
 @Injectable()
 export class ProductService {
-
-    @Output() changedProductData = new EventEmitter<Product[]>();
-    public Products: Product[];
-
-    @Output() changedCurrency = new EventEmitter<string>();
-    public SelectedCurrency: string;
-
     private actionUrl: string;
     private headers: Headers;
     private isoCode: string;
@@ -42,25 +35,5 @@ export class ProductService {
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
             headers: this.headers
         }).map(res => res.json());
-    }
-
-    public GetProducts() {
-        console.log('ProductService:GetProducts starting...');
-        this.GetAvailableProducts()
-            .subscribe((data) => {
-                this.Products = data;
-            },
-            error => console.log(error),
-            () => {
-                this.changedProductData.emit(this.Products);
-                console.log('ProductService:GetProducts completed');
-            }
-        );
-    }
-
-    public UpdateCurrency(currency: string) {
-        this.SelectedCurrency = currency;
-        this.changedCurrency.emit(currency);
-    }
-    
+    }   
 }

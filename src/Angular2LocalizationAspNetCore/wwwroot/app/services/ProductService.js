@@ -34,8 +34,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map', '../
                     this._http = _http;
                     this._configuration = _configuration;
                     this._locale = _locale;
-                    this.changedProductData = new core_1.EventEmitter();
-                    this.changedCurrency = new core_1.EventEmitter();
                     this.GetAvailableProducts = function () {
                         console.log(_this._locale.getCurrentLanguage());
                         console.log(_this._locale.getCurrentCountry());
@@ -52,29 +50,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map', '../
                     this.headers.append('Content-Type', 'application/json');
                     this.headers.append('Accept', 'application/json');
                 };
-                ProductService.prototype.GetProducts = function () {
-                    var _this = this;
-                    console.log('ProductService:GetProducts starting...');
-                    this.GetAvailableProducts()
-                        .subscribe(function (data) {
-                        _this.Products = data;
-                    }, function (error) { return console.log(error); }, function () {
-                        _this.changedProductData.emit(_this.Products);
-                        console.log('ProductService:GetProducts completed');
-                    });
-                };
-                ProductService.prototype.UpdateCurrency = function (currency) {
-                    this.SelectedCurrency = currency;
-                    this.changedCurrency.emit(currency);
-                };
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', Object)
-                ], ProductService.prototype, "changedProductData", void 0);
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', Object)
-                ], ProductService.prototype, "changedCurrency", void 0);
                 ProductService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http, app_constants_1.Configuration, angular2localization_1.LocaleService])

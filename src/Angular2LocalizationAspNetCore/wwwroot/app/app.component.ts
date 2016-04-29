@@ -44,18 +44,14 @@ export class AppComponent {
         this.locale.definePreferredLocale('en', 'US', 30);
 
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
-        this._productService.GetProducts();
-        this._productService.UpdateCurrency("CHF");
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
         this.locale.setCurrentLocale(language, country);
         this.locale.setCurrentcurrency(currency);
-        this._productService.GetProducts();
     }
 
     public ChangeCurrency(currency: string) {
         this.locale.setCurrentcurrency(currency);
-        this._productService.UpdateCurrency(currency);
     }
 }

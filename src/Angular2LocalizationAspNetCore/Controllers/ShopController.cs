@@ -1,8 +1,5 @@
 ﻿using Angular2LocalizationAspNetCore.Providers;
-using Angular2LocalizationAspNetCore.Resources;
-using Angular2LocalizationAspNetCore.ViewModels;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Localization;
 
 namespace Angular2LocalizationAspNetCore.Controllers
 {
@@ -22,7 +19,5 @@ namespace Angular2LocalizationAspNetCore.Controllers
         {
             return Ok(_productProvider.GetAvailableProducts());
         }
-
-
     }
 }
