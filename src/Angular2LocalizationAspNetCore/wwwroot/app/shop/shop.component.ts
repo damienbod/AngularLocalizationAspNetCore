@@ -38,6 +38,9 @@ export class ShopComponent implements OnInit {
         this.GetProducts();
 
         this.Currency = this._locale.getCurrentCurrency();
+        if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
+            this.Currency = "CHF";
+        }
     }
 
     public GetProducts() {

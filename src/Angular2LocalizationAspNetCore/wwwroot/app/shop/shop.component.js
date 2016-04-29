@@ -45,6 +45,9 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', 'angular
                     console.log("ngOnInit ShopComponent");
                     this.GetProducts();
                     this.Currency = this._locale.getCurrentCurrency();
+                    if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
+                        this.Currency = "CHF";
+                    }
                 };
                 ShopComponent.prototype.GetProducts = function () {
                     var _this = this;
