@@ -1,14 +1,10 @@
-﻿
-import {Component} from 'angular2/core';
-import {NgClass} from 'angular2/common';
-import {Location} from 'angular2/platform/common';
+﻿import {Component, OnInit} from '@angular/core';
+import {Routes, Router, ROUTER_DIRECTIVES} from '@angular/router';
 
 import {LocaleService, LocalizationService } from 'angular2localization/angular2localization';
 // Pipes.
 import {TranslatePipe} from 'angular2localization/angular2localization';
 // Components.
-
-import { RouteConfig, AsyncRoute, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component'; 
 import { ProductService } from './services/ProductService';
@@ -18,21 +14,21 @@ import { ProductService } from './services/ProductService';
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [ROUTER_PROVIDERS, LocaleService, LocalizationService, ProductService], // Inherited by all descendants.
+    providers: [LocaleService, LocalizationService, ProductService], // Inherited by all descendants.
     pipes: [TranslatePipe]
 })
 
-@RouteConfig([
-        { path: '/home', name: 'Home', component: HomeComponent, useAsDefault: true },
-        { path: '/shop', name: 'Shop', component: ShopComponent },
+@Routes([
+    { path: '/home', component: HomeComponent },
+    { path: '/shop', component: ShopComponent }
 ])
 
 export class AppComponent {
 
     constructor(
+        private router: Router,
         public locale: LocaleService,
         public localization: LocalizationService,
-        public location: Location,
         private _productService: ProductService
     ) {
         // Adds a new language (ISO 639 two-letter code).
@@ -44,6 +40,12 @@ export class AppComponent {
         this.locale.definePreferredLocale('en', 'US', 30);
 
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
+    }
+
+    ngOnInit() {
+
+        this.router.navigate(['/home']);
+
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {

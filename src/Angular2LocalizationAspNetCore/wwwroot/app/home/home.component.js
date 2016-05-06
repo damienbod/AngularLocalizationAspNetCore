@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/common', 'angular2/router'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/common'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1;
+    var core_1, common_1;
     var HomeComponent;
     return {
         setters:[
@@ -19,14 +19,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
             },
             function (common_1_1) {
                 common_1 = common_1_1;
-            },
-            function (router_1_1) {
-                router_1 = router_1_1;
             }],
         execute: function() {
             HomeComponent = (function () {
-                function HomeComponent(_router) {
-                    this._router = _router;
+                function HomeComponent() {
                     this.message = "home.component";
                 }
                 HomeComponent.prototype.ngOnInit = function () {
@@ -36,9 +32,9 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router'], functio
                     core_1.Component({
                         selector: 'homecomponent',
                         templateUrl: 'app/home/home.component.html',
-                        directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+                        directives: [common_1.CORE_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router])
+                    __metadata('design:paramtypes', [])
                 ], HomeComponent);
                 return HomeComponent;
             }());

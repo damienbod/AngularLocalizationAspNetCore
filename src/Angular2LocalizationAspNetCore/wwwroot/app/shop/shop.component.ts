@@ -1,8 +1,7 @@
-import { Component, OnInit } from 'angular2/core';
-import { CORE_DIRECTIVES } from 'angular2/common';
+import { Component, OnInit } from '@angular/core';
+import { CORE_DIRECTIVES } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
-import { Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { Http } from 'angular2/http';
+import { Http } from '@angular/http';
 import { Product } from '../services/Product';
 import { LocaleService } from 'angular2localization/angular2localization';
 import { ProductService } from '../services/ProductService';
@@ -11,7 +10,7 @@ import {TranslatePipe} from 'angular2localization/angular2localization';
 @Component({
     selector: 'shopcomponent',
     templateUrl: 'app/shop/shop.component.html',
-    directives: [CORE_DIRECTIVES, ROUTER_DIRECTIVES],
+    directives: [CORE_DIRECTIVES],
     pipes: [TranslatePipe]
 })
 
@@ -24,8 +23,7 @@ export class ShopComponent implements OnInit {
 
     constructor(
         public _locale: LocaleService,
-        private _productService: ProductService,
-        private _router: Router) {
+        private _productService: ProductService) {
         this.message = "shop.component";
 
         this._locale.countryCodeChanged.subscribe(item => this.onCountryChangedDataRecieved(item));
