@@ -1,12 +1,13 @@
-﻿import { bootstrap} from 'angular2/platform/browser';
-import { HTTP_PROVIDERS } from 'angular2/http';
-import { provide } from 'angular2/core';
+﻿import { bootstrap } from '@angular/platform-browser-dynamic';
+import { HTTP_PROVIDERS } from '@angular/http';
+import { ROUTER_PROVIDERS } from '@angular/router';
 import { AppComponent } from './app.component';
 import { Configuration } from './app.constants';
 
 bootstrap(AppComponent, [
+    ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     Configuration,
-]).catch(err => console.error(err));
+]);
 
 
