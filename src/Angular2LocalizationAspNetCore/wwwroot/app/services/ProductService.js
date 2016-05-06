@@ -52,9 +52,10 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', '../
                 };
                 ProductService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http, app_constants_1.Configuration, angular2localization_1.LocaleService])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object, app_constants_1.Configuration, angular2localization_1.LocaleService])
                 ], ProductService);
                 return ProductService;
+                var _a;
             }());
             exports_1("ProductService", ProductService);
         }

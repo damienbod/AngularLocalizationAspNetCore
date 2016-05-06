@@ -70,9 +70,10 @@ System.register(['@angular/core', '@angular/router', 'angular2localization/angul
                         { path: '/home', component: home_component_1.HomeComponent },
                         { path: '/shop', component: shop_component_1.ShopComponent }
                     ]), 
-                    __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
                 ], AppComponent);
                 return AppComponent;
+                var _a;
             }());
             exports_1("AppComponent", AppComponent);
         }
