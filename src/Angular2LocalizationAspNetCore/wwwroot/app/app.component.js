@@ -53,9 +53,11 @@ System.register(['@angular/core', '@angular/router', 'angular2localization/angul
                 AppComponent.prototype.ChangeCulture = function (language, country, currency) {
                     this.locale.setCurrentLocale(language, country);
                     this.locale.setCurrentCurrency(currency);
+                    this.localization.updateTranslation();
                 };
                 AppComponent.prototype.ChangeCurrency = function (currency) {
                     this.locale.setCurrentCurrency(currency);
+                    this.localization.updateTranslation();
                 };
                 AppComponent = __decorate([
                     core_1.Component({

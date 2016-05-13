@@ -1,7 +1,8 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {Routes, Router, ROUTER_DIRECTIVES} from '@angular/router';
 
-import {LocaleService, LocalizationService } from 'angular2localization/angular2localization';
+import {LocaleService, Locale, LocalizationService} from 'angular2localization/angular2localization';
+
 // Pipes.
 import {TranslatePipe} from 'angular2localization/angular2localization';
 // Components.
@@ -14,7 +15,7 @@ import { ProductService } from './services/ProductService';
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [LocaleService, LocalizationService, ProductService], // Inherited by all descendants.
+    providers: [Locale, LocalizationService, ProductService], // Inherited by all descendants.
     pipes: [TranslatePipe]
 })
 
@@ -23,7 +24,7 @@ import { ProductService } from './services/ProductService';
     { path: '/shop', component: ShopComponent }
 ])
 
-export class AppComponent {
+export class AppComponent extends Locale {
 
     constructor(
         private router: Router,
@@ -31,6 +32,7 @@ export class AppComponent {
         public localization: LocalizationService,
         private _productService: ProductService
     ) {
+        super(null, localization);
         // Adds a new language (ISO 639 two-letter code).
         this.locale.addLanguage('de');
         this.locale.addLanguage('fr');
@@ -51,9 +53,11 @@ export class AppComponent {
     public ChangeCulture(language: string, country: string, currency: string) {
         this.locale.setCurrentLocale(language, country);
         this.locale.setCurrentCurrency(currency);
+        this.localization.updateTranslation();
     }
 
     public ChangeCurrency(currency: string) {
         this.locale.setCurrentCurrency(currency);
+        this.localization.updateTranslation();
     }
 }
