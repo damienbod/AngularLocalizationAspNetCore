@@ -42,6 +42,8 @@ export class AppComponent extends Locale {
         this.locale.definePreferredLocale('en', 'US', 30);
 
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
+        this.localization.updateTranslation(); // Need to update the translation.
+
     }
 
     ngOnInit() {
@@ -58,6 +60,5 @@ export class AppComponent extends Locale {
 
     public ChangeCurrency(currency: string) {
         this.locale.setCurrentCurrency(currency);
-        this.localization.updateTranslation();
     }
 }
