@@ -1,6 +1,11 @@
 System.register(['@angular/core', '@angular/router', 'angular2localization/angular2localization', './home/home.component', './shop/shop.component', './services/ProductService'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
+    var __extends = (this && this.__extends) || function (d, b) {
+        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -34,8 +39,10 @@ System.register(['@angular/core', '@angular/router', 'angular2localization/angul
                 ProductService_1 = ProductService_1_1;
             }],
         execute: function() {
-            AppComponent = (function () {
+            AppComponent = (function (_super) {
+                __extends(AppComponent, _super);
                 function AppComponent(router, locale, localization, _productService) {
+                    _super.call(this, null, localization);
                     this.router = router;
                     this.locale = locale;
                     this.localization = localization;
@@ -46,16 +53,18 @@ System.register(['@angular/core', '@angular/router', 'angular2localization/angul
                     this.locale.addLanguage('en');
                     this.locale.definePreferredLocale('en', 'US', 30);
                     this.localization.translationProvider('./i18n/locale-');
+                    this.localization.updateTranslation();
                 }
                 AppComponent.prototype.ngOnInit = function () {
                     this.router.navigate(['/home']);
                 };
                 AppComponent.prototype.ChangeCulture = function (language, country, currency) {
                     this.locale.setCurrentLocale(language, country);
-                    this.locale.setCurrentcurrency(currency);
+                    this.locale.setCurrentCurrency(currency);
+                    this.localization.updateTranslation();
                 };
                 AppComponent.prototype.ChangeCurrency = function (currency) {
-                    this.locale.setCurrentcurrency(currency);
+                    this.locale.setCurrentCurrency(currency);
                 };
                 AppComponent = __decorate([
                     core_1.Component({
@@ -63,7 +72,7 @@ System.register(['@angular/core', '@angular/router', 'angular2localization/angul
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css'],
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        providers: [angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService],
+                        providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService],
                         pipes: [angular2localization_2.TranslatePipe]
                     }),
                     router_1.Routes([
@@ -73,7 +82,7 @@ System.register(['@angular/core', '@angular/router', 'angular2localization/angul
                     __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
                 ], AppComponent);
                 return AppComponent;
-            }());
+            }(angular2localization_1.Locale));
             exports_1("AppComponent", AppComponent);
         }
     }
