@@ -50,10 +50,10 @@ export class AppComponent {
 
     public ChangeCulture(language: string, country: string, currency: string) {
         this.locale.setCurrentLocale(language, country);
-        this.locale.setCurrentcurrency(currency);
+        this.locale.setCurrentCurrency(currency);
     }
 
     public ChangeCurrency(currency: string) {
-        this.locale.setCurrentcurrency(currency);
+        this.locale.setCurrentCurrency(currency);
     }
 }
