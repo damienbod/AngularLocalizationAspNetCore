@@ -15,7 +15,7 @@ import { ProductService } from './services/ProductService';
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [Locale, LocalizationService, ProductService], // Inherited by all descendants.
+    providers: [LocalizationService, ProductService], // Inherited by all descendants.
     pipes: [TranslatePipe]
 })
 
