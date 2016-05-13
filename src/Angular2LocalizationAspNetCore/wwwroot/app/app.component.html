@@ -6,8 +6,8 @@
                 <a [routerLink]="['/home']" class="navbar-brand"><img src="images/damienbod.jpg" height="40" style="margin-top:-10px;" /></a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a [routerLink]="['/home']">{{ 'NAV_MENU_HOME' | translate }}</a></li>
-                <li><a [routerLink]="['/shop']">{{ 'NAV_MENU_SHOP' | translate }}</a></li>
+                <li><a [routerLink]="['/home']">{{ 'NAV_MENU_HOME' | translate:lang }}</a></li>
+                <li><a [routerLink]="['/shop']">{{ 'NAV_MENU_SHOP' | translate:lang }}</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
