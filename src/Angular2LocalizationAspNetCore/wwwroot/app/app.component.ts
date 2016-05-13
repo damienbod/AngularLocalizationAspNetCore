@@ -1,10 +1,11 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {Routes, Router, ROUTER_DIRECTIVES} from '@angular/router';
 
-import {LocaleService, Locale, LocalizationService} from 'angular2localization/angular2localization';
-
+// Services.
+import {Locale, LocaleService, LocalizationService} from 'angular2localization/angular2localization';
 // Pipes.
 import {TranslatePipe} from 'angular2localization/angular2localization';
+
 // Components.
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component'; 
@@ -15,7 +16,7 @@ import { ProductService } from './services/ProductService';
     templateUrl: 'app/app.component.html',
     styleUrls: ['app/app.component.css'],
     directives: [ROUTER_DIRECTIVES],
-    providers: [LocalizationService, ProductService], // Inherited by all descendants.
+    providers: [LocalizationService, LocaleService, ProductService],
     pipes: [TranslatePipe]
 })
 
