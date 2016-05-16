@@ -2,17 +2,17 @@
 using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Resources;
 using Angular2LocalizationAspNetCore.ViewModels;
-using Microsoft.AspNet.Mvc.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace Angular2LocalizationAspNetCore.Providers
 {
     public class ProductProvider : IProductProvider
     {
-        private IHtmlLocalizer<ShopResource> _htmlLocalizer;
+        private IStringLocalizer<ShopResource> _stringLocalizer;
 
-        public ProductProvider(IHtmlLocalizer<ShopResource> localizer)
+        public ProductProvider(IStringLocalizer<ShopResource> localizer)
         {
-            _htmlLocalizer = localizer;
+            _stringLocalizer = localizer;
         }
 
         public List<ProductDto> GetAvailableProducts()
@@ -23,8 +23,8 @@ namespace Angular2LocalizationAspNetCore.Providers
             {
                 data.Add(new ProductDto() {
                     Id = t.Id,
-                    Description = _htmlLocalizer[t.Description],
-                    Name = _htmlLocalizer[t.Name],
+                    Description = _stringLocalizer[t.Description],
+                    Name = _stringLocalizer[t.Name],
                     ImagePath = t.ImagePath,
                     PriceCHF = t.PriceCHF,
                     PriceEUR = t.PriceEUR

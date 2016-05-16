@@ -1,31 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Angular2LocalizationAspNetCore.Providers;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Localization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Angular2LocalizationAspNetCore
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+         public Startup(IHostingEnvironment env)
         {
-            // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; set; }
+         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -34,6 +36,22 @@ namespace Angular2LocalizationAspNetCore
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+            services.Configure<RequestLocalizationOptions>(
+                options =>
+                    {
+                        var supportedCultures = new List<CultureInfo>
+                        {
+                            new CultureInfo("en-US"),
+                            new CultureInfo("de-CH"),
+                            new CultureInfo("fr-CH"),
+                            new CultureInfo("it-CH")
+                        };
+
+                        options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                        options.SupportedCultures = supportedCultures;
+                        options.SupportedUICultures = supportedCultures;
+                    });
+                    
             services.AddMvc()
                 .AddViewLocalization()
                 .AddDataAnnotationsLocalization();
@@ -55,26 +73,8 @@ namespace Angular2LocalizationAspNetCore
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            var requestLocalizationOptions = new RequestLocalizationOptions
-            {
-                SupportedCultures = new List<CultureInfo>
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("de-CH"),
-                    new CultureInfo("fr-CH"),
-                    new CultureInfo("it-CH")
-                },
-                SupportedUICultures = new List<CultureInfo>
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("de-CH"),
-                    new CultureInfo("fr-CH"),
-                    new CultureInfo("it-CH")
-                }
-            };
-
-            app.UseRequestLocalization(requestLocalizationOptions, new RequestCulture("en-US"));
-            app.UseIISPlatformHandler();
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             var angularRoutes = new[] {
                 "/home",
@@ -104,6 +104,16 @@ namespace Angular2LocalizationAspNetCore
         }
 
         // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
     }
 }

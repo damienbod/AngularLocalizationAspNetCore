@@ -1,5 +1,5 @@
 ﻿using Angular2LocalizationAspNetCore.Providers;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Angular2LocalizationAspNetCore.Controllers
 {
