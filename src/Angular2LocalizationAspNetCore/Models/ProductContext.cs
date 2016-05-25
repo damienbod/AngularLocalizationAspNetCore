@@ -3,7 +3,7 @@ using System.Linq;
 using Angular2LocalizationAspNetCore.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Angular2LocalizationAspNetCore.Providers
+namespace Angular2LocalizationAspNetCore.Models
 {
     public class ProductContext : DbContext
     {

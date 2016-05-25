@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Resources;
 using Angular2LocalizationAspNetCore.ViewModels;
 using Localization.SqlLocalizer.DbStringLocalizer;

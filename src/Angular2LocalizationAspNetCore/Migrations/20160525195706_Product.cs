@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Angular2LocalizationAspNetCore.Migrations
 {
-    public partial class Products : Migration
+    public partial class Product : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

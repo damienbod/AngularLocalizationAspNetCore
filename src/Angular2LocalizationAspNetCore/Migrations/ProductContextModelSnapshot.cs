@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Angular2LocalizationAspNetCore.Providers;
+using Angular2LocalizationAspNetCore.Models;
 
 namespace Angular2LocalizationAspNetCore.Migrations
 {

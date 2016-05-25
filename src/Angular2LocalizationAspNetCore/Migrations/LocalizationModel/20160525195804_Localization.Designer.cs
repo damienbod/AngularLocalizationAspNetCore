@@ -3,39 +3,37 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Angular2LocalizationAspNetCore.Providers;
+using Localization.SqlLocalizer.DbStringLocalizer;
 
-namespace Angular2LocalizationAspNetCore.Migrations
+namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
 {
-    [DbContext(typeof(ProductContext))]
-    [Migration("20160525151449_Products")]
-    partial class Products
+    [DbContext(typeof(LocalizationModelContext))]
+    [Migration("20160525195804_Localization")]
+    partial class Localization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rc2-20896");
 
-            modelBuilder.Entity("Angular2LocalizationAspNetCore.Models.Product", b =>
+            modelBuilder.Entity("Localization.SqlLocalizer.DbStringLocalizer.LocalizationRecord", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Key");
 
-                    b.Property<string>("ImagePath");
+                    b.Property<string>("LocalizationCulture");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("ResourceKey");
 
-                    b.Property<double>("PriceCHF");
-
-                    b.Property<double>("PriceEUR");
+                    b.Property<string>("Text");
 
                     b.Property<DateTime>("UpdatedTimestamp");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("LocalizationRecords");
                 });
         }
     }

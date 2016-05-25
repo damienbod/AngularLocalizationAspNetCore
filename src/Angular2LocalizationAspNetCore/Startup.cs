@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Providers;
 using Localization.SqlLocalizer.DbStringLocalizer;
 using Microsoft.AspNetCore.Builder;

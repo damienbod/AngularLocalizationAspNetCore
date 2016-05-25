@@ -27,6 +27,8 @@ namespace Angular2LocalizationAspNetCore.Controllers
             _productCudProvider.AddProduct(value);
         }
 
+        // Test method to add data
+        // http://localhost:5000/api/ShopAdmin/AddTestData/description/name
         [HttpGet]
         [Route("AddTestData/{description}/{name}")]
         public IActionResult AddTestData(string description, string name)
@@ -53,13 +55,5 @@ namespace Angular2LocalizationAspNetCore.Controllers
             _productCudProvider.AddProduct(product);
             return Ok("completed");
         }
-
-        //private List<Product> InitDummyData()
-        //{
-        //    List<Product> data = new List<Product>();
-        //    data.Add(new Product() { Id = 1, Description = "Mini HTML for content", Name = "HTML wiz", ImagePath = "", PriceCHF = 2.40, PriceEUR = 2.20 });
-        //    data.Add(new Product() { Id = 2, Description = "R editor for data anaylsis", Name = "R editor", ImagePath = "", PriceCHF = 45.00, PriceEUR = 40 });
-        //    return data;
-        //}
     }
 }
