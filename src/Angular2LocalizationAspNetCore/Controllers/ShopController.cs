@@ -6,18 +6,18 @@ namespace Angular2LocalizationAspNetCore.Controllers
     [Route("api/[controller]")]
     public class ShopController : Controller
     {
-        private readonly IProductProvider _productProvider;
+        private readonly IProductRequestProvider _productRequestProvider;
 
-        public ShopController(IProductProvider productProvider)
+        public ShopController(IProductRequestProvider productProvider)
         {
-            _productProvider = productProvider;
+            _productRequestProvider = productProvider;
         }
 
         // http://localhost:5000/api/shop/AvailableProducts
         [HttpGet("AvailableProducts")]
         public IActionResult GetAvailableProducts()
         {
-            return Ok(_productProvider.GetAvailableProducts());
+            return Ok(_productRequestProvider.GetAvailableProducts());
         }
     }
 }

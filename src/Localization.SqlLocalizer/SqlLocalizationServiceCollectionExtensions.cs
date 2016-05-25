@@ -42,6 +42,10 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             services.TryAdd(new ServiceDescriptor(
+                typeof(IStringExtendedLocalizerFactory),
+                typeof(SqlStringLocalizerFactory),
+                ServiceLifetime.Singleton));
+            services.TryAdd(new ServiceDescriptor(
                 typeof(IStringLocalizerFactory),
                 typeof(SqlStringLocalizerFactory),
                 ServiceLifetime.Singleton));

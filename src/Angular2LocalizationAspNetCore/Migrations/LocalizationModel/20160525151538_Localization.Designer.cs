@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Localization.SqlLocalizer.DbStringLocalizer;
 
-namespace Angular2LocalizationAspNetCore.Migrations
+namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
 {
     [DbContext(typeof(LocalizationModelContext))]
-    [Migration("20160525041934_Products")]
-    partial class Products
+    [Migration("20160525151538_Localization")]
+    partial class Localization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

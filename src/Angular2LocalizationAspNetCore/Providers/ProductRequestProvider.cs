@@ -2,21 +2,25 @@
 using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Resources;
 using Angular2LocalizationAspNetCore.ViewModels;
+using Localization.SqlLocalizer.DbStringLocalizer;
 using Microsoft.Extensions.Localization;
 
 namespace Angular2LocalizationAspNetCore.Providers
 {
-    public class ProductProvider : IProductProvider
+    public class ProductRequestProvider : IProductRequestProvider
     {
-        private IStringLocalizer<ShopResource> _stringLocalizer;
+        private IStringLocalizer _stringLocalizer;
+        private IStringExtendedLocalizerFactory _stringLocalizerFactory;
 
-        public ProductProvider(IStringLocalizer<ShopResource> localizer)
+        public ProductRequestProvider(IStringExtendedLocalizerFactory stringLocalizerFactory)
         {
-            _stringLocalizer = localizer;
+            _stringLocalizerFactory = stringLocalizerFactory;
+            _stringLocalizer = _stringLocalizerFactory.Create(typeof(ShopResource));
         }
 
         public List<ProductDto> GetAvailableProducts()
         {
+            _stringLocalizerFactory.ResetCache();
             var dataSimi = InitDummyData();
             List<ProductDto> data = new List<ProductDto>();
             foreach(var t in dataSimi)
