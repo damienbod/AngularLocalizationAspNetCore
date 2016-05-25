@@ -47,9 +47,7 @@ namespace Angular2LocalizationAspNetCore
             );
 
             // Requires that LocalizationModelContext is defined
-            // services.AddSqlLocalization(options =>  options.UseTypeFullNames = true);
             services.AddSqlLocalization();
-
             // services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.Configure<RequestLocalizationOptions>(
