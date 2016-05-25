@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Angular2LocalizationAspNetCore.Models;
+﻿using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Resources;
 using Angular2LocalizationAspNetCore.ViewModels;
 using Localization.SqlLocalizer.DbStringLocalizer;
@@ -11,14 +9,18 @@ namespace Angular2LocalizationAspNetCore.Providers
     {
         private LocalizationModelContext _localizationModelContext;
         private ProductContext _productContext;
+        private IStringExtendedLocalizerFactory _stringLocalizerFactory;
 
-        public ProductCudProvider(ProductContext productContext, LocalizationModelContext localizationModelContext)
+        public ProductCudProvider(ProductContext productContext, 
+            LocalizationModelContext localizationModelContext,
+            IStringExtendedLocalizerFactory stringLocalizerFactory)
         {
             _productContext = productContext;
             _localizationModelContext = localizationModelContext;
+            _stringLocalizerFactory = stringLocalizerFactory;
         }
 
-        public void AddProduct(ProductDto product, List<LocalizationRecordDto> localizationRecords)
+        public void AddProduct(ProductCreateEditDto product)
         {
             _productContext.Products.Add(new Product
             {
@@ -31,7 +33,7 @@ namespace Angular2LocalizationAspNetCore.Providers
 
             _productContext.SaveChanges();
 
-            foreach(var record in localizationRecords)
+            foreach(var record in product.LocalizationRecords)
             {
                 _localizationModelContext.Add(new LocalizationRecord
                 {
@@ -43,14 +45,7 @@ namespace Angular2LocalizationAspNetCore.Providers
             }
 
             _localizationModelContext.SaveChanges();
-        }
-
-        private List<Product> InitDummyData()
-        {
-            List<Product> data = new List<Product>();
-            data.Add(new Product() { Id = 1, Description = "Mini HTML for content", Name="HTML wiz", ImagePath="", PriceCHF = 2.40, PriceEUR= 2.20  });
-            data.Add(new Product() { Id = 2, Description = "R editor for data anaylsis", Name = "R editor", ImagePath = "", PriceCHF = 45.00, PriceEUR = 40 });
-            return data;
+            _stringLocalizerFactory.ResetCache();
         }
     }
 }
