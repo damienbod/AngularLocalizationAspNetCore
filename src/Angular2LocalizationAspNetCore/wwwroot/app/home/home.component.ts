@@ -1,6 +1,6 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
 import { CORE_DIRECTIVES } from '@angular/common';
-import { Observable }       from 'rxjs/Observable';
 import { Http } from '@angular/http';
 
 
