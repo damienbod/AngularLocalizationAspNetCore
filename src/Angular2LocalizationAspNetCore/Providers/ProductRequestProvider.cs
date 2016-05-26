@@ -26,14 +26,14 @@ namespace Angular2LocalizationAspNetCore.Providers
 
         public List<ProductDto> GetAvailableProducts()
         {
-            var dataSimi = _productContext.Products.OrderByDescending(dataEventRecord => EF.Property<DateTime>(dataEventRecord, "UpdatedTimestamp")).ToList(); 
+            var products = _productContext.Products.OrderByDescending(dataEventRecord => EF.Property<DateTime>(dataEventRecord, "UpdatedTimestamp")).ToList(); 
             List<ProductDto> data = new List<ProductDto>();
-            foreach(var t in dataSimi)
+            foreach(var t in products)
             {
                 data.Add(new ProductDto() {
                     Id = t.Id,
-                    Description = _stringLocalizer[t.Description],
-                    Name = _stringLocalizer[t.Name],
+                    Description = _stringLocalizer[$"{t.Id}.{t.Description}"],
+                    Name = _stringLocalizer[$"{t.Id}.{t.Name}"],
                     ImagePath = t.ImagePath,
                     PriceCHF = t.PriceCHF,
                     PriceEUR = t.PriceEUR

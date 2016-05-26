@@ -22,14 +22,15 @@ namespace Angular2LocalizationAspNetCore.Providers
 
         public void AddProduct(ProductCreateEditDto product)
         {
-            _productContext.Products.Add(new Product
+            var productEntity = new Product
             {
                 Description = product.Description,
                 ImagePath = product.ImagePath,
                 Name = product.Name,
                 PriceCHF = product.PriceCHF,
                 PriceEUR = product.PriceEUR
-            });
+            };
+            _productContext.Products.Add(productEntity);
 
             _productContext.SaveChanges();
 
@@ -37,7 +38,7 @@ namespace Angular2LocalizationAspNetCore.Providers
             {
                 _localizationModelContext.Add(new LocalizationRecord
                 {
-                    Key = record.Key,
+                    Key = $"{productEntity.Id}.{record.Key}",
                     Text = record.Text,
                     LocalizationCulture = record.LocalizationCulture,
                     ResourceKey = typeof(ShopResource).FullName
