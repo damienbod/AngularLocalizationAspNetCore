@@ -8,7 +8,7 @@ using Localization.SqlLocalizer.DbStringLocalizer;
 namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
 {
     [DbContext(typeof(LocalizationModelContext))]
-    [Migration("20160525195804_Localization")]
+    [Migration("20160526185044_Localization")]
     partial class Localization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,11 @@ namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Key");
+                    b.Property<string>("Key")
+                        .IsRequired();
 
-                    b.Property<string>("LocalizationCulture");
+                    b.Property<string>("LocalizationCulture")
+                        .IsRequired();
 
                     b.Property<string>("ResourceKey");
 
@@ -32,6 +34,8 @@ namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
                     b.Property<DateTime>("UpdatedTimestamp");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Key", "LocalizationCulture");
 
                     b.ToTable("LocalizationRecords");
                 });

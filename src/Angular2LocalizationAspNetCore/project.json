@@ -6,7 +6,7 @@
             "version": "1.0.0-rc2-3002702",
             "type": "platform"
         },
-        "Localization.SqlLocalizer": "1.0.0.0",
+        "Localization.SqlLocalizer":  "1.0.1",
         "Microsoft.EntityFrameworkCore.Sqlite": "1.0.0-rc2-final",
         "Microsoft.EntityFrameworkCore.Sqlite.Design": "1.0.0-rc2-final",
         "Microsoft.EntityFrameworkCore.Tools.Core": "1.0.0-rc2-final",
