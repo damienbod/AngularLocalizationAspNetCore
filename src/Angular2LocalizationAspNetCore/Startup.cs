@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Providers;
+using Localization.SqlLocalizer.DbStringLocalizer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,9 +35,26 @@ namespace Angular2LocalizationAspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IProductProvider, ProductProvider>();
+            services.AddTransient<IProductRequestProvider, ProductRequestProvider>();
+            services.AddTransient<IProductCudProvider, ProductCudProvider>();
+            
+            // init database for localization
+            var sqlConnectionString = Configuration["DbStringLocalizer:ConnectionString"];
 
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddDbContext<LocalizationModelContext>(options =>
+                options.UseSqlite(
+                    sqlConnectionString,
+                    b => b.MigrationsAssembly("Angular2LocalizationAspNetCore")
+                )
+            );
+
+            services.AddDbContext<ProductContext>(options =>
+              options.UseSqlite( sqlConnectionString )
+            );
+
+            // Requires that LocalizationModelContext is defined
+            services.AddSqlLocalization(options => options.UseTypeFullNames = true);
+            // services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.Configure<RequestLocalizationOptions>(
                 options =>

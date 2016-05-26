@@ -4,3 +4,9 @@ src/Angular2LocalizationAspNetCore/project.lock.json
 .vs/Angular2LocalizationAspNetCore/v14/.suo
 src/Angular2LocalizationAspNetCore/bin
 src/Angular2LocalizationAspNetCore/obj
+src/Localization.SqlLocalizer/bin
+src/Localization.SqlLocalizer/obj
+src/Localization.SqlLocalizer/project.lock.json
+src/Localization.SqlLocalizer/Localization.SqlLocalizer.xproj.user
+.vs/restore.dg
+.vs/restore.dg
