@@ -14,8 +14,8 @@ namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    Key = table.Column<string>(nullable: true),
-                    LocalizationCulture = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: false),
+                    LocalizationCulture = table.Column<string>(nullable: false),
                     ResourceKey = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true),
                     UpdatedTimestamp = table.Column<DateTime>(nullable: false)
@@ -23,6 +23,7 @@ namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LocalizationRecords", x => x.Id);
+                    table.UniqueConstraint("AK_LocalizationRecords_Key_LocalizationCulture", x => new { x.Key, x.LocalizationCulture });
                 });
         }
 
