@@ -6,6 +6,7 @@
 	<li><a href="https://damienbod.com/2016/05/26/creating-and-requesting-sql-localized-data-in-asp-net-core/">Creating and requesting SQL localized data in ASP.NET Core</a></li>
 </ul>
 
-Localization.SqlLocalizer NuGet package
+
+# Localization.SqlLocalizer NuGet package
 
 <a href="https://www.nuget.org/packages/Localization.SqlLocalizer/">NuGet</a> | <a href="https://github.com/damienbod/AspNet5Localization/issues">Issues</a> | <a href="https://github.com/damienbod/AspNet5Localization/tree/master/AspNet5Localization/src/Localization.SqlLocalizer">Code</a>
