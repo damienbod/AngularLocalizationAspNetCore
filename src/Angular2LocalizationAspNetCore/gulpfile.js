@@ -35,4 +35,4 @@ gulp.task('copyNpmTo_wwwrootLibs', ['clean'], function () {
     gulp.src(packagesToMove[8]).pipe(gulp.dest(paths.libTarget + 'angular2localization/bundles'));
 });
 
-+gulp.task('default', ['copyNpmTo_wwwrootLibs']);
+gulp.task('default', ['copyNpmTo_wwwrootLibs']);
