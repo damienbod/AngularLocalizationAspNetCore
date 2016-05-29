@@ -3,7 +3,7 @@ using Angular2LocalizationAspNetCore.Models;
 
 namespace Angular2LocalizationAspNetCore.ViewModels
 {
-    public class ProductDto
+    public class ProductCreateEditDto
     {
         public long Id { get; set; }
 
@@ -16,5 +16,7 @@ namespace Angular2LocalizationAspNetCore.ViewModels
         public double PriceEUR { get; set; }
 
         public double PriceCHF { get; set; }
+
+        public List<LocalizationRecordDto> LocalizationRecords { get; set; }
     }
 }
