@@ -8,7 +8,7 @@ webpackJsonp([0],{
 	var http_1 = __webpack_require__(280);
 	var router_1 = __webpack_require__(301);
 	var app_component_1 = __webpack_require__(323);
-	var app_constants_1 = __webpack_require__(340);
+	var app_constants_1 = __webpack_require__(341);
 	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
 	    router_1.ROUTER_PROVIDERS,
 	    http_1.HTTP_PROVIDERS,
@@ -41,8 +41,8 @@ webpackJsonp([0],{
 	var angular2localization_1 = __webpack_require__(324);
 	var angular2localization_2 = __webpack_require__(324);
 	var home_component_1 = __webpack_require__(337);
-	var shop_component_1 = __webpack_require__(338);
-	var ProductService_1 = __webpack_require__(339);
+	var shop_component_1 = __webpack_require__(339);
+	var ProductService_1 = __webpack_require__(340);
 	var AppComponent = (function (_super) {
 	    __extends(AppComponent, _super);
 	    function AppComponent(router, locale, localization, _productService) {
@@ -117,7 +117,7 @@ webpackJsonp([0],{
 	    HomeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'homecomponent',
-	            templateUrl: 'app/home/home.component.html',
+	            template: __webpack_require__(338),
 	            directives: [common_1.CORE_DIRECTIVES]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -130,6 +130,13 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 338:
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"panel-group\">\r\n\r\n    <p>hello home</p>\r\n\r\n</div>";
+
+/***/ },
+
+/***/ 339:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -145,7 +152,7 @@ webpackJsonp([0],{
 	var core_1 = __webpack_require__(7);
 	var common_1 = __webpack_require__(181);
 	var angular2localization_1 = __webpack_require__(324);
-	var ProductService_1 = __webpack_require__(339);
+	var ProductService_1 = __webpack_require__(340);
 	var angular2localization_2 = __webpack_require__(324);
 	var ShopComponent = (function () {
 	    function ShopComponent(_locale, _productService) {
@@ -200,7 +207,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 339:
+/***/ 340:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -216,7 +223,7 @@ webpackJsonp([0],{
 	var core_1 = __webpack_require__(7);
 	var http_1 = __webpack_require__(280);
 	__webpack_require__(326);
-	var app_constants_1 = __webpack_require__(340);
+	var app_constants_1 = __webpack_require__(341);
 	var angular2localization_1 = __webpack_require__(324);
 	var ProductService = (function () {
 	    function ProductService(_http, _configuration, _locale) {
@@ -251,7 +258,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 340:
+/***/ 341:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

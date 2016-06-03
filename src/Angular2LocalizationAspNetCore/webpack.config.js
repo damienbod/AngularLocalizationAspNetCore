@@ -1,4 +1,5 @@
 ﻿var webpack = require("webpack");
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -10,16 +11,24 @@ module.exports = {
         filename: "./wwwroot/dist/[name].bundle.js"
     },
     resolve: {
-        extensions: ['', '.ts', '.js']
+        extensions: ['', '.ts', '.js', '.html']
     },
     devtool: 'source-map',
     module: {
         loaders: [
-          {
-              test: /\.ts/,
-              loaders: ['ts-loader'],
-              exclude: /node_modules/
-          }
+            {
+                test: /\.ts/,
+                loaders: ['ts-loader'],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.html$/,
+                loader: 'html'
+            },
+            {
+                test: /\.css$/,
+                loader: 'raw'
+            }
         ]
     },
     plugins: [
