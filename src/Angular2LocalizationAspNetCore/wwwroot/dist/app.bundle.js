@@ -1,14 +1,17 @@
 webpackJsonp([0],{
 
 /***/ 0:
+/*!*****************************!*\
+  !*** ./wwwroot/app/boot.ts ***!
+  \*****************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var platform_browser_dynamic_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(280);
-	var router_1 = __webpack_require__(301);
-	var app_component_1 = __webpack_require__(323);
-	var app_constants_1 = __webpack_require__(341);
+	var platform_browser_dynamic_1 = __webpack_require__(/*! @angular/platform-browser-dynamic */ 1);
+	var http_1 = __webpack_require__(/*! @angular/http */ 280);
+	var router_1 = __webpack_require__(/*! @angular/router */ 301);
+	var app_component_1 = __webpack_require__(/*! ./app.component */ 323);
+	var app_constants_1 = __webpack_require__(/*! ./app.constants */ 341);
 	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
 	    router_1.ROUTER_PROVIDERS,
 	    http_1.HTTP_PROVIDERS,
@@ -19,6 +22,9 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 323:
+/*!**************************************!*\
+  !*** ./wwwroot/app/app.component.ts ***!
+  \**************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36,13 +42,13 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(7);
-	var router_1 = __webpack_require__(301);
-	var angular2localization_1 = __webpack_require__(324);
-	var angular2localization_2 = __webpack_require__(324);
-	var home_component_1 = __webpack_require__(337);
-	var shop_component_1 = __webpack_require__(339);
-	var ProductService_1 = __webpack_require__(340);
+	var core_1 = __webpack_require__(/*! @angular/core */ 7);
+	var router_1 = __webpack_require__(/*! @angular/router */ 301);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
+	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 337);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 339);
+	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 340);
 	var AppComponent = (function (_super) {
 	    __extends(AppComponent, _super);
 	    function AppComponent(router, locale, localization, _productService) {
@@ -93,6 +99,9 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 337:
+/*!********************************************!*\
+  !*** ./wwwroot/app/home/home.component.ts ***!
+  \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -105,8 +114,8 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(181);
+	var core_1 = __webpack_require__(/*! @angular/core */ 7);
+	var common_1 = __webpack_require__(/*! @angular/common */ 181);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.message = "home.component";
@@ -117,7 +126,7 @@ webpackJsonp([0],{
 	    HomeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'homecomponent',
-	            template: __webpack_require__(338),
+	            template: __webpack_require__(/*! ./home.component.html */ 338),
 	            directives: [common_1.CORE_DIRECTIVES]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -130,6 +139,9 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 338:
+/*!**********************************************!*\
+  !*** ./wwwroot/app/home/home.component.html ***!
+  \**********************************************/
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"panel-group\">\r\n\r\n    <p>hello home</p>\r\n\r\n</div>";
@@ -137,6 +149,9 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 339:
+/*!********************************************!*\
+  !*** ./wwwroot/app/shop/shop.component.ts ***!
+  \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -149,11 +164,11 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(181);
-	var angular2localization_1 = __webpack_require__(324);
-	var ProductService_1 = __webpack_require__(340);
-	var angular2localization_2 = __webpack_require__(324);
+	var core_1 = __webpack_require__(/*! @angular/core */ 7);
+	var common_1 = __webpack_require__(/*! @angular/common */ 181);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
+	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 340);
+	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var ShopComponent = (function () {
 	    function ShopComponent(_locale, _productService) {
 	        var _this = this;
@@ -194,7 +209,7 @@ webpackJsonp([0],{
 	    ShopComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopcomponent',
-	            templateUrl: 'app/shop/shop.component.html',
+	            template: __webpack_require__(/*! ./shop.component.html */ 342),
 	            directives: [common_1.CORE_DIRECTIVES],
 	            pipes: [angular2localization_2.TranslatePipe]
 	        }), 
@@ -208,6 +223,9 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 340:
+/*!************************************************!*\
+  !*** ./wwwroot/app/services/ProductService.ts ***!
+  \************************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -220,11 +238,11 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(7);
-	var http_1 = __webpack_require__(280);
-	__webpack_require__(326);
-	var app_constants_1 = __webpack_require__(341);
-	var angular2localization_1 = __webpack_require__(324);
+	var core_1 = __webpack_require__(/*! @angular/core */ 7);
+	var http_1 = __webpack_require__(/*! @angular/http */ 280);
+	__webpack_require__(/*! rxjs/add/operator/map */ 326);
+	var app_constants_1 = __webpack_require__(/*! ../app.constants */ 341);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var ProductService = (function () {
 	    function ProductService(_http, _configuration, _locale) {
 	        var _this = this;
@@ -259,6 +277,9 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 341:
+/*!**************************************!*\
+  !*** ./wwwroot/app/app.constants.ts ***!
+  \**************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -271,7 +292,7 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(7);
+	var core_1 = __webpack_require__(/*! @angular/core */ 7);
 	var Configuration = (function () {
 	    function Configuration() {
 	        this.Server = "http://localhost:5000/";
@@ -284,6 +305,16 @@ webpackJsonp([0],{
 	}());
 	exports.Configuration = Configuration;
 
+
+/***/ },
+
+/***/ 342:
+/*!**********************************************!*\
+  !*** ./wwwroot/app/shop/shop.component.html ***!
+  \**********************************************/
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"panel-group\" >\r\n\r\n    <div class=\"panel-group\" *ngIf=\"Products\">\r\n\r\n        <div class=\"mcbutton col-md-4\" style=\"margin-left: -15px; margin-bottom: 10px;\" *ngFor=\"let product of Products\">\r\n            <div class=\"panel panel-default\" >\r\n                <div class=\"panel-heading\" style=\"color: #9d9d9d;background-color: #222;\">\r\n                    {{product.Name}}\r\n                    <span style=\"float:right;\" *ngIf=\"Currency === 'CHF'\">{{product.PriceCHF}} {{Currency}}</span>\r\n                    <span style=\"float:right;\" *ngIf=\"Currency === 'EUR'\">{{product.PriceEUR}} {{Currency}}</span>\r\n                </div>\r\n                <div class=\"panel-body\" style=\"height: 200px;\">\r\n                    <!--<img src=\"images/mc1.jpg\" style=\"width: 100%;margin-top: 20px;\" />-->\r\n                    {{product.Description}}\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n";
 
 /***/ }
 

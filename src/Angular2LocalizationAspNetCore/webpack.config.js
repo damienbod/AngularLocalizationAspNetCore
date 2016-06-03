@@ -28,7 +28,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'raw'
-            }
+            },
+            { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
         ]
     },
     plugins: [

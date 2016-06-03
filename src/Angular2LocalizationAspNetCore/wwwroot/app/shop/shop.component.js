@@ -53,7 +53,7 @@ var ShopComponent = (function () {
     ShopComponent = __decorate([
         core_1.Component({
             selector: 'shopcomponent',
-            templateUrl: 'app/shop/shop.component.html',
+            template: require('./shop.component.html'),
             directives: [common_1.CORE_DIRECTIVES],
             pipes: [angular2localization_2.TranslatePipe]
         }), 
