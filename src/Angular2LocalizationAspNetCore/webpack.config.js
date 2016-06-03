@@ -3,8 +3,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
-        "vendor": "./wwwroot/app/vendor",
-        "app": "./wwwroot/app/boot"
+        "vendor": "./angular2App/app/vendor",
+        "app": "./angular2App/app/boot"
     },
     output: {
         path: __dirname,
