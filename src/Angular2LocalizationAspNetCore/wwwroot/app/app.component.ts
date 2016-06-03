@@ -13,7 +13,7 @@ import { ProductService } from './services/ProductService';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'app/app.component.html',
+    template: require( './app.component.html'),
     styles: [require('./app.component.css')],
     directives: [ROUTER_DIRECTIVES],
     providers: [LocalizationService, LocaleService, ProductService],

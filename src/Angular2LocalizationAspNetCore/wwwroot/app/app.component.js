@@ -50,8 +50,8 @@ var AppComponent = (function (_super) {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            templateUrl: 'app/app.component.html',
-            styleUrls: ['app/app.component.css'],
+            template: require('./app.component.html'),
+            styles: [require('./app.component.css')],
             directives: [router_1.ROUTER_DIRECTIVES],
             providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService],
             pipes: [angular2localization_2.TranslatePipe]
