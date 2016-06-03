@@ -20,7 +20,7 @@ var HomeComponent = (function () {
     HomeComponent = __decorate([
         core_1.Component({
             selector: 'homecomponent',
-            templateUrl: 'app/home/home.component.html',
+            template: require('./home.component.html'),
             directives: [common_1.CORE_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [])

@@ -6,7 +6,7 @@ import { Http } from '@angular/http';
 
 @Component({
     selector: 'homecomponent',
-    templateUrl: 'app/home/home.component.html',
+    template: require('./home.component.html'),
     directives: [CORE_DIRECTIVES]
 })
 

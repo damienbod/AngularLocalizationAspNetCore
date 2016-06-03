@@ -9,7 +9,7 @@ import {TranslatePipe} from 'angular2localization/angular2localization';
 
 @Component({
     selector: 'shopcomponent',
-    templateUrl: 'app/shop/shop.component.html',
+    template: require('./shop.component.html'),
     directives: [CORE_DIRECTIVES],
     pipes: [TranslatePipe]
 })
