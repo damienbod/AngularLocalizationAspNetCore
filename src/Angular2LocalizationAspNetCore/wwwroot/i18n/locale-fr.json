@@ -1,5 +1,6 @@
 ﻿{
     "HELLO": "Bonjour",
     "NAV_MENU_HOME": "Actualités",
-    "NAV_MENU_SHOP": "Boutique"
+    "NAV_MENU_SHOP": "Boutique",
+    "NAV_MENU_SHOP_ADMIN": "Boutique Admin"
 }

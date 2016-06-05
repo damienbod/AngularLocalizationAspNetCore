@@ -19,6 +19,7 @@ var angular2localization_1 = require('angular2localization/angular2localization'
 var angular2localization_2 = require('angular2localization/angular2localization');
 var home_component_1 = require('./home/home.component');
 var shop_component_1 = require('./shop/shop.component');
+var shop_admin_component_1 = require('./shop-admin/shop-admin.component');
 var ProductService_1 = require('./services/ProductService');
 var AppComponent = (function (_super) {
     __extends(AppComponent, _super);
@@ -58,7 +59,8 @@ var AppComponent = (function (_super) {
         }),
         router_1.Routes([
             { path: '/home', component: home_component_1.HomeComponent },
-            { path: '/shop', component: shop_component_1.ShopComponent }
+            { path: '/shop', component: shop_component_1.ShopComponent },
+            { path: '/shopAdmin', component: shop_admin_component_1.ShopAdminComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
     ], AppComponent);

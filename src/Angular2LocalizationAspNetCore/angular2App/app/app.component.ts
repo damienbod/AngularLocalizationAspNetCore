@@ -9,6 +9,7 @@ import {TranslatePipe} from 'angular2localization/angular2localization';
 // Components.
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component'; 
+import { ShopAdminComponent } from './shop-admin/shop-admin.component'; 
 import { ProductService } from './services/ProductService';
 
 @Component({
@@ -22,7 +23,8 @@ import { ProductService } from './services/ProductService';
 
 @Routes([
     { path: '/home', component: HomeComponent },
-    { path: '/shop', component: ShopComponent }
+    { path: '/shop', component: ShopComponent },
+    { path: '/shopAdmin', component: ShopAdminComponent }
 ])
 
 export class AppComponent extends Locale {
