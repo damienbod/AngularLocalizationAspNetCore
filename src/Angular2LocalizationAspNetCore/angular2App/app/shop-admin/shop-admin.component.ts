@@ -3,6 +3,7 @@ import { CORE_DIRECTIVES } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import { Product } from '../services/Product';
+import { ProductCreateEdit } from  '../services/ProductCreateEdit';
 import { LocaleService } from 'angular2localization/angular2localization';
 import { ProductService } from '../services/ProductService';
 import {TranslatePipe} from 'angular2localization/angular2localization';
@@ -17,7 +18,7 @@ import {TranslatePipe} from 'angular2localization/angular2localization';
 export class ShopAdminComponent implements OnInit {
 
     public message: string;
-    public Products: Product[];
+    public Product: ProductCreateEdit;
     public Currency: string;
     public Price: string;
 
@@ -33,7 +34,8 @@ export class ShopAdminComponent implements OnInit {
 
     ngOnInit() {
         console.log("ngOnInit ShopAdminComponent");
-        // Get product if Id exists
+        // TODO Get product if Id exists
+        this.Product = new ProductCreateEdit();
 
         this.Currency = this._locale.getCurrentCurrency();
         if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
@@ -41,6 +43,19 @@ export class ShopAdminComponent implements OnInit {
         }
     }
 
+    public SaveProduct() {
+        if (this.Product.Id) {
+            // TODO update Product
+        } else {
+            this._productService.CreateProduct(this.Product)
+                .subscribe(data => {
+                    this.Product = new ProductCreateEdit();
+                }, error => {
+                    console.log(error)
+                },
+                () => console.log('Add product complete'));
+        }
+    }
 
     private onCountryChangedDataRecieved(item) {
         console.log("onProductDataRecieved");
