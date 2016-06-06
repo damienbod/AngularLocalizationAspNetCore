@@ -80,8 +80,8 @@ webpackJsonp([0],{
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'my-app',
-	            template: __webpack_require__(/*! ./app.component.html */ 345),
-	            styles: [__webpack_require__(/*! ./app.component.css */ 347)],
+	            template: __webpack_require__(/*! ./app.component.html */ 346),
+	            styles: [__webpack_require__(/*! ./app.component.css */ 348)],
 	            directives: [router_1.ROUTER_DIRECTIVES],
 	            providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService],
 	            pipes: [angular2localization_2.TranslatePipe]
@@ -263,13 +263,14 @@ webpackJsonp([0],{
 	        };
 	        this.CreateProduct = function (product) {
 	            var item = JSON.stringify(product);
-	            return _this._http.post(_this.actionUrl, item, {
+	            return _this._http.post(_this.actionUrlShopAdmin, item, {
 	                headers: _this.headers
 	            })
 	                .map(function (response) { return response.json(); })
 	                .catch(_this.handleError);
 	        };
 	        this.actionUrl = _configuration.Server + "api/Shop/";
+	        this.actionUrlShopAdmin = _configuration.Server + "api/ShopAdmin/";
 	    }
 	    ProductService.prototype.setHeaders = function () {
 	        this.headers = new http_1.Headers();
@@ -351,6 +352,7 @@ webpackJsonp([0],{
 	};
 	var core_1 = __webpack_require__(/*! @angular/core */ 7);
 	var common_1 = __webpack_require__(/*! @angular/common */ 181);
+	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 344);
 	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 340);
 	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
@@ -365,10 +367,29 @@ webpackJsonp([0],{
 	    }
 	    ShopAdminComponent.prototype.ngOnInit = function () {
 	        console.log("ngOnInit ShopAdminComponent");
+	        this.initProduct();
 	        this.Currency = this._locale.getCurrentCurrency();
 	        if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
 	            this.Currency = "CHF";
 	        }
+	    };
+	    ShopAdminComponent.prototype.Create = function () {
+	        var _this = this;
+	        this.Product.LocalizationRecords = [];
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "de-CH", Text: this.Name_de });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "fr-CH", Text: this.Name_fr });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "it-CH", Text: this.Name_it });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "en-US", Text: this.Name_en });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "de-CH", Text: this.Description_de });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "fr-CH", Text: this.Description_fr });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "it-CH", Text: this.Description_it });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "en-US", Text: this.Description_en });
+	        this._productService.CreateProduct(this.Product)
+	            .subscribe(function (data) {
+	            _this.initProduct();
+	        }, function (error) {
+	            console.log(error);
+	        }, function () { return console.log('Add product complete'); });
 	    };
 	    ShopAdminComponent.prototype.onCountryChangedDataRecieved = function (item) {
 	        console.log("onProductDataRecieved");
@@ -379,10 +400,13 @@ webpackJsonp([0],{
 	        console.log("onChangedCurrencyRecieved");
 	        console.log(currency);
 	    };
+	    ShopAdminComponent.prototype.initProduct = function () {
+	        this.Product = new ProductCreateEdit_1.ProductCreateEdit();
+	    };
 	    ShopAdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopadmincomponent',
-	            template: __webpack_require__(/*! ./shop-admin.component.html */ 344),
+	            template: __webpack_require__(/*! ./shop-admin.component.html */ 345),
 	            directives: [common_1.CORE_DIRECTIVES],
 	            pipes: [angular2localization_2.TranslatePipe]
 	        }), 
@@ -396,26 +420,43 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 344:
+/*!*******************************************************!*\
+  !*** ./angular2App/app/services/ProductCreateEdit.ts ***!
+  \*******************************************************/
+/***/ function(module, exports) {
+
+	"use strict";
+	var ProductCreateEdit = (function () {
+	    function ProductCreateEdit() {
+	    }
+	    return ProductCreateEdit;
+	}());
+	exports.ProductCreateEdit = ProductCreateEdit;
+
+
+/***/ },
+
+/***/ 345:
 /*!**************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.html ***!
   \**************************************************************/
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"panel-group\" >\r\n\r\n   Shop Admin\r\n\r\n</div>\r\n";
+	module.exports = "<div class=\"panel-group\">\r\n\r\n    <div class=\"panel-group\" *ngIf=\"Product\">\r\n\r\n        <div class=\"mcbutton col-md-8\" style=\"margin-left: -15px; margin-bottom: 10px;\" >\r\n            <div class=\"panel panel-default\">\r\n                <div class=\"panel-heading\" style=\"color: #9d9d9d;background-color: #222;\">\r\n                    Add new product\r\n                </div>\r\n                <div class=\"panel-body\">\r\n\r\n                    <!--<div class=\"row\" *ngIf=\"Product\">\r\n                        <div class=\"col-md-3\">Id</div>\r\n                        <div class=\"col-md-9\"><input class=\"form-control\" type=\"text\" [(ngModel)]=\"Product.Id\" style=\"width: 100%\" /></div>\r\n                    </div>\r\n\r\n                    <hr />-->\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">Name</div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Product.Name\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <hr />\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">Description</div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Product.Description\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <hr />\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">PriceEUR</div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"number\" [(ngModel)]=\"Product.PriceEUR\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <hr />\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">PriceCHF</div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"number\" [(ngModel)]=\"Product.PriceCHF\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <hr />\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">Name</div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>de</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Name_de\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>fr</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Name_fr\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>it</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Name_it\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>en</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Name_en\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <hr />\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">Description</div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>de</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Description_de\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>fr</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Description_fr\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>it</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Description_it\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\"><em>en</em></div>\r\n                        <div class=\"col-md-9\">\r\n                            <input class=\"form-control\" type=\"text\"[(ngModel)]=\"Description_en\" style=\"width: 100%\" />\r\n                        </div>\r\n                    </div>\r\n                    <hr />\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-3\">\r\n                            <button class=\"btn-primary\" (click)=\"Create()\">Create</button>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n";
 
 /***/ },
 
-/***/ 345:
+/***/ 346:
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.html ***!
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container\" style=\"margin-top: 15px;\">\r\n   \r\n    <nav class=\"navbar navbar-inverse\">\r\n        <div class=\"container-fluid\">\r\n            <div class=\"navbar-header\">\r\n                <a [routerLink]=\"['/home']\" class=\"navbar-brand\"><img src=\"" + __webpack_require__(/*! ../images/damienbod.jpg */ 346) + "\" height=\"40\" style=\"margin-top:-10px;\" /></a>\r\n            </div>\r\n            <ul class=\"nav navbar-nav\">\r\n                <li><a [routerLink]=\"['/home']\">{{ 'NAV_MENU_HOME' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shop']\">{{ 'NAV_MENU_SHOP' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shopAdmin']\">{{ 'NAV_MENU_SHOP_ADMIN' | translate:lang }}</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li><a (click)=\"ChangeCulture('de','CH', 'CHF')\">de</a></li>\r\n                <li><a (click)=\"ChangeCulture('fr','CH', 'CHF')\">fr</a></li>\r\n                <li><a (click)=\"ChangeCulture('it','CH', 'CHF')\">it</a></li>\r\n                <li><a (click)=\"ChangeCulture('en','US', 'CHF')\">en</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li>\r\n                    <div class=\"navbar\" style=\"margin-bottom:0;\">\r\n                        <form class=\"navbar-form pull-left\">\r\n                            <select (change)=\"ChangeCurrency($event.target.value)\" class=\"form-control\">\r\n                                <option *ngFor=\"let currency of ['CHF', 'EUR']\">{{currency}}</option>\r\n                            </select>\r\n                        </form>\r\n                    </div>\r\n                </li>             \r\n            </ul>\r\n        </div>\r\n    </nav>\r\n\r\n    <router-outlet></router-outlet>\r\n\r\n</div>\r\n\r\n\r\n";
+	module.exports = "<div class=\"container\" style=\"margin-top: 15px;\">\r\n   \r\n    <nav class=\"navbar navbar-inverse\">\r\n        <div class=\"container-fluid\">\r\n            <div class=\"navbar-header\">\r\n                <a [routerLink]=\"['/home']\" class=\"navbar-brand\"><img src=\"" + __webpack_require__(/*! ../images/damienbod.jpg */ 347) + "\" height=\"40\" style=\"margin-top:-10px;\" /></a>\r\n            </div>\r\n            <ul class=\"nav navbar-nav\">\r\n                <li><a [routerLink]=\"['/home']\">{{ 'NAV_MENU_HOME' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shop']\">{{ 'NAV_MENU_SHOP' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shopAdmin']\">{{ 'NAV_MENU_SHOP_ADMIN' | translate:lang }}</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li><a (click)=\"ChangeCulture('de','CH', 'CHF')\">de</a></li>\r\n                <li><a (click)=\"ChangeCulture('fr','CH', 'CHF')\">fr</a></li>\r\n                <li><a (click)=\"ChangeCulture('it','CH', 'CHF')\">it</a></li>\r\n                <li><a (click)=\"ChangeCulture('en','US', 'CHF')\">en</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li>\r\n                    <div class=\"navbar\" style=\"margin-bottom:0;\">\r\n                        <form class=\"navbar-form pull-left\">\r\n                            <select (change)=\"ChangeCurrency($event.target.value)\" class=\"form-control\">\r\n                                <option *ngFor=\"let currency of ['CHF', 'EUR']\">{{currency}}</option>\r\n                            </select>\r\n                        </form>\r\n                    </div>\r\n                </li>             \r\n            </ul>\r\n        </div>\r\n    </nav>\r\n\r\n    <router-outlet></router-outlet>\r\n\r\n</div>\r\n\r\n\r\n";
 
 /***/ },
 
-/***/ 346:
+/***/ 347:
 /*!******************************************!*\
   !*** ./angular2App/images/damienbod.jpg ***!
   \******************************************/
@@ -425,7 +466,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 347:
+/***/ 348:
 /*!*******************************************!*\
   !*** ./angular2App/app/app.component.css ***!
   \*******************************************/

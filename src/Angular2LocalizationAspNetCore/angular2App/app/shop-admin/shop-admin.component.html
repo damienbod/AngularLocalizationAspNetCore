@@ -1,5 +1,112 @@
-<div class="panel-group" >
+<div class="panel-group">
 
-   Shop Admin
+    <div class="panel-group" *ngIf="Product">
+
+        <div class="mcbutton col-md-8" style="margin-left: -15px; margin-bottom: 10px;" >
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color: #9d9d9d;background-color: #222;">
+                    Add new product
+                </div>
+                <div class="panel-body">
+
+                    <!--<div class="row" *ngIf="Product">
+                        <div class="col-md-3">Id</div>
+                        <div class="col-md-9"><input class="form-control" type="text" [(ngModel)]="Product.Id" style="width: 100%" /></div>
+                    </div>
+
+                    <hr />-->
+                    <div class="row">
+                        <div class="col-md-3">Name</div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Product.Name" style="width: 100%" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">Description</div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Product.Description" style="width: 100%" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">PriceEUR</div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="number" [(ngModel)]="Product.PriceEUR" style="width: 100%" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">PriceCHF</div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="number" [(ngModel)]="Product.PriceCHF" style="width: 100%" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">Name</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>de</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Name_de" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>fr</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Name_fr" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>it</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Name_it" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>en</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Name_en" style="width: 100%" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">Description</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>de</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Description_de" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>fr</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Description_fr" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>it</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Description_it" style="width: 100%" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"><em>en</em></div>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"[(ngModel)]="Description_en" style="width: 100%" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button class="btn-primary" (click)="Create()">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

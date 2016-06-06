@@ -10,11 +10,13 @@ import { LocaleService } from 'angular2localization/angular2localization';
 @Injectable()
 export class ProductService {
     private actionUrl: string;
+    private actionUrlShopAdmin: string;
     private headers: Headers;
     private isoCode: string;
 
     constructor(private _http: Http, private _configuration: Configuration, public _locale: LocaleService) {
-        this.actionUrl = `${_configuration.Server}api/Shop/`;       
+        this.actionUrl = `${_configuration.Server}api/Shop/`;    
+        this.actionUrlShopAdmin = `${_configuration.Server}api/ShopAdmin/`;      
     }
 
     private setHeaders() {
@@ -41,7 +43,7 @@ export class ProductService {
     public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
         let item: string = JSON.stringify(product);
 
-        return this._http.post(this.actionUrl, item, {
+        return this._http.post(this.actionUrlShopAdmin, item, {
             headers: this.headers
         })
             .map((response: Response) => <ProductCreateEdit>response.json())
