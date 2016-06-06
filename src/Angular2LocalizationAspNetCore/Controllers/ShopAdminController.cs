@@ -40,7 +40,7 @@ namespace Angular2LocalizationAspNetCore.Controllers
                 ImagePath = "",
                 PriceCHF = 2.40,
                 PriceEUR = 2.20,
-                LocalizationRecords = new System.Collections.Generic.List<Models.LocalizationRecordDto>
+                LocalizationRecords = new System.Collections.Generic.List<LocalizationRecordDto>
                 {
                     new LocalizationRecordDto { Key= description, LocalizationCulture = "de-CH", Text = $"{description} de-CH" },
                     new LocalizationRecordDto { Key= description, LocalizationCulture = "it-CH", Text = $"{description} it-CH" },

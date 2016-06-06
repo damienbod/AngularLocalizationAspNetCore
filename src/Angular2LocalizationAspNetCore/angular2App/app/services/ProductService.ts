@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
+import { ProductCreateEdit } from './ProductCreateEdit';
 import { LocaleService } from 'angular2localization/angular2localization';
 
 @Injectable()
@@ -35,5 +36,20 @@ export class ProductService {
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
             headers: this.headers
         }).map(res => res.json());
-    }   
+    } 
+
+    public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
+        let item: string = JSON.stringify(product);
+
+        return this._http.post(this.actionUrl, item, {
+            headers: this.headers
+        })
+            .map((response: Response) => <ProductCreateEdit>response.json())
+            .catch(this.handleError);
+    }
+
+    private handleError(error: Response) {
+        console.error(error);
+        return Observable.throw(error.json().error || 'Server error');
+    }
 }
