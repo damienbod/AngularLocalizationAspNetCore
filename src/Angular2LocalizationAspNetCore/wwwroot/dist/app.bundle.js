@@ -48,6 +48,7 @@ webpackJsonp([0],{
 	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 337);
 	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 339);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 343);
 	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 340);
 	var AppComponent = (function (_super) {
 	    __extends(AppComponent, _super);
@@ -79,15 +80,16 @@ webpackJsonp([0],{
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'my-app',
-	            template: __webpack_require__(/*! ./app.component.html */ 343),
-	            styles: [__webpack_require__(/*! ./app.component.css */ 345)],
+	            template: __webpack_require__(/*! ./app.component.html */ 345),
+	            styles: [__webpack_require__(/*! ./app.component.css */ 347)],
 	            directives: [router_1.ROUTER_DIRECTIVES],
 	            providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService],
 	            pipes: [angular2localization_2.TranslatePipe]
 	        }),
 	        router_1.Routes([
 	            { path: '/home', component: home_component_1.HomeComponent },
-	            { path: '/shop', component: shop_component_1.ShopComponent }
+	            { path: '/shop', component: shop_component_1.ShopComponent },
+	            { path: '/shopAdmin', component: shop_admin_component_1.ShopAdminComponent }
 	        ]), 
 	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], AppComponent);
@@ -241,6 +243,7 @@ webpackJsonp([0],{
 	var core_1 = __webpack_require__(/*! @angular/core */ 7);
 	var http_1 = __webpack_require__(/*! @angular/http */ 280);
 	__webpack_require__(/*! rxjs/add/operator/map */ 326);
+	var Observable_1 = __webpack_require__(/*! rxjs/Observable */ 41);
 	var app_constants_1 = __webpack_require__(/*! ../app.constants */ 341);
 	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var ProductService = (function () {
@@ -258,12 +261,24 @@ webpackJsonp([0],{
 	                headers: _this.headers
 	            }).map(function (res) { return res.json(); });
 	        };
+	        this.CreateProduct = function (product) {
+	            var item = JSON.stringify(product);
+	            return _this._http.post(_this.actionUrl, item, {
+	                headers: _this.headers
+	            })
+	                .map(function (response) { return response.json(); })
+	                .catch(_this.handleError);
+	        };
 	        this.actionUrl = _configuration.Server + "api/Shop/";
 	    }
 	    ProductService.prototype.setHeaders = function () {
 	        this.headers = new http_1.Headers();
 	        this.headers.append('Content-Type', 'application/json');
 	        this.headers.append('Accept', 'application/json');
+	    };
+	    ProductService.prototype.handleError = function (error) {
+	        console.error(error);
+	        return Observable_1.Observable.throw(error.json().error || 'Server error');
 	    };
 	    ProductService = __decorate([
 	        core_1.Injectable(), 
@@ -319,16 +334,88 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 343:
+/*!************************************************************!*\
+  !*** ./angular2App/app/shop-admin/shop-admin.component.ts ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(/*! @angular/core */ 7);
+	var common_1 = __webpack_require__(/*! @angular/common */ 181);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
+	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 340);
+	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
+	var ShopAdminComponent = (function () {
+	    function ShopAdminComponent(_locale, _productService) {
+	        var _this = this;
+	        this._locale = _locale;
+	        this._productService = _productService;
+	        this.message = "shop-admin.component";
+	        this._locale.countryCodeChanged.subscribe(function (item) { return _this.onCountryChangedDataRecieved(item); });
+	        this._locale.currencyCodeChanged.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
+	    }
+	    ShopAdminComponent.prototype.ngOnInit = function () {
+	        console.log("ngOnInit ShopAdminComponent");
+	        this.Currency = this._locale.getCurrentCurrency();
+	        if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
+	            this.Currency = "CHF";
+	        }
+	    };
+	    ShopAdminComponent.prototype.onCountryChangedDataRecieved = function (item) {
+	        console.log("onProductDataRecieved");
+	        console.log(item);
+	    };
+	    ShopAdminComponent.prototype.onChangedCurrencyRecieved = function (currency) {
+	        this.Currency = currency;
+	        console.log("onChangedCurrencyRecieved");
+	        console.log(currency);
+	    };
+	    ShopAdminComponent = __decorate([
+	        core_1.Component({
+	            selector: 'shopadmincomponent',
+	            template: __webpack_require__(/*! ./shop-admin.component.html */ 344),
+	            directives: [common_1.CORE_DIRECTIVES],
+	            pipes: [angular2localization_2.TranslatePipe]
+	        }), 
+	        __metadata('design:paramtypes', [angular2localization_1.LocaleService, ProductService_1.ProductService])
+	    ], ShopAdminComponent);
+	    return ShopAdminComponent;
+	}());
+	exports.ShopAdminComponent = ShopAdminComponent;
+
+
+/***/ },
+
+/***/ 344:
+/*!**************************************************************!*\
+  !*** ./angular2App/app/shop-admin/shop-admin.component.html ***!
+  \**************************************************************/
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"panel-group\" >\r\n\r\n   Shop Admin\r\n\r\n</div>\r\n";
+
+/***/ },
+
+/***/ 345:
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.html ***!
   \********************************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<div class=\"container\" style=\"margin-top: 15px;\">\r\n   \r\n    <nav class=\"navbar navbar-inverse\">\r\n        <div class=\"container-fluid\">\r\n            <div class=\"navbar-header\">\r\n                <a [routerLink]=\"['/home']\" class=\"navbar-brand\"><img src=\"" + __webpack_require__(/*! ../images/damienbod.jpg */ 344) + "\" height=\"40\" style=\"margin-top:-10px;\" /></a>\r\n            </div>\r\n            <ul class=\"nav navbar-nav\">\r\n                <li><a [routerLink]=\"['/home']\">{{ 'NAV_MENU_HOME' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shop']\">{{ 'NAV_MENU_SHOP' | translate:lang }}</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li><a (click)=\"ChangeCulture('de','CH', 'CHF')\">de</a></li>\r\n                <li><a (click)=\"ChangeCulture('fr','CH', 'CHF')\">fr</a></li>\r\n                <li><a (click)=\"ChangeCulture('it','CH', 'CHF')\">it</a></li>\r\n                <li><a (click)=\"ChangeCulture('en','US', 'CHF')\">en</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li>\r\n                    <div class=\"navbar\" style=\"margin-bottom:0;\">\r\n                        <form class=\"navbar-form pull-left\">\r\n                            <select (change)=\"ChangeCurrency($event.target.value)\" class=\"form-control\">\r\n                                <option *ngFor=\"let currency of ['CHF', 'EUR']\">{{currency}}</option>\r\n                            </select>\r\n                        </form>\r\n                    </div>\r\n                </li>             \r\n            </ul>\r\n        </div>\r\n    </nav>\r\n\r\n    <router-outlet></router-outlet>\r\n\r\n</div>\r\n\r\n\r\n";
+	module.exports = "<div class=\"container\" style=\"margin-top: 15px;\">\r\n   \r\n    <nav class=\"navbar navbar-inverse\">\r\n        <div class=\"container-fluid\">\r\n            <div class=\"navbar-header\">\r\n                <a [routerLink]=\"['/home']\" class=\"navbar-brand\"><img src=\"" + __webpack_require__(/*! ../images/damienbod.jpg */ 346) + "\" height=\"40\" style=\"margin-top:-10px;\" /></a>\r\n            </div>\r\n            <ul class=\"nav navbar-nav\">\r\n                <li><a [routerLink]=\"['/home']\">{{ 'NAV_MENU_HOME' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shop']\">{{ 'NAV_MENU_SHOP' | translate:lang }}</a></li>\r\n                <li><a [routerLink]=\"['/shopAdmin']\">{{ 'NAV_MENU_SHOP_ADMIN' | translate:lang }}</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li><a (click)=\"ChangeCulture('de','CH', 'CHF')\">de</a></li>\r\n                <li><a (click)=\"ChangeCulture('fr','CH', 'CHF')\">fr</a></li>\r\n                <li><a (click)=\"ChangeCulture('it','CH', 'CHF')\">it</a></li>\r\n                <li><a (click)=\"ChangeCulture('en','US', 'CHF')\">en</a></li>\r\n            </ul>\r\n\r\n            <ul class=\"nav navbar-nav navbar-right\">\r\n                <li>\r\n                    <div class=\"navbar\" style=\"margin-bottom:0;\">\r\n                        <form class=\"navbar-form pull-left\">\r\n                            <select (change)=\"ChangeCurrency($event.target.value)\" class=\"form-control\">\r\n                                <option *ngFor=\"let currency of ['CHF', 'EUR']\">{{currency}}</option>\r\n                            </select>\r\n                        </form>\r\n                    </div>\r\n                </li>             \r\n            </ul>\r\n        </div>\r\n    </nav>\r\n\r\n    <router-outlet></router-outlet>\r\n\r\n</div>\r\n\r\n\r\n";
 
 /***/ },
 
-/***/ 344:
+/***/ 346:
 /*!******************************************!*\
   !*** ./angular2App/images/damienbod.jpg ***!
   \******************************************/
@@ -338,7 +425,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 345:
+/***/ 347:
 /*!*******************************************!*\
   !*** ./angular2App/app/app.component.css ***!
   \*******************************************/
