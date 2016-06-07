@@ -45,7 +45,7 @@ export class ShopAdminComponent extends Locale implements OnInit  {
     descriptionfr: Control;
     descriptionit: Control;
     descriptionen: Control;
-    submitAttempt: boolean = false;
+    submitted: boolean = false;
     saving: boolean = false;
 
     constructor(
@@ -110,7 +110,7 @@ export class ShopAdminComponent extends Locale implements OnInit  {
 
     public Create() {
 
-        this.submitAttempt = true;
+        this.submitted = true;
 
         if (this.productForm.valid) {
             this.saving = true;

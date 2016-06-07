@@ -1,31 +1,31 @@
 <form [ngFormModel]="productForm" (ngSubmit)="Create(productForm.value)">
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !name.valid && submitAttempt }">
+    <div class="form-group" [ngClass]="{ 'has-error' : !name.valid && submitted }">
         <label class="control-label" for="name">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>
-        <em *ngIf="!name.valid && submitAttempt">Required</em>
+        <em *ngIf="!name.valid && submitted">Required</em>
         <input id="name" type="text" class="form-control" placeholder="name" ngControl="name" [(ngModel)]="Product.Name">
     </div>
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !description.valid && submitAttempt }">
+    <div class="form-group" [ngClass]="{ 'has-error' : !description.valid && submitted }">
         <label class="control-label" for="description">{{ 'ADD_PRODUCT_DESCRIPTION' | translate:lang }}</label>
-        <em *ngIf="!description.valid && submitAttempt">Required</em>
+        <em *ngIf="!description.valid && submitted">Required</em>
         <input id="description" type="text" class="form-control" placeholder="description" ngControl="description" [(ngModel)]="Product.Description">
     </div>
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !priceEUR.valid && submitAttempt }">
+    <div class="form-group" [ngClass]="{ 'has-error' : !priceEUR.valid && submitted }">
         <label class="control-label" for="priceEUR">{{ 'ADD_PRODUCT_PRICE_EUR' | translate:lang }}</label>
-        <em *ngIf="!priceEUR.valid && submitAttempt">Required</em>
+        <em *ngIf="!priceEUR.valid && submitted">Required</em>
         <input id="priceEUR" type="number" class="form-control" placeholder="priceEUR" ngControl="priceEUR" [(ngModel)]="Product.PriceEUR">
     </div>
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !priceCHF.valid && submitAttempt }">
+    <div class="form-group" [ngClass]="{ 'has-error' : !priceCHF.valid && submitted }">
         <label class="control-label" for="priceCHF">{{ 'ADD_PRODUCT_PRICE_CHF' | translate:lang }}</label>
-        <em *ngIf="!priceCHF.valid && submitAttempt">Required</em>
+        <em *ngIf="!priceCHF.valid && submitted">Required</em>
         <input id="priceCHF" type="number" class="form-control" placeholder="priceCHF" ngControl="priceCHF" [(ngModel)]="Product.PriceCHF">
     </div>
   
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitAttempt }">
+    <div class="form-group" [ngClass]="{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitted }">
         <label>{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>
         <div class="row">
             <div class="col-md-3"><em>de</em></div>
@@ -54,7 +54,7 @@
     
     </div>
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitAttempt }">
+    <div class="form-group" [ngClass]="{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitted }">
         <label>{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>
         <div class="row">
             <div class="col-md-3"><em>de</em></div>
