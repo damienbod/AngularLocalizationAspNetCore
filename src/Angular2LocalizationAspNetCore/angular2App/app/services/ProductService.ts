@@ -42,12 +42,11 @@ export class ProductService {
 
     public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
         let item: string = JSON.stringify(product);
-
+        this.setHeaders();
         return this._http.post(this.actionUrlShopAdmin, item, {
             headers: this.headers
-        })
-            .map((response: Response) => <ProductCreateEdit>response.json())
-            .catch(this.handleError);
+        }).map((response: Response) => <ProductCreateEdit>response.json())
+        .catch(this.handleError);
     }
 
     private handleError(error: Response) {

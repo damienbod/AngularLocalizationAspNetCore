@@ -56,13 +56,13 @@ export class ShopComponent implements OnInit {
 
     private onCountryChangedDataRecieved(item) {
         this.GetProducts();
-        console.log("onProductDataRecieved");
+        console.log("onCountryChangedDataRecieved Shop");
         console.log(item);
     }
 
     private onChangedCurrencyRecieved(currency) {
         this.Currency = currency;
-        console.log("onChangedCurrencyRecieved");
+        console.log("onChangedCurrencyRecieved Shop");
         console.log(currency);
     }
 }

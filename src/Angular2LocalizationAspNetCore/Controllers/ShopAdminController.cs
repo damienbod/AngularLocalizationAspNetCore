@@ -22,9 +22,10 @@ namespace Angular2LocalizationAspNetCore.Controllers
         //}
 
         [HttpPost]
-        public void Post([FromBody]ProductCreateEditDto value)
+        public IActionResult Post([FromBody]ProductCreateEditDto value)
         {
             _productCudProvider.AddProduct(value);
+            return Created("http://localhost:5000/api/ShopAdmin/", value);
         }
 
         // Test method to add data

@@ -1,112 +1,90 @@
-<div class="panel-group">
+<form [ngFormModel]="productForm" (ngSubmit)="Create(productForm.value)">
 
-    <div class="panel-group" *ngIf="Product">
-
-        <div class="mcbutton col-md-8" style="margin-left: -15px; margin-bottom: 10px;" >
-            <div class="panel panel-default">
-                <div class="panel-heading" style="color: #9d9d9d;background-color: #222;">
-                    Add new product
-                </div>
-                <div class="panel-body">
-
-                    <!--<div class="row" *ngIf="Product">
-                        <div class="col-md-3">Id</div>
-                        <div class="col-md-9"><input class="form-control" type="text" [(ngModel)]="Product.Id" style="width: 100%" /></div>
-                    </div>
-
-                    <hr />-->
-                    <div class="row">
-                        <div class="col-md-3">Name</div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Product.Name" style="width: 100%" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3">Description</div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Product.Description" style="width: 100%" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3">PriceEUR</div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="number" [(ngModel)]="Product.PriceEUR" style="width: 100%" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3">PriceCHF</div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="number" [(ngModel)]="Product.PriceCHF" style="width: 100%" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3">Name</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>de</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Name_de" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>fr</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Name_fr" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>it</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Name_it" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>en</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Name_en" style="width: 100%" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3">Description</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>de</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Description_de" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>fr</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Description_fr" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>it</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Description_it" style="width: 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3"><em>en</em></div>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"[(ngModel)]="Description_en" style="width: 100%" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-3">
-                            <button class="btn-primary" (click)="Create()">Create</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="form-group" [ngClass]="{ 'has-error' : !name.valid && submitAttempt }">
+        <label class="control-label" for="name">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>
+        <em *ngIf="!name.valid && submitAttempt">Required</em>
+        <input id="name" type="text" class="form-control" placeholder="name" ngControl="name" [(ngModel)]="Product.Name">
     </div>
 
-</div>
+    <div class="form-group" [ngClass]="{ 'has-error' : !description.valid && submitAttempt }">
+        <label class="control-label" for="description">{{ 'ADD_PRODUCT_DESCRIPTION' | translate:lang }}</label>
+        <em *ngIf="!description.valid && submitAttempt">Required</em>
+        <input id="description" type="text" class="form-control" placeholder="description" ngControl="description" [(ngModel)]="Product.Description">
+    </div>
+
+    <div class="form-group" [ngClass]="{ 'has-error' : !priceEUR.valid && submitAttempt }">
+        <label class="control-label" for="priceEUR">{{ 'ADD_PRODUCT_PRICE_EUR' | translate:lang }}</label>
+        <em *ngIf="!priceEUR.valid && submitAttempt">Required</em>
+        <input id="priceEUR" type="number" class="form-control" placeholder="priceEUR" ngControl="priceEUR" [(ngModel)]="Product.PriceEUR">
+    </div>
+
+    <div class="form-group" [ngClass]="{ 'has-error' : !priceCHF.valid && submitAttempt }">
+        <label class="control-label" for="priceCHF">{{ 'ADD_PRODUCT_PRICE_CHF' | translate:lang }}</label>
+        <em *ngIf="!priceCHF.valid && submitAttempt">Required</em>
+        <input id="priceCHF" type="number" class="form-control" placeholder="priceCHF" ngControl="priceCHF" [(ngModel)]="Product.PriceCHF">
+    </div>
+  
+
+    <div class="form-group" [ngClass]="{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitAttempt }">
+        <label>{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>
+        <div class="row">
+            <div class="col-md-3"><em>de</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Name_de" ngControl="namede" #name="ngForm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><em>fr</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Name_fr" ngControl="namefr" #name="ngForm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><em>it</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Name_it" ngControl="nameit" #name="ngForm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><em>en</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Name_en" ngControl="nameen" #name="ngForm" />
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="form-group" [ngClass]="{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitAttempt }">
+        <label>{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>
+        <div class="row">
+            <div class="col-md-3"><em>de</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Description_de" ngControl="descriptionde" #name="ngForm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><em>fr</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Description_fr" ngControl="descriptionfr" #name="ngForm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><em>it</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Description_it" ngControl="descriptionit" #name="ngForm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"><em>en</em></div>
+            <div class="col-md-9">
+                <input class="form-control" type="text" [(ngModel)]="Description_en" ngControl="descriptionen" #name="ngForm" />
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <button type="submit" [disabled]="saving" class="btn btn-primary">{{ 'ADD_PRODUCT_CREATE_NEW_PRODUCT' | translate:lang }}</button>
+    </div>
+
+</form>
+
