@@ -185,7 +185,6 @@ webpackJsonp([0],{
 	        this.localization = localization;
 	        this._productService = _productService;
 	        this.message = "shop.component";
-	        this.GetProducts();
 	        this._locale.countryCodeChanged.subscribe(function (item) { return _this.onCountryChangedDataRecieved(item); });
 	        this._locale.currencyCodeChanged.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
 	    }
