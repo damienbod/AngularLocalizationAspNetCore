@@ -157,6 +157,11 @@ webpackJsonp([0],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
 	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -168,20 +173,25 @@ webpackJsonp([0],{
 	};
 	var core_1 = __webpack_require__(/*! @angular/core */ 7);
 	var common_1 = __webpack_require__(/*! @angular/common */ 181);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 340);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
 	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 324);
-	var ShopComponent = (function () {
-	    function ShopComponent(_locale, _productService) {
+	var ShopComponent = (function (_super) {
+	    __extends(ShopComponent, _super);
+	    function ShopComponent(_locale, localization, _productService) {
 	        var _this = this;
+	        _super.call(this, null, localization);
 	        this._locale = _locale;
+	        this.localization = localization;
 	        this._productService = _productService;
 	        this.message = "shop.component";
+	        this.GetProducts();
 	        this._locale.countryCodeChanged.subscribe(function (item) { return _this.onCountryChangedDataRecieved(item); });
 	        this._locale.currencyCodeChanged.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
 	    }
 	    ShopComponent.prototype.ngOnInit = function () {
 	        console.log("ngOnInit ShopComponent");
+	        this.localization.updateTranslation();
 	        this.GetProducts();
 	        this.Currency = this._locale.getCurrentCurrency();
 	        if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
@@ -213,12 +223,12 @@ webpackJsonp([0],{
 	            selector: 'shopcomponent',
 	            template: __webpack_require__(/*! ./shop.component.html */ 342),
 	            directives: [common_1.CORE_DIRECTIVES],
-	            pipes: [angular2localization_2.TranslatePipe]
+	            pipes: [angular2localization_1.TranslatePipe]
 	        }), 
-	        __metadata('design:paramtypes', [angular2localization_1.LocaleService, ProductService_1.ProductService])
+	        __metadata('design:paramtypes', [angular2localization_2.LocaleService, angular2localization_2.LocalizationService, ProductService_1.ProductService])
 	    ], ShopComponent);
 	    return ShopComponent;
-	}());
+	}(angular2localization_2.Locale));
 	exports.ShopComponent = ShopComponent;
 
 

@@ -3,9 +3,9 @@ import { CORE_DIRECTIVES } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
 import { Product } from '../services/Product';
-import { LocaleService } from 'angular2localization/angular2localization';
 import { ProductService } from '../services/ProductService';
-import {TranslatePipe} from 'angular2localization/angular2localization';
+import { TranslatePipe} from 'angular2localization/angular2localization';
+import { Locale, LocaleService, LocalizationService} from 'angular2localization/angular2localization';
 
 @Component({
     selector: 'shopcomponent',
@@ -14,7 +14,7 @@ import {TranslatePipe} from 'angular2localization/angular2localization';
     pipes: [TranslatePipe]
 })
 
-export class ShopComponent implements OnInit {
+export class ShopComponent extends Locale implements OnInit {
 
     public message: string;
     public Products: Product[];
@@ -23,22 +23,24 @@ export class ShopComponent implements OnInit {
 
     constructor(
         public _locale: LocaleService,
-        private _productService: ProductService) {
+        public localization: LocalizationService,
+        private _productService: ProductService
+    ) {
+        super(null, localization);
         this.message = "shop.component";
-
         this._locale.countryCodeChanged.subscribe(item => this.onCountryChangedDataRecieved(item));
-        this._locale.currencyCodeChanged.subscribe(currency => this.onChangedCurrencyRecieved(currency));
-        
+        this._locale.currencyCodeChanged.subscribe(currency => this.onChangedCurrencyRecieved(currency));     
     }
 
     ngOnInit() {
         console.log("ngOnInit ShopComponent");
+        this.localization.updateTranslation(); // Need to update the translation.   
         this.GetProducts();
 
         this.Currency = this._locale.getCurrentCurrency();
         if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
             this.Currency = "CHF";
-        }
+        } 
     }
 
     public GetProducts() {

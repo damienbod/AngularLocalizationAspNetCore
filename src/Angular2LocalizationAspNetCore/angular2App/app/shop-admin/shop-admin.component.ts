@@ -53,7 +53,8 @@ export class ShopAdminComponent extends Locale implements OnInit  {
         public _localeService: LocaleService,
         public localization: LocalizationService,
         private _productService: ProductService,
-        private builder: FormBuilder) {
+        private builder: FormBuilder
+    ) {
 
         super(null, localization);
 
