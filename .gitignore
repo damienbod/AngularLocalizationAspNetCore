@@ -34,3 +34,9 @@ src/Angular2LocalizationAspNetCore/angular2App/app/vendor.js
 src/Angular2LocalizationAspNetCore/angular2App/app/vendor.js.map
 .vs/config/applicationhost.config
 .vs/restore.dg
+src/Angular2LocalizationAspNetCore/angular2App/boot.js
+src/Angular2LocalizationAspNetCore/angular2App/boot.js.map
+src/Angular2LocalizationAspNetCore/angular2App/polyfills.js
+src/Angular2LocalizationAspNetCore/angular2App/polyfills.js.map
+src/Angular2LocalizationAspNetCore/angular2App/vendor.js
+src/Angular2LocalizationAspNetCore/angular2App/vendor.js.map
