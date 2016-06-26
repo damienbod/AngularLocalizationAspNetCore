@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ROUTER_DIRECTIVES} from '@angular/router';
 import { CORE_DIRECTIVES, NgForm, FORM_DIRECTIVES, FormBuilder, Control, ControlGroup, Validators } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Http } from '@angular/http';
@@ -7,13 +8,12 @@ import { ProductCreateEdit } from  '../services/ProductCreateEdit';
 import { Locale, LocaleService, LocalizationService} from 'angular2localization/angular2localization';
 import { ProductService } from '../services/ProductService';
 import { TranslatePipe } from 'angular2localization/angular2localization';
-import { Router} from '@angular/router';
 
 
 @Component({
     selector: 'shopadmincomponent',
     template: require('./shop-admin.component.html'),
-    directives: [CORE_DIRECTIVES],
+    directives: [CORE_DIRECTIVES, ROUTER_DIRECTIVES],
     pipes: [TranslatePipe]
 })
 

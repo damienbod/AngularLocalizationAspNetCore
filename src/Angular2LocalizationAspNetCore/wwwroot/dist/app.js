@@ -63,9 +63,6 @@ webpackJsonp([0],{
 	        this.localization.translationProvider('./i18n/locale-');
 	        this.localization.updateTranslation();
 	    }
-	    AppComponent.prototype.ngOnInit = function () {
-	        this.router.navigate(['/home']);
-	    };
 	    AppComponent.prototype.ChangeCulture = function (language, country, currency) {
 	        this.locale.setCurrentLocale(language, country);
 	        this.locale.setCurrentCurrency(currency);
@@ -308,6 +305,7 @@ webpackJsonp([0],{
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(/*! @angular/core */ 5);
+	var router_1 = __webpack_require__(/*! @angular/router */ 345);
 	var common_1 = __webpack_require__(/*! @angular/common */ 2);
 	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 405);
 	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 394);
@@ -357,7 +355,7 @@ webpackJsonp([0],{
 	        core_1.Component({
 	            selector: 'shopcomponent',
 	            template: __webpack_require__(/*! ./shop.component.html */ 413),
-	            directives: [common_1.CORE_DIRECTIVES],
+	            directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
 	            pipes: [angular2localization_1.TranslatePipe]
 	        }), 
 	        __metadata('design:paramtypes', [angular2localization_2.LocaleService, angular2localization_2.LocalizationService, ProductService_1.ProductService])
@@ -401,12 +399,12 @@ webpackJsonp([0],{
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(/*! @angular/core */ 5);
+	var router_1 = __webpack_require__(/*! @angular/router */ 345);
 	var common_1 = __webpack_require__(/*! @angular/common */ 2);
 	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 415);
 	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 394);
 	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 405);
 	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 394);
-	var router_1 = __webpack_require__(/*! @angular/router */ 345);
 	var ShopAdminComponent = (function (_super) {
 	    __extends(ShopAdminComponent, _super);
 	    function ShopAdminComponent(router, _localeService, localization, _productService, builder) {
@@ -494,7 +492,7 @@ webpackJsonp([0],{
 	        core_1.Component({
 	            selector: 'shopadmincomponent',
 	            template: __webpack_require__(/*! ./shop-admin.component.html */ 416),
-	            directives: [common_1.CORE_DIRECTIVES],
+	            directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
 	            pipes: [angular2localization_2.TranslatePipe]
 	        }), 
 	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService, common_1.FormBuilder])
