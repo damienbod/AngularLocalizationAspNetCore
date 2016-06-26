@@ -1,4 +1,4 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import { Component, OnInit} from '@angular/core';
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
 
 // Services.
@@ -38,12 +38,6 @@ export class AppComponent extends Locale {
 
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
         this.localization.updateTranslation(); // Need to update the translation.
-
-    }
-
-    ngOnInit() {
-
-        this.router.navigate(['/home']);
 
     }
 
