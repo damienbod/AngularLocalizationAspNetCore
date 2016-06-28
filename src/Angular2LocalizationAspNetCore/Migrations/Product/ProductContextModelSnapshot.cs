@@ -5,16 +5,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Angular2LocalizationAspNetCore.Models;
 
-namespace Angular2LocalizationAspNetCore.Migrations
+namespace Angular2LocalizationAspNetCore.Migrations.Product
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20160525195706_Product")]
-    partial class Product
+    partial class ProductContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc2-20896");
+                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
             modelBuilder.Entity("Angular2LocalizationAspNetCore.Models.Product", b =>
                 {

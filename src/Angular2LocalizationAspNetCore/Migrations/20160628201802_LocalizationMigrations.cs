@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Angular2LocalizationAspNetCore.Migrations.LocalizationModel
+namespace Angular2LocalizationAspNetCore.Migrations
 {
-    public partial class Localization : Migration
+    public partial class LocalizationMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
