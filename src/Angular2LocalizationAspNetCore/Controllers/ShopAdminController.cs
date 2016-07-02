@@ -22,9 +22,10 @@ namespace Angular2LocalizationAspNetCore.Controllers
         //}
 
         [HttpPost]
-        public void Post([FromBody]ProductCreateEditDto value)
+        public IActionResult Post([FromBody]ProductCreateEditDto value)
         {
             _productCudProvider.AddProduct(value);
+            return Created("http://localhost:5000/api/ShopAdmin/", value);
         }
 
         // Test method to add data
@@ -40,7 +41,7 @@ namespace Angular2LocalizationAspNetCore.Controllers
                 ImagePath = "",
                 PriceCHF = 2.40,
                 PriceEUR = 2.20,
-                LocalizationRecords = new System.Collections.Generic.List<Models.LocalizationRecordDto>
+                LocalizationRecords = new System.Collections.Generic.List<LocalizationRecordDto>
                 {
                     new LocalizationRecordDto { Key= description, LocalizationCulture = "de-CH", Text = $"{description} de-CH" },
                     new LocalizationRecordDto { Key= description, LocalizationCulture = "it-CH", Text = $"{description} it-CH" },
