@@ -1,12 +1,5 @@
-﻿// Polyfill(s) for older browsers.
-import 'core-js/client/core';
-
-// Reflect Metadata.
-import 'reflect-metadata';
-// RxJS.
+﻿// RxJS.
 import 'rxjs';
-// Zone.
-import 'zone.js/dist/zone';
 
 // Angular 2.
 import '@angular/common';
@@ -20,9 +13,12 @@ import '@angular/router';
 // angular2localization.
 import 'angular2localization/angular2localization';
 
-// Other libraries.
+import 'reflect-metadata';
+
 import 'jquery/src/jquery';
 import 'bootstrap/dist/js/bootstrap';
+
+
 
 // import './css/bootstrap.css';
 // import './css/bootstrap-theme.css';
