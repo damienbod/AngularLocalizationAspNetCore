@@ -1,4 +1,4 @@
-<form #productForm="ngForm" (ngSubmit)="Create(productForm.value)">
+<form id="productForm" #productForm="ngForm" (ngSubmit)="Create(productForm.value)">
 
         <div class="form-group" [ngClass]="{ 'has-error' : !name.valid && submitted }">
             <label class="control-label" for="name">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>

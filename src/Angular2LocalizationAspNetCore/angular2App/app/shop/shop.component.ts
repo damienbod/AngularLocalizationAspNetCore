@@ -33,7 +33,7 @@ export class ShopComponent extends Locale implements OnInit {
     ) {
         super(null, localization);
         this.message = "shop.component";
-        this._locale.countryCodeChanged.subscribe(item => this.onCountryChangedDataRecieved(item));
+        this._locale.languageCodeChanged.subscribe(item => this.onLanguageCodeChangedDataRecieved(item));
         this._locale.currencyCodeChanged.subscribe(currency => this.onChangedCurrencyRecieved(currency));     
     }
 
@@ -61,7 +61,7 @@ export class ShopComponent extends Locale implements OnInit {
             );
     } 
 
-    private onCountryChangedDataRecieved(item) {
+    private onLanguageCodeChangedDataRecieved(item) {
         this.GetProducts();
         console.log("onCountryChangedDataRecieved Shop");
         console.log(item);
