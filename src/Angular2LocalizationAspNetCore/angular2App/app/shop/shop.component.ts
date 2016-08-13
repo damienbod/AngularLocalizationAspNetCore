@@ -1,3 +1,7 @@
+import { NgModule } from '@angular/core';
+import { CommonModule }   from '@angular/common';
+import { FormsModule }    from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
 import { CORE_DIRECTIVES } from '@angular/common';
