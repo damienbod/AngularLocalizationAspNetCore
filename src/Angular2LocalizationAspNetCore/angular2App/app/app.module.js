@@ -42,7 +42,6 @@ var AppModule = (function () {
             ],
             providers: [
                 ProductService_1.ProductService,
-                angular2localization_1.Locale,
                 angular2localization_1.LocaleService,
                 angular2localization_1.LocalizationService,
                 app_constants_1.Configuration

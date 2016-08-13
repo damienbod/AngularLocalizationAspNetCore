@@ -14,7 +14,18 @@ import { ShopComponent } from './shop/shop.component';
 import { ShopAdminComponent } from './shop-admin/shop-admin.component';
 
 import { ProductService } from './services/ProductService';
-import {Locale, LocaleService, LocalizationService} from 'angular2localization/angular2localization';
+
+import { LocaleService, LocalizationService } from 'angular2localization/angular2localization';
+// Pipes.
+import {
+    TranslatePipe,
+    LocaleDatePipe,
+    LocaleDecimalPipe,
+    LocalePercentPipe,
+    LocaleCurrencyPipe
+} from 'angular2localization/angular2localization';
+// Directives.
+import { LocaleNumberValidator } from 'angular2localization/angular2localization';
 
 @NgModule({
     imports: [
@@ -33,7 +44,6 @@ import {Locale, LocaleService, LocalizationService} from 'angular2localization/a
     ],
     providers: [
         ProductService,
-        Locale,
         LocaleService,
         LocalizationService,
         Configuration
