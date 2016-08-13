@@ -108,6 +108,7 @@ webpackJsonp([0],{
 	var AppComponent = (function (_super) {
 	    __extends(AppComponent, _super);
 	    function AppComponent(router, locale, localization, _productService) {
+	        var _this = this;
 	        _super.call(this, null, localization);
 	        this.router = router;
 	        this.locale = locale;
@@ -120,6 +121,7 @@ webpackJsonp([0],{
 	        this.locale.definePreferredLocale('en', 'US', 30);
 	        this.localization.translationProvider('./i18n/locale-');
 	        this.localization.updateTranslation();
+	        this.locale.languageCodeChanged.subscribe(function (item) { return _this.onLanguageCodeChangedDataRecieved(item); });
 	    }
 	    AppComponent.prototype.ChangeCulture = function (language, country, currency) {
 	        this.locale.setCurrentLocale(language, country);
@@ -128,6 +130,11 @@ webpackJsonp([0],{
 	    };
 	    AppComponent.prototype.ChangeCurrency = function (currency) {
 	        this.locale.setCurrentCurrency(currency);
+	    };
+	    AppComponent.prototype.onLanguageCodeChangedDataRecieved = function (item) {
+	        this.localization.updateTranslation();
+	        console.log("onLanguageCodeChangedDataRecieved App");
+	        console.log(item);
 	    };
 	    AppComponent = __decorate([
 	        core_1.Component({
@@ -405,7 +412,7 @@ webpackJsonp([0],{
 	    };
 	    ShopComponent.prototype.onChangedCurrencyRecieved = function (currency) {
 	        this.Currency = currency;
-	        console.log("onChangedCurrencyRecieved Shop");
+	        console.log("onLanguageCodeChangedDataRecieved Shop");
 	        console.log(currency);
 	    };
 	    ShopComponent = __decorate([

@@ -43,6 +43,8 @@ export class AppComponent extends Locale {
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
         this.localization.updateTranslation(); // Need to update the translation.
 
+        this.locale.languageCodeChanged.subscribe(item => this.onLanguageCodeChangedDataRecieved(item));
+
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
@@ -53,5 +55,11 @@ export class AppComponent extends Locale {
 
     public ChangeCurrency(currency: string) {
         this.locale.setCurrentCurrency(currency);
+    }
+
+    private onLanguageCodeChangedDataRecieved(item) {
+        this.localization.updateTranslation();
+        console.log("onLanguageCodeChangedDataRecieved App");
+        console.log(item);
     }
 }

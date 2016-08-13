@@ -69,7 +69,7 @@ export class ShopComponent extends Locale implements OnInit {
 
     private onChangedCurrencyRecieved(currency) {
         this.Currency = currency;
-        console.log("onChangedCurrencyRecieved Shop");
+        console.log("onLanguageCodeChangedDataRecieved Shop");
         console.log(currency);
     }
 }
