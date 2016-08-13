@@ -34,6 +34,48 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="control-label" >{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>
+
+                <div class="row">
+                    <div class="col-md-3"><em>de</em></div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="Namede" required [(ngModel)]="Name_de"  name="Namede" #Namede="ngModel">
+                        <div [hidden]="Namede.valid || Namede.pristine" class="alert alert-danger">
+                            Name_de is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><em>fr</em></div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="Namefr" required  [(ngModel)]="Name_fr"  name="Namefr" #Namefr="ngModel">
+                        <div [hidden]="Namefr.valid || Namefr.pristine" class="alert alert-danger">
+                            Name_fr is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><em>it</em></div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="Nameit" required [(ngModel)]="Name_it" name="Nameit" #Nameit="ngModel">
+                        <div [hidden]="Nameit.valid || Nameit.pristine" class="alert alert-danger">
+                            Name_it is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"><em>en</em></div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="Nameen" required [(ngModel)]="Name_en"  name="Nameen" #Nameen="ngModel">
+                        <div [hidden]="Nameen.valid || Nameen.pristine" class="alert alert-danger">
+                            Name_en is required
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <button type="submit" class="btn btn-default" [disabled]="!productForm.form.valid">Submit</button>
 
         </form>
@@ -44,34 +86,6 @@
 
 
 
-        <div class="form-group" [ngClass]="{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitted }">
-            <label>{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>
-            <div class="row">
-                <div class="col-md-3"><em>de</em></div>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" id="Name_de" [(ngModel)]="Name_de" ngControl="namede" name="Name_de">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><em>fr</em></div>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" id="Name_fr" [(ngModel)]="Name_fr" ngControl="namefr" name="Name_fr">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><em>it</em></div>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" id="Name_it" [(ngModel)]="Name_it" ngControl="nameit" name="Name_it">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3"><em>en</em></div>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" id="Name_en" [(ngModel)]="Name_en" ngControl="nameen" name="Name_en">
-                </div>
-            </div>
-
-        </div>
 
         <div class="form-group" [ngClass]="{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitted }">
             <label>{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>
