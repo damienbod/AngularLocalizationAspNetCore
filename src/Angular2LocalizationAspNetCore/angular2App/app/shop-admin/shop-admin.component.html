@@ -1,90 +1,90 @@
-<form [ngFormModel]="productForm" (ngSubmit)="Create(productForm.value)">
+<form #productForm="ngForm" (ngSubmit)="Create(productForm.value)">
 
-    <div class="form-group" [ngClass]="{ 'has-error' : !name.valid && submitted }">
-        <label class="control-label" for="name">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>
-        <em *ngIf="!name.valid && submitted">Required</em>
-        <input id="name" type="text" class="form-control" placeholder="name" ngControl="name" [(ngModel)]="Product.Name">
-    </div>
-
-    <div class="form-group" [ngClass]="{ 'has-error' : !description.valid && submitted }">
-        <label class="control-label" for="description">{{ 'ADD_PRODUCT_DESCRIPTION' | translate:lang }}</label>
-        <em *ngIf="!description.valid && submitted">Required</em>
-        <input id="description" type="text" class="form-control" placeholder="description" ngControl="description" [(ngModel)]="Product.Description">
-    </div>
-
-    <div class="form-group" [ngClass]="{ 'has-error' : !priceEUR.valid && submitted }">
-        <label class="control-label" for="priceEUR">{{ 'ADD_PRODUCT_PRICE_EUR' | translate:lang }}</label>
-        <em *ngIf="!priceEUR.valid && submitted">Required</em>
-        <input id="priceEUR" type="number" class="form-control" placeholder="priceEUR" ngControl="priceEUR" [(ngModel)]="Product.PriceEUR">
-    </div>
-
-    <div class="form-group" [ngClass]="{ 'has-error' : !priceCHF.valid && submitted }">
-        <label class="control-label" for="priceCHF">{{ 'ADD_PRODUCT_PRICE_CHF' | translate:lang }}</label>
-        <em *ngIf="!priceCHF.valid && submitted">Required</em>
-        <input id="priceCHF" type="number" class="form-control" placeholder="priceCHF" ngControl="priceCHF" [(ngModel)]="Product.PriceCHF">
-    </div>
-  
-
-    <div class="form-group" [ngClass]="{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitted }">
-        <label>{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>
-        <div class="row">
-            <div class="col-md-3"><em>de</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Name_de" ngControl="namede" #name="ngForm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><em>fr</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Name_fr" ngControl="namefr" #name="ngForm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><em>it</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Name_it" ngControl="nameit" #name="ngForm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><em>en</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Name_en" ngControl="nameen" #name="ngForm" />
-            </div>
-        </div>
-    
-    </div>
-
-    <div class="form-group" [ngClass]="{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitted }">
-        <label>{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>
-        <div class="row">
-            <div class="col-md-3"><em>de</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Description_de" ngControl="descriptionde" #name="ngForm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><em>fr</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Description_fr" ngControl="descriptionfr" #name="ngForm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><em>it</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Description_it" ngControl="descriptionit" #name="ngForm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"><em>en</em></div>
-            <div class="col-md-9">
-                <input class="form-control" type="text" [(ngModel)]="Description_en" ngControl="descriptionen" #name="ngForm" />
-            </div>
+        <div class="form-group" [ngClass]="{ 'has-error' : !name.valid && submitted }">
+            <label class="control-label" for="name">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>
+            <em *ngIf="!name.valid && submitted">Required</em>
+            <input id="name" type="text" class="form-control" placeholder="name" ngControl="name" [(ngModel)]="Product.Name">
         </div>
 
-    </div>
-    <div class="form-group">
-        <button type="submit" [disabled]="saving" class="btn btn-primary">{{ 'ADD_PRODUCT_CREATE_NEW_PRODUCT' | translate:lang }}</button>
-    </div>
+        <div class="form-group" [ngClass]="{ 'has-error' : !description.valid && submitted }">
+            <label class="control-label" for="description">{{ 'ADD_PRODUCT_DESCRIPTION' | translate:lang }}</label>
+            <em *ngIf="!description.valid && submitted">Required</em>
+            <input id="description" type="text" class="form-control" placeholder="description" ngControl="description" [(ngModel)]="Product.Description">
+        </div>
 
-</form>
+        <div class="form-group" [ngClass]="{ 'has-error' : !priceEUR.valid && submitted }">
+            <label class="control-label" for="priceEUR">{{ 'ADD_PRODUCT_PRICE_EUR' | translate:lang }}</label>
+            <em *ngIf="!priceEUR.valid && submitted">Required</em>
+            <input id="priceEUR" type="number" class="form-control" placeholder="priceEUR" ngControl="priceEUR" [(ngModel)]="Product.PriceEUR">
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-error' : !priceCHF.valid && submitted }">
+            <label class="control-label" for="priceCHF">{{ 'ADD_PRODUCT_PRICE_CHF' | translate:lang }}</label>
+            <em *ngIf="!priceCHF.valid && submitted">Required</em>
+            <input id="priceCHF" type="number" class="form-control" placeholder="priceCHF" ngControl="priceCHF" [(ngModel)]="Product.PriceCHF">
+        </div>
+
+
+        <div class="form-group" [ngClass]="{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitted }">
+            <label>{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>
+            <div class="row">
+                <div class="col-md-3"><em>de</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Name_de" [(ngModel)]="Name_de"ngControl="namede" name="Name_de">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><em>fr</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Name_fr" [(ngModel)]="Name_fr" ngControl="namefr" name="Name_fr">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><em>it</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Name_it" [(ngModel)]="Name_it" ngControl="nameit" name="Name_it">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><em>en</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Name_en" [(ngModel)]="Name_en" ngControl="nameen" name="Name_en">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group" [ngClass]="{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitted }">
+            <label>{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>
+            <div class="row">
+                <div class="col-md-3"><em>de</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Description_de" [(ngModel)]="Description_de" ngControl="descriptionde" name="Description_de">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><em>fr</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Description_fr" [(ngModel)]="Description_fr" ngControl="descriptionfr" name="Description_fr">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><em>it</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Description_it" [(ngModel)]="Description_it" ngControl="descriptionit" name="Description_it">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><em>en</em></div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Description_en" [(ngModel)]="Description_en" ngControl="descriptionen" name="Description_en">
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <button type="submit" [disabled]="saving" class="btn btn-primary">{{ 'ADD_PRODUCT_CREATE_NEW_PRODUCT' | translate:lang }}</button>
+        </div>
+
+    </form>
 
