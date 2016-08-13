@@ -36,7 +36,8 @@ export class ProductService {
 
         this.setHeaders();
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
-            headers: this.headers
+            headers: this.headers,
+            body: '',
         }).map(res => res.json());
     } 
 
