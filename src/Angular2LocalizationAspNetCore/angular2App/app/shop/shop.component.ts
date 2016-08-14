@@ -1,3 +1,7 @@
+import { NgModule } from '@angular/core';
+import { CommonModule }   from '@angular/common';
+import { FormsModule }    from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES} from '@angular/router';
 import { CORE_DIRECTIVES } from '@angular/common';
@@ -29,7 +33,7 @@ export class ShopComponent extends Locale implements OnInit {
     ) {
         super(null, localization);
         this.message = "shop.component";
-        this._locale.countryCodeChanged.subscribe(item => this.onCountryChangedDataRecieved(item));
+        this._locale.languageCodeChanged.subscribe(item => this.onLanguageCodeChangedDataRecieved(item));
         this._locale.currencyCodeChanged.subscribe(currency => this.onChangedCurrencyRecieved(currency));     
     }
 
@@ -57,7 +61,7 @@ export class ShopComponent extends Locale implements OnInit {
             );
     } 
 
-    private onCountryChangedDataRecieved(item) {
+    private onLanguageCodeChangedDataRecieved(item) {
         this.GetProducts();
         console.log("onCountryChangedDataRecieved Shop");
         console.log(item);
@@ -65,7 +69,7 @@ export class ShopComponent extends Locale implements OnInit {
 
     private onChangedCurrencyRecieved(currency) {
         this.Currency = currency;
-        console.log("onChangedCurrencyRecieved Shop");
+        console.log("onLanguageCodeChangedDataRecieved Shop");
         console.log(currency);
     }
 }
