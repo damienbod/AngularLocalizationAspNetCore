@@ -4,7 +4,7 @@
         <form *ngIf="active" (ngSubmit)="onSubmit()" #productForm="ngForm">
             <div class="form-group">
                 <label class="control-label" for="name">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>
-                <input type="text" class="form-control" id="name" required  [(ngModel)]="Product.name" name="name" placeholder="name" #name="ngModel">
+                <input type="text" class="form-control" id="name" required  [(ngModel)]="Product.Name" name="name" placeholder="name" #name="ngModel">
                 <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
                     Name is required
                 </div>
