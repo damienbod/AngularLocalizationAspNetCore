@@ -8,20 +8,78 @@ webpackJsonp([0],{
 
 	"use strict";
 	var platform_browser_dynamic_1 = __webpack_require__(/*! @angular/platform-browser-dynamic */ 1);
-	var http_1 = __webpack_require__(/*! @angular/http */ 328);
-	var app_component_1 = __webpack_require__(/*! ./app/app.component */ 349);
-	var app_constants_1 = __webpack_require__(/*! ./app/app.constants */ 414);
-	var app_routes_1 = __webpack_require__(/*! ./app/app.routes */ 417);
-	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
-	    app_routes_1.APP_ROUTER_PROVIDERS,
-	    http_1.HTTP_PROVIDERS,
-	    app_constants_1.Configuration,
-	]);
+	var app_module_1 = __webpack_require__(/*! ./app/app.module */ 337);
+	platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
 
 /***/ },
 
-/***/ 349:
+/***/ 337:
+/*!***************************************!*\
+  !*** ./angular2App/app/app.module.ts ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var common_1 = __webpack_require__(/*! @angular/common */ 205);
+	var forms_1 = __webpack_require__(/*! @angular/forms */ 338);
+	var platform_browser_1 = __webpack_require__(/*! @angular/platform-browser */ 203);
+	var app_component_1 = __webpack_require__(/*! ./app.component */ 376);
+	var app_constants_1 = __webpack_require__(/*! ./app.constants */ 472);
+	var app_routes_1 = __webpack_require__(/*! ./app.routes */ 475);
+	var http_1 = __webpack_require__(/*! @angular/http */ 440);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 476);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 478);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 480);
+	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 471);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var AppModule = (function () {
+	    function AppModule() {
+	    }
+	    AppModule = __decorate([
+	        core_1.NgModule({
+	            imports: [
+	                platform_browser_1.BrowserModule,
+	                common_1.CommonModule,
+	                forms_1.FormsModule,
+	                app_routes_1.routing,
+	                http_1.HttpModule,
+	                http_1.JsonpModule
+	            ],
+	            declarations: [
+	                app_component_1.AppComponent,
+	                shop_component_1.ShopComponent,
+	                home_component_1.HomeComponent,
+	                shop_admin_component_1.ShopAdminComponent
+	            ],
+	            providers: [
+	                ProductService_1.ProductService,
+	                angular2localization_1.LocaleService,
+	                angular2localization_1.LocalizationService,
+	                app_constants_1.Configuration
+	            ],
+	            bootstrap: [app_component_1.AppComponent],
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], AppModule);
+	    return AppModule;
+	}());
+	exports.AppModule = AppModule;
+
+
+/***/ },
+
+/***/ 376:
 /*!******************************************!*\
   !*** ./angular2App/app/app.component.ts ***!
   \******************************************/
@@ -42,14 +100,15 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 5);
-	var router_1 = __webpack_require__(/*! @angular/router */ 350);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
-	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
-	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 413);
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var router_1 = __webpack_require__(/*! @angular/router */ 377);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 471);
 	var AppComponent = (function (_super) {
 	    __extends(AppComponent, _super);
 	    function AppComponent(router, locale, localization, _productService) {
+	        var _this = this;
 	        _super.call(this, null, localization);
 	        this.router = router;
 	        this.locale = locale;
@@ -62,6 +121,7 @@ webpackJsonp([0],{
 	        this.locale.definePreferredLocale('en', 'US', 30);
 	        this.localization.translationProvider('./i18n/locale-');
 	        this.localization.updateTranslation();
+	        this.locale.languageCodeChanged.subscribe(function (item) { return _this.onLanguageCodeChangedDataRecieved(item); });
 	    }
 	    AppComponent.prototype.ChangeCulture = function (language, country, currency) {
 	        this.locale.setCurrentLocale(language, country);
@@ -71,11 +131,16 @@ webpackJsonp([0],{
 	    AppComponent.prototype.ChangeCurrency = function (currency) {
 	        this.locale.setCurrentCurrency(currency);
 	    };
+	    AppComponent.prototype.onLanguageCodeChangedDataRecieved = function (item) {
+	        this.localization.updateTranslation();
+	        console.log("onLanguageCodeChangedDataRecieved App");
+	        console.log(item);
+	    };
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'my-app',
-	            template: __webpack_require__(/*! ./app.component.html */ 415),
-	            styles: [__webpack_require__(/*! ./app.component.scss */ 416)],
+	            template: __webpack_require__(/*! ./app.component.html */ 473),
+	            styles: [__webpack_require__(/*! ./app.component.scss */ 474)],
 	            directives: [router_1.ROUTER_DIRECTIVES],
 	            providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService],
 	            pipes: [angular2localization_2.TranslatePipe]
@@ -89,7 +154,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 413:
+/***/ 471:
 /*!****************************************************!*\
   !*** ./angular2App/app/services/ProductService.ts ***!
   \****************************************************/
@@ -105,12 +170,12 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 5);
-	var http_1 = __webpack_require__(/*! @angular/http */ 328);
-	__webpack_require__(/*! rxjs/add/operator/map */ 353);
-	var Observable_1 = __webpack_require__(/*! rxjs/Observable */ 38);
-	var app_constants_1 = __webpack_require__(/*! ../app.constants */ 414);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var http_1 = __webpack_require__(/*! @angular/http */ 440);
+	__webpack_require__(/*! rxjs/add/operator/map */ 380);
+	var Observable_1 = __webpack_require__(/*! rxjs/Observable */ 70);
+	var app_constants_1 = __webpack_require__(/*! ../app.constants */ 472);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
 	var ProductService = (function () {
 	    function ProductService(_http, _configuration, _locale) {
 	        var _this = this;
@@ -123,7 +188,8 @@ webpackJsonp([0],{
 	            _this.isoCode = _this._locale.getCurrentLanguage() + "-" + _this._locale.getCurrentCountry();
 	            _this.setHeaders();
 	            return _this._http.get(_this.actionUrl + "AvailableProducts?culture=" + _this.isoCode, {
-	                headers: _this.headers
+	                headers: _this.headers,
+	                body: '',
 	            }).map(function (res) { return res.json(); });
 	        };
 	        this.CreateProduct = function (product) {
@@ -157,7 +223,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 414:
+/***/ 472:
 /*!******************************************!*\
   !*** ./angular2App/app/app.constants.ts ***!
   \******************************************/
@@ -173,7 +239,7 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 5);
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
 	var Configuration = (function () {
 	    function Configuration() {
 	        this.Server = "http://localhost:5000/";
@@ -189,7 +255,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 415:
+/***/ 473:
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.html ***!
   \********************************************/
@@ -199,41 +265,39 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 416:
+/***/ 474:
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.scss ***!
   \********************************************/
 /***/ function(module, exports) {
 
-	module.exports = "body {\n  padding-top: 50px; }\n\n.starter-template {\n  padding: 40px 15px;\n  text-align: center; }\n\n.navigationLinkButton:hover {\n  cursor: pointer; }\n"
+	module.exports = "// style-loader: Adds some css to the DOM by adding a <style> tag\n\n// load the styles\nvar content = require(\"!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss\");\nif(typeof content === 'string') content = [[module.id, content, '']];\n// add the styles to the DOM\nvar update = require(\"!./../../node_modules/style-loader/addStyles.js\")(content, {});\nif(content.locals) module.exports = content.locals;\n// Hot Module Replacement\nif(module.hot) {\n\t// When the styles change, update the <style> tags\n\tif(!content.locals) {\n\t\tmodule.hot.accept(\"!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss\", function() {\n\t\t\tvar newContent = require(\"!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss\");\n\t\t\tif(typeof newContent === 'string') newContent = [[module.id, newContent, '']];\n\t\t\tupdate(newContent);\n\t\t});\n\t}\n\t// When the module is disposed, remove the <style> tags\n\tmodule.hot.dispose(function() { update(); });\n}"
 
 /***/ },
 
-/***/ 417:
+/***/ 475:
 /*!***************************************!*\
   !*** ./angular2App/app/app.routes.ts ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var router_1 = __webpack_require__(/*! @angular/router */ 350);
-	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 418);
-	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 420);
-	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 422);
-	exports.routes = [
+	var router_1 = __webpack_require__(/*! @angular/router */ 377);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 476);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 478);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 480);
+	var appRoutes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'home', component: home_component_1.HomeComponent },
 	    { path: 'shop', component: shop_component_1.ShopComponent },
 	    { path: 'shopAdmin', component: shop_admin_component_1.ShopAdminComponent }
 	];
-	exports.APP_ROUTER_PROVIDERS = [
-	    router_1.provideRouter(exports.routes)
-	];
+	exports.routing = router_1.RouterModule.forRoot(appRoutes);
 
 
 /***/ },
 
-/***/ 418:
+/***/ 476:
 /*!************************************************!*\
   !*** ./angular2App/app/home/home.component.ts ***!
   \************************************************/
@@ -249,8 +313,8 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 5);
-	var common_1 = __webpack_require__(/*! @angular/common */ 2);
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var common_1 = __webpack_require__(/*! @angular/common */ 205);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.message = "home.component";
@@ -261,7 +325,7 @@ webpackJsonp([0],{
 	    HomeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'homecomponent',
-	            template: __webpack_require__(/*! ./home.component.html */ 419),
+	            template: __webpack_require__(/*! ./home.component.html */ 477),
 	            directives: [common_1.CORE_DIRECTIVES]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -273,7 +337,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 419:
+/***/ 477:
 /*!**************************************************!*\
   !*** ./angular2App/app/home/home.component.html ***!
   \**************************************************/
@@ -283,7 +347,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 420:
+/***/ 478:
 /*!************************************************!*\
   !*** ./angular2App/app/shop/shop.component.ts ***!
   \************************************************/
@@ -304,12 +368,12 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 5);
-	var router_1 = __webpack_require__(/*! @angular/router */ 350);
-	var common_1 = __webpack_require__(/*! @angular/common */ 2);
-	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 413);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
-	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var router_1 = __webpack_require__(/*! @angular/router */ 377);
+	var common_1 = __webpack_require__(/*! @angular/common */ 205);
+	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 471);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
 	var ShopComponent = (function (_super) {
 	    __extends(ShopComponent, _super);
 	    function ShopComponent(_locale, localization, _productService) {
@@ -319,7 +383,7 @@ webpackJsonp([0],{
 	        this.localization = localization;
 	        this._productService = _productService;
 	        this.message = "shop.component";
-	        this._locale.countryCodeChanged.subscribe(function (item) { return _this.onCountryChangedDataRecieved(item); });
+	        this._locale.languageCodeChanged.subscribe(function (item) { return _this.onLanguageCodeChangedDataRecieved(item); });
 	        this._locale.currencyCodeChanged.subscribe(function (currency) { return _this.onChangedCurrencyRecieved(currency); });
 	    }
 	    ShopComponent.prototype.ngOnInit = function () {
@@ -341,20 +405,20 @@ webpackJsonp([0],{
 	            console.log('ProductService:GetProducts completed');
 	        });
 	    };
-	    ShopComponent.prototype.onCountryChangedDataRecieved = function (item) {
+	    ShopComponent.prototype.onLanguageCodeChangedDataRecieved = function (item) {
 	        this.GetProducts();
 	        console.log("onCountryChangedDataRecieved Shop");
 	        console.log(item);
 	    };
 	    ShopComponent.prototype.onChangedCurrencyRecieved = function (currency) {
 	        this.Currency = currency;
-	        console.log("onChangedCurrencyRecieved Shop");
+	        console.log("onLanguageCodeChangedDataRecieved Shop");
 	        console.log(currency);
 	    };
 	    ShopComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopcomponent',
-	            template: __webpack_require__(/*! ./shop.component.html */ 421),
+	            template: __webpack_require__(/*! ./shop.component.html */ 479),
 	            directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
 	            pipes: [angular2localization_1.TranslatePipe]
 	        }), 
@@ -367,7 +431,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 421:
+/***/ 479:
 /*!**************************************************!*\
   !*** ./angular2App/app/shop/shop.component.html ***!
   \**************************************************/
@@ -377,7 +441,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 422:
+/***/ 480:
 /*!************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.ts ***!
   \************************************************************/
@@ -398,29 +462,33 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 5);
-	var router_1 = __webpack_require__(/*! @angular/router */ 350);
-	var common_1 = __webpack_require__(/*! @angular/common */ 2);
-	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 423);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
-	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 413);
-	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 402);
+	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var common_1 = __webpack_require__(/*! @angular/common */ 205);
+	var router_1 = __webpack_require__(/*! @angular/router */ 377);
+	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 481);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 471);
+	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
 	var ShopAdminComponent = (function (_super) {
 	    __extends(ShopAdminComponent, _super);
-	    function ShopAdminComponent(router, _localeService, localization, _productService, builder) {
+	    function ShopAdminComponent(router, _localeService, localization, _productService) {
 	        var _this = this;
 	        _super.call(this, null, localization);
 	        this.router = router;
 	        this._localeService = _localeService;
 	        this.localization = localization;
 	        this._productService = _productService;
-	        this.builder = builder;
+	        this.Product = new ProductCreateEdit_1.ProductCreateEdit();
 	        this.submitted = false;
+	        this.active = true;
 	        this.saving = false;
 	        this.message = "shop-admin.component";
 	        this._localeService.languageCodeChanged.subscribe(function (item) { return _this.onLanguageCodeChangedDataRecieved(item); });
-	        this.buildForm();
 	    }
+	    ShopAdminComponent.prototype.onSubmit = function () {
+	        this.submitted = true;
+	        this.Create();
+	    };
 	    ShopAdminComponent.prototype.ngOnInit = function () {
 	        console.log("ngOnInit ShopAdminComponent");
 	        this.initProduct();
@@ -429,57 +497,27 @@ webpackJsonp([0],{
 	            this.Currency = "CHF";
 	        }
 	    };
-	    ShopAdminComponent.prototype.buildForm = function () {
-	        this.name = new common_1.Control('', common_1.Validators.required);
-	        this.description = new common_1.Control('', common_1.Validators.required);
-	        this.priceEUR = new common_1.Control('', common_1.Validators.required);
-	        this.priceCHF = new common_1.Control('', common_1.Validators.required);
-	        this.namede = new common_1.Control('', common_1.Validators.required);
-	        this.namefr = new common_1.Control('', common_1.Validators.required);
-	        this.nameit = new common_1.Control('', common_1.Validators.required);
-	        this.nameen = new common_1.Control('', common_1.Validators.required);
-	        this.descriptionde = new common_1.Control('', common_1.Validators.required);
-	        this.descriptionfr = new common_1.Control('', common_1.Validators.required);
-	        this.descriptionit = new common_1.Control('', common_1.Validators.required);
-	        this.descriptionen = new common_1.Control('', common_1.Validators.required);
-	        this.productForm = this.builder.group({
-	            name: ['', common_1.Validators.required],
-	            description: ['', common_1.Validators.required],
-	            priceEUR: ['', common_1.Validators.required],
-	            priceCHF: ['', common_1.Validators.required],
-	            namede: ['', common_1.Validators.required],
-	            namefr: ['', common_1.Validators.required],
-	            nameit: ['', common_1.Validators.required],
-	            nameen: ['', common_1.Validators.required],
-	            descriptionde: ['', common_1.Validators.required],
-	            descriptionfr: ['', common_1.Validators.required],
-	            descriptionit: ['', common_1.Validators.required],
-	            descriptionen: ['', common_1.Validators.required]
-	        });
-	    };
 	    ShopAdminComponent.prototype.Create = function () {
 	        var _this = this;
 	        this.submitted = true;
-	        if (this.productForm.valid) {
-	            this.saving = true;
-	            this.Product.LocalizationRecords = [];
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "de-CH", Text: this.Name_de });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "fr-CH", Text: this.Name_fr });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "it-CH", Text: this.Name_it });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "en-US", Text: this.Name_en });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "de-CH", Text: this.Description_de });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "fr-CH", Text: this.Description_fr });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "it-CH", Text: this.Description_it });
-	            this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "en-US", Text: this.Description_en });
-	            this._productService.CreateProduct(this.Product)
-	                .subscribe(function (data) {
-	                _this.saving = false;
-	                _this.router.navigate(['/shop']);
-	            }, function (error) {
-	                _this.saving = false;
-	                console.log(error);
-	            }, function () { return _this.saving = false; });
-	        }
+	        this.saving = true;
+	        this.Product.LocalizationRecords = [];
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "de-CH", Text: this.Name_de });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "fr-CH", Text: this.Name_fr });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "it-CH", Text: this.Name_it });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "en-US", Text: this.Name_en });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "de-CH", Text: this.Description_de });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "fr-CH", Text: this.Description_fr });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "it-CH", Text: this.Description_it });
+	        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "en-US", Text: this.Description_en });
+	        this._productService.CreateProduct(this.Product)
+	            .subscribe(function (data) {
+	            _this.saving = false;
+	            _this.router.navigate(['/shop']);
+	        }, function (error) {
+	            _this.saving = false;
+	            console.log(error);
+	        }, function () { return _this.saving = false; });
 	    };
 	    ShopAdminComponent.prototype.onLanguageCodeChangedDataRecieved = function (item) {
 	        console.log("onLanguageCodeChangedDataRecieved Shop Admin");
@@ -491,11 +529,11 @@ webpackJsonp([0],{
 	    ShopAdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopadmincomponent',
-	            template: __webpack_require__(/*! ./shop-admin.component.html */ 424),
+	            template: __webpack_require__(/*! ./shop-admin.component.html */ 482),
 	            directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
 	            pipes: [angular2localization_2.TranslatePipe]
 	        }), 
-	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService, common_1.FormBuilder])
+	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], ShopAdminComponent);
 	    return ShopAdminComponent;
 	}(angular2localization_1.Locale));
@@ -504,7 +542,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 423:
+/***/ 481:
 /*!*******************************************************!*\
   !*** ./angular2App/app/services/ProductCreateEdit.ts ***!
   \*******************************************************/
@@ -521,15 +559,15 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 424:
+/***/ 482:
 /*!**************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.html ***!
   \**************************************************************/
 /***/ function(module, exports) {
 
-	module.exports = "<form [ngFormModel]=\"productForm\" (ngSubmit)=\"Create(productForm.value)\">\r\n\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error' : !name.valid && submitted }\">\r\n        <label class=\"control-label\" for=\"name\">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>\r\n        <em *ngIf=\"!name.valid && submitted\">Required</em>\r\n        <input id=\"name\" type=\"text\" class=\"form-control\" placeholder=\"name\" ngControl=\"name\" [(ngModel)]=\"Product.Name\">\r\n    </div>\r\n\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error' : !description.valid && submitted }\">\r\n        <label class=\"control-label\" for=\"description\">{{ 'ADD_PRODUCT_DESCRIPTION' | translate:lang }}</label>\r\n        <em *ngIf=\"!description.valid && submitted\">Required</em>\r\n        <input id=\"description\" type=\"text\" class=\"form-control\" placeholder=\"description\" ngControl=\"description\" [(ngModel)]=\"Product.Description\">\r\n    </div>\r\n\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error' : !priceEUR.valid && submitted }\">\r\n        <label class=\"control-label\" for=\"priceEUR\">{{ 'ADD_PRODUCT_PRICE_EUR' | translate:lang }}</label>\r\n        <em *ngIf=\"!priceEUR.valid && submitted\">Required</em>\r\n        <input id=\"priceEUR\" type=\"number\" class=\"form-control\" placeholder=\"priceEUR\" ngControl=\"priceEUR\" [(ngModel)]=\"Product.PriceEUR\">\r\n    </div>\r\n\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error' : !priceCHF.valid && submitted }\">\r\n        <label class=\"control-label\" for=\"priceCHF\">{{ 'ADD_PRODUCT_PRICE_CHF' | translate:lang }}</label>\r\n        <em *ngIf=\"!priceCHF.valid && submitted\">Required</em>\r\n        <input id=\"priceCHF\" type=\"number\" class=\"form-control\" placeholder=\"priceCHF\" ngControl=\"priceCHF\" [(ngModel)]=\"Product.PriceCHF\">\r\n    </div>\r\n  \r\n\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error' : !namede.valid && !namefr.valid && !nameit.valid && !nameen.valid && submitted }\">\r\n        <label>{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>de</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Name_de\" ngControl=\"namede\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>fr</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Name_fr\" ngControl=\"namefr\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>it</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Name_it\" ngControl=\"nameit\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>en</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Name_en\" ngControl=\"nameen\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n    \r\n    </div>\r\n\r\n    <div class=\"form-group\" [ngClass]=\"{ 'has-error' : !descriptionde.valid && !descriptionfr.valid && !descriptionit.valid && !descriptionen.valid && submitted }\">\r\n        <label>{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>de</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Description_de\" ngControl=\"descriptionde\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>fr</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Description_fr\" ngControl=\"descriptionfr\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>it</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Description_it\" ngControl=\"descriptionit\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-3\"><em>en</em></div>\r\n            <div class=\"col-md-9\">\r\n                <input class=\"form-control\" type=\"text\" [(ngModel)]=\"Description_en\" ngControl=\"descriptionen\" #name=\"ngForm\" />\r\n            </div>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"form-group\">\r\n        <button type=\"submit\" [disabled]=\"saving\" class=\"btn btn-primary\">{{ 'ADD_PRODUCT_CREATE_NEW_PRODUCT' | translate:lang }}</button>\r\n    </div>\r\n\r\n</form>\r\n\r\n"
+	module.exports = "<div class=\"container\">\r\n    <div [hidden]=\"submitted\">\r\n        <h1>New Product</h1>\r\n        <form *ngIf=\"active\" (ngSubmit)=\"onSubmit()\" #productForm=\"ngForm\">\r\n            <div class=\"form-group\">\r\n                <label class=\"control-label\" for=\"name\">{{ 'ADD_PRODUCT_NAME' | translate:lang }}</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"name\" required  [(ngModel)]=\"Product.Name\" name=\"name\" placeholder=\"name\" #name=\"ngModel\">\r\n                <div [hidden]=\"name.valid || name.pristine\" class=\"alert alert-danger\">\r\n                    Name is required\r\n                </div>\r\n            </div>\r\n          \r\n            <div class=\"form-group\">\r\n                <label class=\"control-label\" for=\"description\">{{ 'ADD_PRODUCT_DESCRIPTION' | translate:lang }}</label>\r\n                <input type=\"text\" class=\"form-control\" id=\"description\" required [(ngModel)]=\"Product.Description\" name=\"description\" placeholder=\"description\" #description=\"ngModel\">\r\n                <div [hidden]=\"description.valid || description.pristine\" class=\"alert alert-danger\">\r\n                    description is required\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <label class=\"control-label\" for=\"priceEUR\">{{ 'ADD_PRODUCT_PRICE_EUR' | translate:lang }}</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"priceEUR\" required [(ngModel)]=\"Product.PriceEUR\" name=\"priceEUR\" placeholder=\"priceEUR\" #priceEUR=\"ngModel\">\r\n                <div [hidden]=\"priceEUR.valid || priceEUR.pristine\" class=\"alert alert-danger\">\r\n                    priceEUR is required\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <label class=\"control-label\" for=\"priceCHF\">{{ 'ADD_PRODUCT_PRICE_CHF' | translate:lang }}</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"priceCHF\" required [(ngModel)]=\"Product.PriceCHF\" name=\"priceCHF\" placeholder=\"priceCHF\" #priceCHF=\"ngModel\">\r\n                <div [hidden]=\"priceCHF.valid || priceCHF.pristine\" class=\"alert alert-danger\">\r\n                    priceCHF is required\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <label class=\"control-label\" >{{ 'ADD_PRODUCT_LOCALIZED_NAME' | translate:lang }}</label>\r\n\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>de</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Namede\" required [(ngModel)]=\"Name_de\"  name=\"Namede\" #Namede=\"ngModel\">\r\n                        <div [hidden]=\"Namede.valid || Namede.pristine\" class=\"alert alert-danger\">\r\n                            Name_de is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>fr</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Namefr\" required  [(ngModel)]=\"Name_fr\"  name=\"Namefr\" #Namefr=\"ngModel\">\r\n                        <div [hidden]=\"Namefr.valid || Namefr.pristine\" class=\"alert alert-danger\">\r\n                            Name_fr is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>it</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Nameit\" required [(ngModel)]=\"Name_it\" name=\"Nameit\" #Nameit=\"ngModel\">\r\n                        <div [hidden]=\"Nameit.valid || Nameit.pristine\" class=\"alert alert-danger\">\r\n                            Name_it is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>en</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Nameen\" required [(ngModel)]=\"Name_en\"  name=\"Nameen\" #Nameen=\"ngModel\">\r\n                        <div [hidden]=\"Nameen.valid || Nameen.pristine\" class=\"alert alert-danger\">\r\n                            Name_en is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n                <label class=\"control-label\">{{ 'ADD_PRODUCT_LOCALIZED_DESCRIPTION' | translate:lang }}</label>\r\n\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>de</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Descriptionde\" required [(ngModel)]=\"Description_de\" name=\"Descriptionde\" #Descriptionde=\"ngModel\">\r\n                        <div [hidden]=\"Descriptionde.valid || Descriptionde.pristine\" class=\"alert alert-danger\">\r\n                            Description DE is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>fr</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Descriptionfr\" required [(ngModel)]=\"Description_fr\" name=\"Descriptionfr\" #Descriptionfr=\"ngModel\">\r\n                        <div [hidden]=\"Descriptionfr.valid || Descriptionfr.pristine\" class=\"alert alert-danger\">\r\n                            Description FR is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>it</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Descriptionit\" required [(ngModel)]=\"Description_it\" name=\"Descriptionit\" #Descriptionit=\"ngModel\">\r\n                        <div [hidden]=\"Descriptionit.valid || Descriptionit.pristine\" class=\"alert alert-danger\">\r\n                            Description IT is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"row\">\r\n                    <div class=\"col-md-3\"><em>en</em></div>\r\n                    <div class=\"col-md-9\">\r\n                        <input type=\"text\" class=\"form-control\" id=\"Descriptionen\" required [(ngModel)]=\"Description_en\" name=\"Descriptionen\" #Descriptionen=\"ngModel\">\r\n                        <div [hidden]=\"Descriptionen.valid || Descriptionen.pristine\" class=\"alert alert-danger\">\r\n                            Description EN is required\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n            <button type=\"submit\" class=\"btn btn-default\" [disabled]=\"!productForm.form.valid\">Submit</button>\r\n\r\n        </form>\r\n    </div>\r\n</div>"
 
 /***/ }
 
 });
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=app.bundle.js.map
