@@ -7,7 +7,7 @@
             "type": "platform"
         },
         "Localization.SqlLocalizer": "1.0.2",
-        "Microsoft.EntityFrameworkCore":  "1.0.0",
+        "Microsoft.EntityFrameworkCore": "1.0.0",
         "Microsoft.EntityFrameworkCore.Sqlite": "1.0.0",
         "Microsoft.EntityFrameworkCore.Sqlite.Design": "1.0.0",
         "Microsoft.EntityFrameworkCore.Tools": {
@@ -87,15 +87,16 @@
         }
     },
 
-    "buildOptions": {
-        "emitEntryPoint": true,
-        "preserveCompilationContext": true
-    },
-
     "runtimeOptions": {
         "gcServer": true
     },
-
+    "buildOptions": {
+        "emitEntryPoint": true,
+        "preserveCompilationContext": true,
+        "compile": {
+            "exclude": [ "node_modules" ]
+        }
+    },
     "publishOptions": {
         "include": [
             "wwwroot",
