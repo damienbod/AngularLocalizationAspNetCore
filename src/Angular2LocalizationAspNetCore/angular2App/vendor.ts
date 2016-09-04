@@ -1,25 +1,16 @@
-﻿// RxJS.
-import 'rxjs';
-
-// Angular 2.
-import '@angular/core';
-import '@angular/common';
-import '@angular/compiler';
-import '@angular/forms';
-import '@angular/http';
+﻿import '@angular/platform-browser-dynamic';
 import '@angular/platform-browser';
-import '@angular/platform-browser-dynamic';
+import '@angular/core';
+import '@angular/http';
 import '@angular/router';
-import '@angular/upgrade';
 
-
-// angular2localization.
-import 'angular2localization/angular2localization';
 
 import 'jquery/src/jquery';
 import 'bootstrap/dist/js/bootstrap';
 
+import './css/bootstrap.css';
+import './css/bootstrap-theme.css';
 
 
-// import './css/bootstrap.css';
-// import './css/bootstrap-theme.css';
+// angular2localization.
+import 'angular2localization/angular2localization';
