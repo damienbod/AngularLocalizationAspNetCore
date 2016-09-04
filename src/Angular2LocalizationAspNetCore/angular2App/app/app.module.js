@@ -33,8 +33,8 @@ var AppModule = (function () {
                 app_routes_1.routing,
                 http_1.HttpModule,
                 http_1.JsonpModule,
-                angular2localization_1.LocaleModule,
-                angular2localization_1.LocalizationModule.forChild()
+                angular2localization_1.LocaleModule.forRoot(),
+                angular2localization_1.LocalizationModule.forRoot()
             ],
             declarations: [
                 app_component_1.AppComponent,

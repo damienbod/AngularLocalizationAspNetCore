@@ -1,14 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
-import { Router} from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Http } from '@angular/http';
 import { Product } from '../services/Product';
 import { ProductService } from '../services/ProductService';
-import { Locale, LocaleService, LocalizationService, TranslatePipe} from 'angular2localization';
+import { Locale, LocaleService, LocalizationService } from 'angular2localization';
 
 @Component({
     selector: 'shopcomponent',
@@ -34,8 +27,7 @@ export class ShopComponent extends Locale implements OnInit {
     }
 
     ngOnInit() {
-        console.log("ngOnInit ShopComponent");
-        this.localization.updateTranslation(); // Need to update the translation.   
+        console.log("ngOnInit ShopComponent");  
         this.GetProducts();
 
         this.Currency = this._locale.getCurrentCurrency();
