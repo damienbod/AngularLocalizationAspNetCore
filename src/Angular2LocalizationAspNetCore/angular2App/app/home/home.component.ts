@@ -1,10 +1,4 @@
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
-
 
 @Component({
     selector: 'homecomponent',

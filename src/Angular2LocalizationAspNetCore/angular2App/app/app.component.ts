@@ -1,28 +1,19 @@
-﻿import { NgModule } from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { Component, OnInit} from '@angular/core';
-import { Router} from '@angular/router';
+﻿import { Component, OnInit} from '@angular/core';
 
 // Services.
-import { Locale, LocaleService, LocalizationService, TranslatePipe} from 'angular2localization';
-
-// Components.
+import { Locale, LocaleService, LocalizationService } from 'angular2localization';
 import { ProductService } from './services/ProductService';
 
 @Component({
     selector: 'my-app',
     template: require( './app.component.html'),
-    styles: [require('./app.component.scss')],
-    providers: [LocalizationService, LocaleService, ProductService]
+    styles: [require('./app.component.scss')]
 })
 
 
 export class AppComponent extends Locale {
 
     constructor(
-        private router: Router,
         public locale: LocaleService,
         public localization: LocalizationService,
         private _productService: ProductService
@@ -46,7 +37,6 @@ export class AppComponent extends Locale {
     public ChangeCulture(language: string, country: string, currency: string) {
         this.locale.setCurrentLocale(language, country);
         this.locale.setCurrentCurrency(currency);
-        this.localization.updateTranslation();
     }
 
     public ChangeCurrency(currency: string) {
@@ -54,7 +44,6 @@ export class AppComponent extends Locale {
     }
 
     private onLanguageCodeChangedDataRecieved(item) {
-        this.localization.updateTranslation();
         console.log("onLanguageCodeChangedDataRecieved App");
         console.log(item);
     }
