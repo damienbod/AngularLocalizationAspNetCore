@@ -8,7 +8,6 @@ import { Configuration } from './app.constants';
 import { routing } from './app.routes';
 import { HttpModule, JsonpModule } from '@angular/http';
 
-import { provideRouter, RouterConfig } from '@angular/router';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
@@ -25,7 +24,7 @@ import {
     LocalePercentPipe,
     LocaleCurrencyPipe
 } from 'angular2localization/angular2localization';
-// Directives.
+
 import { LocaleNumberValidator } from 'angular2localization/angular2localization';
 
 @NgModule({
