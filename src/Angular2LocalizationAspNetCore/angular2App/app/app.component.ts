@@ -3,12 +3,10 @@ import { CommonModule }   from '@angular/common';
 import { FormsModule }    from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { Component, OnInit} from '@angular/core';
-import { Router, ROUTER_DIRECTIVES} from '@angular/router';
+import { Router} from '@angular/router';
 
 // Services.
-import {Locale, LocaleService, LocalizationService} from 'angular2localization/angular2localization';
-// Pipes.
-import {TranslatePipe} from 'angular2localization/angular2localization';
+import { Locale, LocaleService, LocalizationService, TranslatePipe} from 'angular2localization';
 
 // Components.
 import { ProductService } from './services/ProductService';
@@ -17,9 +15,7 @@ import { ProductService } from './services/ProductService';
     selector: 'my-app',
     template: require( './app.component.html'),
     styles: [require('./app.component.scss')],
-    directives: [ROUTER_DIRECTIVES],
-    providers: [LocalizationService, LocaleService, ProductService],
-    pipes: [TranslatePipe]
+    providers: [LocalizationService, LocaleService, ProductService]
 })
 
 

@@ -3,14 +3,12 @@ import { FormsModule }    from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from '@angular/core';
-import { CORE_DIRECTIVES } from '@angular/common';
 import { Http } from '@angular/http';
 
 
 @Component({
     selector: 'homecomponent',
-    template: require('./home.component.html'),
-    directives: [CORE_DIRECTIVES]
+    template: require('./home.component.html')
 })
 
 export class HomeComponent implements OnInit {

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { ProductCreateEdit } from './ProductCreateEdit';
-import { LocaleService } from 'angular2localization/angular2localization';
+import { LocaleService } from 'angular2localization';
 
 @Injectable()
 export class ProductService {
@@ -46,8 +46,7 @@ export class ProductService {
         this.setHeaders();
         return this._http.post(this.actionUrlShopAdmin, item, {
             headers: this.headers
-        }).map((response: Response) => <ProductCreateEdit>response.json())
-        .catch(this.handleError);
+        }).map((response: Response) => <ProductCreateEdit>response.json());
     }
 
     private handleError(error: Response) {
