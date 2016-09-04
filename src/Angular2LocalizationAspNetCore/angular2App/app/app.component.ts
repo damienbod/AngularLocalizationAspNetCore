@@ -6,9 +6,7 @@ import { Component, OnInit} from '@angular/core';
 import { Router} from '@angular/router';
 
 // Services.
-import {Locale, LocaleService, LocalizationService} from 'angular2localization/angular2localization';
-// Pipes.
-import {TranslatePipe} from 'angular2localization/angular2localization';
+import { Locale, LocaleService, LocalizationService, TranslatePipe} from 'angular2localization';
 
 // Components.
 import { ProductService } from './services/ProductService';

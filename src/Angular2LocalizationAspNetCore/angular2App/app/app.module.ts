@@ -15,17 +15,8 @@ import { ShopAdminComponent } from './shop-admin/shop-admin.component';
 
 import { ProductService } from './services/ProductService';
 
-import { LocaleService, LocalizationService } from 'angular2localization/angular2localization';
-// Pipes.
-import {
-    TranslatePipe,
-    LocaleDatePipe,
-    LocaleDecimalPipe,
-    LocalePercentPipe,
-    LocaleCurrencyPipe
-} from 'angular2localization/angular2localization';
+import { LocaleModule, LocalizationModule } from 'angular2localization';
 
-import { LocaleNumberValidator } from 'angular2localization/angular2localization';
 
 @NgModule({
     imports: [
@@ -34,7 +25,9 @@ import { LocaleNumberValidator } from 'angular2localization/angular2localization
         FormsModule,
         routing,
         HttpModule,
-        JsonpModule
+        JsonpModule,
+        LocaleModule, // LocaleService is singleton.
+        LocalizationModule.forChild() // New instance of LocalizationService.
     ],
     declarations: [
         AppComponent,
@@ -44,8 +37,6 @@ import { LocaleNumberValidator } from 'angular2localization/angular2localization
     ],
     providers: [
         ProductService,
-        LocaleService,
-        LocalizationService,
         Configuration
     ],
     bootstrap:    [AppComponent],

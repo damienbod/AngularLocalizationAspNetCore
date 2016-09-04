@@ -11,6 +11,4 @@ import 'bootstrap/dist/js/bootstrap';
 import './css/bootstrap.css';
 import './css/bootstrap-theme.css';
 
-
-// angular2localization.
-import 'angular2localization/angular2localization';
+import 'angular2localization';

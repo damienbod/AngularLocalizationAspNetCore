@@ -8,13 +8,13 @@ webpackJsonp([0],{
 
 	"use strict";
 	var platform_browser_dynamic_1 = __webpack_require__(/*! @angular/platform-browser-dynamic */ 1);
-	var app_module_1 = __webpack_require__(/*! ./app/app.module */ 337);
+	var app_module_1 = __webpack_require__(/*! ./app/app.module */ 24);
 	platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
 
 /***/ },
 
-/***/ 337:
+/***/ 24:
 /*!***************************************!*\
   !*** ./angular2App/app/app.module.ts ***!
   \***************************************/
@@ -30,19 +30,19 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
-	var common_1 = __webpack_require__(/*! @angular/common */ 205);
-	var forms_1 = __webpack_require__(/*! @angular/forms */ 338);
-	var platform_browser_1 = __webpack_require__(/*! @angular/platform-browser */ 203);
-	var app_component_1 = __webpack_require__(/*! ./app.component */ 376);
-	var app_constants_1 = __webpack_require__(/*! ./app.constants */ 472);
-	var app_routes_1 = __webpack_require__(/*! ./app.routes */ 475);
-	var http_1 = __webpack_require__(/*! @angular/http */ 440);
-	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 476);
-	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 478);
-	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 480);
-	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 471);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
+	var common_1 = __webpack_require__(/*! @angular/common */ 23);
+	var forms_1 = __webpack_require__(/*! @angular/forms */ 25);
+	var platform_browser_1 = __webpack_require__(/*! @angular/platform-browser */ 22);
+	var app_component_1 = __webpack_require__(/*! ./app.component */ 29);
+	var app_constants_1 = __webpack_require__(/*! ./app.constants */ 62);
+	var app_routes_1 = __webpack_require__(/*! ./app.routes */ 65);
+	var http_1 = __webpack_require__(/*! @angular/http */ 59);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 66);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 68);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 70);
+	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 61);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 58);
 	var AppModule = (function () {
 	    function AppModule() {
 	    }
@@ -54,7 +54,9 @@ webpackJsonp([0],{
 	                forms_1.FormsModule,
 	                app_routes_1.routing,
 	                http_1.HttpModule,
-	                http_1.JsonpModule
+	                http_1.JsonpModule,
+	                angular2localization_1.LocaleModule,
+	                angular2localization_1.LocalizationModule.forChild()
 	            ],
 	            declarations: [
 	                app_component_1.AppComponent,
@@ -64,8 +66,6 @@ webpackJsonp([0],{
 	            ],
 	            providers: [
 	                ProductService_1.ProductService,
-	                angular2localization_1.LocaleService,
-	                angular2localization_1.LocalizationService,
 	                app_constants_1.Configuration
 	            ],
 	            bootstrap: [app_component_1.AppComponent],
@@ -79,7 +79,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 376:
+/***/ 29:
 /*!******************************************!*\
   !*** ./angular2App/app/app.component.ts ***!
   \******************************************/
@@ -100,11 +100,10 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
-	var router_1 = __webpack_require__(/*! @angular/router */ 377);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
-	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
-	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 471);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
+	var router_1 = __webpack_require__(/*! @angular/router */ 30);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 58);
+	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 61);
 	var AppComponent = (function (_super) {
 	    __extends(AppComponent, _super);
 	    function AppComponent(router, locale, localization, _productService) {
@@ -139,11 +138,9 @@ webpackJsonp([0],{
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'my-app',
-	            template: __webpack_require__(/*! ./app.component.html */ 473),
-	            styles: [__webpack_require__(/*! ./app.component.scss */ 474)],
-	            directives: [router_1.ROUTER_DIRECTIVES],
-	            providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService],
-	            pipes: [angular2localization_2.TranslatePipe]
+	            template: __webpack_require__(/*! ./app.component.html */ 63),
+	            styles: [__webpack_require__(/*! ./app.component.scss */ 64)],
+	            providers: [angular2localization_1.LocalizationService, angular2localization_1.LocaleService, ProductService_1.ProductService]
 	        }), 
 	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], AppComponent);
@@ -154,7 +151,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 471:
+/***/ 61:
 /*!****************************************************!*\
   !*** ./angular2App/app/services/ProductService.ts ***!
   \****************************************************/
@@ -170,12 +167,12 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
-	var http_1 = __webpack_require__(/*! @angular/http */ 440);
-	__webpack_require__(/*! rxjs/add/operator/map */ 380);
-	var Observable_1 = __webpack_require__(/*! rxjs/Observable */ 70);
-	var app_constants_1 = __webpack_require__(/*! ../app.constants */ 472);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
+	var http_1 = __webpack_require__(/*! @angular/http */ 59);
+	__webpack_require__(/*! rxjs/add/operator/map */ 60);
+	var Observable_1 = __webpack_require__(/*! rxjs/Observable */ 5);
+	var app_constants_1 = __webpack_require__(/*! ../app.constants */ 62);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 58);
 	var ProductService = (function () {
 	    function ProductService(_http, _configuration, _locale) {
 	        var _this = this;
@@ -197,8 +194,7 @@ webpackJsonp([0],{
 	            _this.setHeaders();
 	            return _this._http.post(_this.actionUrlShopAdmin, item, {
 	                headers: _this.headers
-	            }).map(function (response) { return response.json(); })
-	                .catch(_this.handleError);
+	            }).map(function (response) { return response.json(); });
 	        };
 	        this.actionUrl = _configuration.Server + "api/Shop/";
 	        this.actionUrlShopAdmin = _configuration.Server + "api/ShopAdmin/";
@@ -223,7 +219,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 472:
+/***/ 62:
 /*!******************************************!*\
   !*** ./angular2App/app/app.constants.ts ***!
   \******************************************/
@@ -239,7 +235,7 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
 	var Configuration = (function () {
 	    function Configuration() {
 	        this.Server = "http://localhost:5000/";
@@ -255,7 +251,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 473:
+/***/ 63:
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.html ***!
   \********************************************/
@@ -265,7 +261,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 474:
+/***/ 64:
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.scss ***!
   \********************************************/
@@ -275,17 +271,17 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 475:
+/***/ 65:
 /*!***************************************!*\
   !*** ./angular2App/app/app.routes.ts ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var router_1 = __webpack_require__(/*! @angular/router */ 377);
-	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 476);
-	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 478);
-	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 480);
+	var router_1 = __webpack_require__(/*! @angular/router */ 30);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 66);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 68);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 70);
 	var appRoutes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'home', component: home_component_1.HomeComponent },
@@ -297,7 +293,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 476:
+/***/ 66:
 /*!************************************************!*\
   !*** ./angular2App/app/home/home.component.ts ***!
   \************************************************/
@@ -313,8 +309,7 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
-	var common_1 = __webpack_require__(/*! @angular/common */ 205);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.message = "home.component";
@@ -325,8 +320,7 @@ webpackJsonp([0],{
 	    HomeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'homecomponent',
-	            template: __webpack_require__(/*! ./home.component.html */ 477),
-	            directives: [common_1.CORE_DIRECTIVES]
+	            template: __webpack_require__(/*! ./home.component.html */ 67)
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], HomeComponent);
@@ -337,7 +331,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 477:
+/***/ 67:
 /*!**************************************************!*\
   !*** ./angular2App/app/home/home.component.html ***!
   \**************************************************/
@@ -347,7 +341,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 478:
+/***/ 68:
 /*!************************************************!*\
   !*** ./angular2App/app/shop/shop.component.ts ***!
   \************************************************/
@@ -368,12 +362,9 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
-	var router_1 = __webpack_require__(/*! @angular/router */ 377);
-	var common_1 = __webpack_require__(/*! @angular/common */ 205);
-	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 471);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
-	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
+	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 61);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 58);
 	var ShopComponent = (function (_super) {
 	    __extends(ShopComponent, _super);
 	    function ShopComponent(_locale, localization, _productService) {
@@ -418,20 +409,18 @@ webpackJsonp([0],{
 	    ShopComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopcomponent',
-	            template: __webpack_require__(/*! ./shop.component.html */ 479),
-	            directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
-	            pipes: [angular2localization_1.TranslatePipe]
+	            template: __webpack_require__(/*! ./shop.component.html */ 69)
 	        }), 
-	        __metadata('design:paramtypes', [angular2localization_2.LocaleService, angular2localization_2.LocalizationService, ProductService_1.ProductService])
+	        __metadata('design:paramtypes', [angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], ShopComponent);
 	    return ShopComponent;
-	}(angular2localization_2.Locale));
+	}(angular2localization_1.Locale));
 	exports.ShopComponent = ShopComponent;
 
 
 /***/ },
 
-/***/ 479:
+/***/ 69:
 /*!**************************************************!*\
   !*** ./angular2App/app/shop/shop.component.html ***!
   \**************************************************/
@@ -441,7 +430,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 480:
+/***/ 70:
 /*!************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.ts ***!
   \************************************************************/
@@ -462,13 +451,11 @@ webpackJsonp([0],{
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(/*! @angular/core */ 11);
-	var common_1 = __webpack_require__(/*! @angular/common */ 205);
-	var router_1 = __webpack_require__(/*! @angular/router */ 377);
-	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 481);
-	var angular2localization_1 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
-	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 471);
-	var angular2localization_2 = __webpack_require__(/*! angular2localization/angular2localization */ 438);
+	var core_1 = __webpack_require__(/*! @angular/core */ 3);
+	var router_1 = __webpack_require__(/*! @angular/router */ 30);
+	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 71);
+	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 58);
+	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 61);
 	var ShopAdminComponent = (function (_super) {
 	    __extends(ShopAdminComponent, _super);
 	    function ShopAdminComponent(router, _localeService, localization, _productService) {
@@ -529,9 +516,7 @@ webpackJsonp([0],{
 	    ShopAdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopadmincomponent',
-	            template: __webpack_require__(/*! ./shop-admin.component.html */ 482),
-	            directives: [common_1.CORE_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
-	            pipes: [angular2localization_2.TranslatePipe]
+	            template: __webpack_require__(/*! ./shop-admin.component.html */ 72)
 	        }), 
 	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], ShopAdminComponent);
@@ -542,7 +527,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 481:
+/***/ 71:
 /*!*******************************************************!*\
   !*** ./angular2App/app/services/ProductCreateEdit.ts ***!
   \*******************************************************/
@@ -559,7 +544,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 482:
+/***/ 72:
 /*!**************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.html ***!
   \**************************************************************/

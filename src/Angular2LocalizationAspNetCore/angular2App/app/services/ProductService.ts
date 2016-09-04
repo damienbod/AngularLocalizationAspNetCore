@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { ProductCreateEdit } from './ProductCreateEdit';
-import { LocaleService } from 'angular2localization/angular2localization';
+import { LocaleService } from 'angular2localization';
 
 @Injectable()
 export class ProductService {

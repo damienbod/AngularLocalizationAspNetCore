@@ -20,7 +20,7 @@ var home_component_1 = require('./home/home.component');
 var shop_component_1 = require('./shop/shop.component');
 var shop_admin_component_1 = require('./shop-admin/shop-admin.component');
 var ProductService_1 = require('./services/ProductService');
-var angular2localization_1 = require('angular2localization/angular2localization');
+var angular2localization_1 = require('angular2localization');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -32,7 +32,9 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 app_routes_1.routing,
                 http_1.HttpModule,
-                http_1.JsonpModule
+                http_1.JsonpModule,
+                angular2localization_1.LocaleModule,
+                angular2localization_1.LocalizationModule.forChild()
             ],
             declarations: [
                 app_component_1.AppComponent,
@@ -42,8 +44,6 @@ var AppModule = (function () {
             ],
             providers: [
                 ProductService_1.ProductService,
-                angular2localization_1.LocaleService,
-                angular2localization_1.LocalizationService,
                 app_constants_1.Configuration
             ],
             bootstrap: [app_component_1.AppComponent],
