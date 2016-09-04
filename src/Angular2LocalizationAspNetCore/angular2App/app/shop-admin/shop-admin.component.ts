@@ -12,8 +12,7 @@ import { TranslatePipe } from 'angular2localization/angular2localization';
 
 @Component({
     selector: 'shopadmincomponent',
-    template: require('./shop-admin.component.html'),
-    pipes: [TranslatePipe]
+    template: require('./shop-admin.component.html')
 })
 
 export class ShopAdminComponent extends Locale implements OnInit  {

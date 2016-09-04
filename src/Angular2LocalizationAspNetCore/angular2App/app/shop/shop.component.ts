@@ -13,8 +13,7 @@ import { Locale, LocaleService, LocalizationService} from 'angular2localization/
 
 @Component({
     selector: 'shopcomponent',
-    template: require('./shop.component.html'),
-    pipes: [TranslatePipe]
+    template: require('./shop.component.html')
 })
 
 export class ShopComponent extends Locale implements OnInit {

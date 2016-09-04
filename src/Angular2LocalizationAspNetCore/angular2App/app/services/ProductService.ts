@@ -46,8 +46,7 @@ export class ProductService {
         this.setHeaders();
         return this._http.post(this.actionUrlShopAdmin, item, {
             headers: this.headers
-        }).map((response: Response) => <ProductCreateEdit>response.json())
-        .catch(this.handleError);
+        }).map((response: Response) => <ProductCreateEdit>response.json());
     }
 
     private handleError(error: Response) {

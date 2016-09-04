@@ -17,8 +17,7 @@ import { ProductService } from './services/ProductService';
     selector: 'my-app',
     template: require( './app.component.html'),
     styles: [require('./app.component.scss')],
-    providers: [LocalizationService, LocaleService, ProductService],
-    pipes: [TranslatePipe]
+    providers: [LocalizationService, LocaleService, ProductService]
 })
 
 
