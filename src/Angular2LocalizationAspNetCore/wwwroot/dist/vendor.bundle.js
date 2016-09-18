@@ -9,13 +9,13 @@ webpackJsonp([2],[
 	__webpack_require__(/*! @angular/platform-browser-dynamic */ 1);
 	__webpack_require__(/*! @angular/platform-browser */ 21);
 	__webpack_require__(/*! @angular/core */ 3);
-	__webpack_require__(/*! @angular/http */ 58);
-	__webpack_require__(/*! @angular/router */ 29);
+	__webpack_require__(/*! @angular/http */ 30);
+	__webpack_require__(/*! @angular/router */ 38);
 	__webpack_require__(/*! jquery/src/jquery */ 348);
 	__webpack_require__(/*! bootstrap/dist/js/bootstrap */ 440);
 	__webpack_require__(/*! ./css/bootstrap.css */ 441);
 	__webpack_require__(/*! ./css/bootstrap-theme.css */ 450);
-	__webpack_require__(/*! angular2localization */ 57);
+	__webpack_require__(/*! angular2localization */ 29);
 
 
 /***/ },
@@ -40277,6 +40277,4454 @@ webpackJsonp([2],[
 /***/ },
 /* 28 */,
 /* 29 */
+/*!********************************************************************!*\
+  !*** ./~/angular2localization/bundles/angular2localization.umd.js ***!
+  \********************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	(function (global, factory) {
+	     true ? factory(exports, __webpack_require__(/*! @angular/core */ 3), __webpack_require__(/*! @angular/http */ 30), __webpack_require__(/*! rxjs/Observable */ 5), __webpack_require__(/*! rxjs/add/operator/map */ 31), __webpack_require__(/*! @angular/common */ 22), __webpack_require__(/*! @angular/forms */ 24)) :
+	        typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/map', '@angular/common', '@angular/forms'], factory) :
+	            (factory((global.ng = global.ng || {}, global.ng.angular2localization = global.ng.angular2localization || {}), global.ng.core, global.ng.http, global.Rx, global.Rx, global.ng.common, global.ng.forms));
+	}(this, (function (exports, _angular_core, _angular_http, rxjs_Observable, rxjs_add_operator_map, _angular_common, _angular_forms) {
+	    'use strict';
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * LocaleService class.
+	     * Defines language, default locale & currency.
+	     *
+	     * Instantiate this class only once in the bootstrap component in order to access the data of location from anywhere in the application:
+	     *
+	     * FIRST SCENARIO - Dates & numbers.
+	     *
+	     * import {LocaleService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService) {
+	     *
+	     *         // Required: default language (ISO 639 two-letter or three-letter code) and country (ISO 3166 two-letter, uppercase code).
+	     *         this.locale.definePreferredLocale('en', 'US');
+	     *
+	     *         // Optional: default currency (ISO 4217 three-letter code).
+	     *         this.locale.definePreferredCurrency('USD');
+	     *
+	     *      }
+	     *
+	     * }
+	     *
+	     * SECOND SCENARIO - Messages.
+	     *
+	     * import {LocaleService, LocalizationService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService, public localization: LocalizationService) {
+	     *
+	     *         // Adds a new language (ISO 639 two-letter or three-letter code).
+	     *         this.locale.addLanguage('en');
+	     *         // Add a new language here.
+	     *
+	     *         // Required: default language and expiry (No days). If the expiry is omitted, the cookie becomes a session cookie.
+	     *         this.locale.definePreferredLanguage('en', 30);
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * THIRD SCENARIO - Messages, dates & numbers.
+	     *
+	     * import {LocaleService, LocalizationService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService, public localization: LocalizationService) {
+	     *
+	     *         // Adds a new language (ISO 639 two-letter or three-letter code).
+	     *         this.locale.addLanguage('en');
+	     *         // Add a new language here.
+	     *
+	     *         // Required: default language, country (ISO 3166 two-letter, uppercase code) and expiry (No days). If the expiry is omitted, the cookie becomes a session cookie.
+	     *         this.locale.definePreferredLocale('en', 'US', 30);
+	     *
+	     *         // Optional: default currency (ISO 4217 three-letter code).
+	     *         this.locale.definePreferredCurrency('USD');
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * Changing language.
+	     *
+	     * To change language at runtime, call the following method:
+	     *
+	     * this.locale.setCurrentLanguage(language);
+	     *
+	     * where 'language' is the two-letter or three-letter code of the new language (ISO 639).
+	     *
+	     *
+	     * Changing locale.
+	     *
+	     * To change locale at runtime, call the following method:
+	     *
+	     * this.locale.setCurrentLocale(language, country);
+	     *
+	     * where 'language' is the two-letter or three-letter code of the new language (ISO 639)
+	     * and 'country' is the two-letter, uppercase code of the new country (ISO 3166).
+	     *
+	     *
+	     * Changing currency.
+	     *
+	     * To change currency at runtime, call the following method:
+	     *
+	     * this.locale.setCurrentCurrency(currency);
+	     *
+	     * where 'currency' is the three-letter code of the new currency (ISO 4217).
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var LocaleService = (function () {
+	        function LocaleService() {
+	            /**
+	             * Output for event current language code changed.
+	             */
+	            this.languageCodeChanged = new _angular_core.EventEmitter();
+	            /**
+	             * Output for event current country code changed.
+	             */
+	            this.countryCodeChanged = new _angular_core.EventEmitter();
+	            /**
+	             * Output for event current currency code changed.
+	             */
+	            this.currencyCodeChanged = new _angular_core.EventEmitter();
+	            /**
+	             * Output for event script code changed.
+	             */
+	            this.scriptCodeChanged = new _angular_core.EventEmitter();
+	            /**
+	             * Output for event numbering system changed.
+	             */
+	            this.numberingSystemChanged = new _angular_core.EventEmitter();
+	            /**
+	             * Output for event calendar changed.
+	             */
+	            this.calendarChanged = new _angular_core.EventEmitter();
+	            /**
+	             * Enable/disable cookie.
+	             */
+	            this.enableCookie = false;
+	            /**
+	             * Enable/disable Local Storage.
+	             */
+	            this.enableLocalStorage = false;
+	            /**
+	             * The available language codes.
+	             */
+	            this.languageCodes = [];
+	            this.languageCode = "";
+	            this.countryCode = "";
+	            this.currencyCode = "";
+	            this.defaultLocale = "";
+	            this.scriptCode = "";
+	            this.numberingSystem = "";
+	            this.calendar = "";
+	            // Counts the reference to the service.
+	            LocaleService.referenceCounter++;
+	            // Enables the cookies for the first instance of the service (see issue #11).
+	            if (LocaleService.referenceCounter == 1) {
+	                this.enableCookie = true;
+	            }
+	        }
+	        /**
+	         * Adds a new language.
+	         *
+	         * @param language The two-letter or three-letter code of the new language
+	         */
+	        LocaleService.prototype.addLanguage = function (language) {
+	            this.languageCodes.push(language);
+	        };
+	        /**
+	         * Sets Local Storage as default.
+	         */
+	        LocaleService.prototype.useLocalStorage = function () {
+	            this.enableLocalStorage = true;
+	        };
+	        /**
+	         * Defines the preferred language.
+	         * Selects the current language of the browser if it has been added, else the default language.
+	         *
+	         * @param defaultLanguage The two-letter or three-letter code of the default language
+	         * @param expiry Number of days on the expiry. If omitted, the cookie becomes a session cookie
+	         */
+	        LocaleService.prototype.definePreferredLanguage = function (defaultLanguage, expiry) {
+	            this.expiry = expiry;
+	            // Parses the storage "locale" to extract the codes.
+	            this.parseStorage("locale");
+	            if (this.languageCode == "") {
+	                this.languageCode = defaultLanguage;
+	                // Verifies browser language.
+	                var browserLanguage = "";
+	                if (typeof navigator.language != "undefined") {
+	                    browserLanguage = navigator.language;
+	                }
+	                // Tries to gets the current language of browser.
+	                if (browserLanguage != "") {
+	                    var index = browserLanguage.indexOf("-");
+	                    if (index != -1) {
+	                        browserLanguage = browserLanguage.substring(0, index); // Gets the language code.
+	                    }
+	                    if (this.languageCodes.length > 0 && this.languageCodes.indexOf(browserLanguage) != -1) {
+	                        this.languageCode = browserLanguage;
+	                    }
+	                }
+	            }
+	            // Sets the default locale.
+	            this.setDefaultLocale();
+	        };
+	        /**
+	         * Defines preferred languange and country, regardless of the browser language.
+	         *
+	         * @param defaultLanguage The two-letter or three-letter code of the default language
+	         * @param defaultCountry The two-letter, uppercase code of the default country
+	         * @param expiry Number of days on the expiry. If omitted, the cookie becomes a session cookie
+	         * @param script The optional four-letter script code
+	         * @param numberingSystem The optional numbering system to be used
+	         * @param calendar The optional calendar to be used
+	         */
+	        LocaleService.prototype.definePreferredLocale = function (defaultLanguage, defaultCountry, expiry, script, numberingSystem, calendar) {
+	            if (script === void 0) {
+	                script = "";
+	            }
+	            if (numberingSystem === void 0) {
+	                numberingSystem = "";
+	            }
+	            if (calendar === void 0) {
+	                calendar = "";
+	            }
+	            this.expiry = expiry;
+	            // Parses the storage "locale" to extract the codes & the extension.
+	            this.parseStorage("locale");
+	            if (this.languageCode == "" || this.countryCode == "") {
+	                this.languageCode = defaultLanguage;
+	                this.countryCode = defaultCountry;
+	                this.scriptCode = script;
+	                this.numberingSystem = numberingSystem;
+	                this.calendar = calendar;
+	            }
+	            // Sets the default locale.
+	            this.setDefaultLocale();
+	        };
+	        /**
+	         * Defines the preferred currency.
+	         *
+	         * @param defaultCurrency The three-letter code of the default currency
+	         */
+	        LocaleService.prototype.definePreferredCurrency = function (defaultCurrency) {
+	            // Parses the storage "currency" to extract the code.
+	            this.parseStorage("currency");
+	            if (this.currencyCode == "") {
+	                this.currencyCode = defaultCurrency;
+	            }
+	            // Sets the storage "currency".
+	            this.setStorage("currency", this.currencyCode);
+	        };
+	        /**
+	         * Gets the current language.
+	         *
+	         * @return The two-letter or three-letter code of the current language
+	         */
+	        LocaleService.prototype.getCurrentLanguage = function () {
+	            return this.languageCode;
+	        };
+	        /**
+	         * Gets the current country.
+	         *
+	         * @return The two-letter, uppercase code of the current country
+	         */
+	        LocaleService.prototype.getCurrentCountry = function () {
+	            return this.countryCode;
+	        };
+	        /**
+	         * Gets the current currency.
+	         *
+	         * @return The three-letter code of the current currency
+	         */
+	        LocaleService.prototype.getCurrentCurrency = function () {
+	            return this.currencyCode;
+	        };
+	        /**
+	         * Gets the script.
+	         *
+	         * @return The four-letter code of the script
+	         */
+	        LocaleService.prototype.getScript = function () {
+	            return this.scriptCode;
+	        };
+	        /**
+	         * Gets the numbering system.
+	         *
+	         * @return The numbering system
+	         */
+	        LocaleService.prototype.getNumberingSystem = function () {
+	            return this.numberingSystem;
+	        };
+	        /**
+	         * Gets the calendar.
+	         *
+	         * @return The calendar
+	         */
+	        LocaleService.prototype.getCalendar = function () {
+	            return this.calendar;
+	        };
+	        /**
+	         * Sets the current language.
+	         *
+	         * @param language The two-letter or three-letter code of the new language
+	         */
+	        LocaleService.prototype.setCurrentLanguage = function (language) {
+	            // Checks if the language has changed.
+	            if (this.languageCode != language) {
+	                // Assigns the value & sends an event.
+	                this.languageCode = language;
+	                this.languageCodeChanged.emit(language);
+	                // Sets the default locale.
+	                this.setDefaultLocale();
+	            }
+	        };
+	        /**
+	         * Sets the current locale.
+	         *
+	         * @param language The two-letter or three-letter code of the new language
+	         * @param country The two-letter, uppercase code of the new country
+	         * @param script The optional four-letter script code
+	         * @param numberingSystem The optional numbering system to be used
+	         * @param calendar The optional calendar to be used
+	         */
+	        LocaleService.prototype.setCurrentLocale = function (language, country, script, numberingSystem, calendar) {
+	            if (script === void 0) {
+	                script = "";
+	            }
+	            if (numberingSystem === void 0) {
+	                numberingSystem = "";
+	            }
+	            if (calendar === void 0) {
+	                calendar = "";
+	            }
+	            // Checks if language, country, script or extension have changed.
+	            if (this.languageCode != language || this.countryCode != country || this.scriptCode != script || this.numberingSystem != numberingSystem || this.calendar != calendar) {
+	                // Assigns the values & sends the events.
+	                if (this.languageCode != language) {
+	                    this.languageCode = language;
+	                    this.languageCodeChanged.emit(language);
+	                }
+	                if (this.countryCode != country) {
+	                    this.countryCode = country;
+	                    this.countryCodeChanged.emit(country);
+	                }
+	                if (this.scriptCode != script) {
+	                    this.scriptCode = script;
+	                    this.scriptCodeChanged.emit(script);
+	                }
+	                if (this.numberingSystem != numberingSystem) {
+	                    this.numberingSystem = numberingSystem;
+	                    this.numberingSystemChanged.emit(numberingSystem);
+	                }
+	                if (this.calendar != calendar) {
+	                    this.calendar = calendar;
+	                    this.calendarChanged.emit(calendar);
+	                }
+	                // Sets the default locale.
+	                this.setDefaultLocale();
+	            }
+	        };
+	        /**
+	         * Sets the current currency.
+	         *
+	         * @param currency The three-letter code of the new currency
+	         */
+	        LocaleService.prototype.setCurrentCurrency = function (currency) {
+	            // Checks if the currency has changed.
+	            if (this.currencyCode != currency) {
+	                // Assigns the value & sends an event.
+	                this.currencyCode = currency;
+	                this.currencyCodeChanged.emit(currency);
+	                // Sets the storage "currency".
+	                this.setStorage("currency", this.currencyCode);
+	            }
+	        };
+	        /**
+	         * Gets the default locale.
+	         *
+	         * @return The default locale
+	         */
+	        LocaleService.prototype.getDefaultLocale = function () {
+	            return this.defaultLocale;
+	        };
+	        /**
+	         * Builds the default locale.
+	         */
+	        LocaleService.prototype.setDefaultLocale = function () {
+	            this.defaultLocale = this.languageCode;
+	            this.defaultLocale += this.scriptCode != "" ? "-" + this.scriptCode : "";
+	            this.defaultLocale += this.countryCode != "" ? "-" + this.countryCode : "";
+	            // Adds the 'u' (Unicode) extension.
+	            this.defaultLocale += this.numberingSystem != "" || this.calendar != "" ? "-u" : "";
+	            // Adds numbering system.
+	            this.defaultLocale += this.numberingSystem != "" ? "-nu-" + this.numberingSystem : "";
+	            // Adds calendar.
+	            this.defaultLocale += this.calendar != "" ? "-ca-" + this.calendar : "";
+	            // Sets the storage "locale".
+	            this.setStorage("locale", this.defaultLocale);
+	        };
+	        /**
+	         * Parses the storage to extract the codes & the extension.
+	         *
+	         * @param name The name of the storage
+	         */
+	        LocaleService.prototype.parseStorage = function (name) {
+	            var storage = "";
+	            if (this.enableLocalStorage && this.verifyLocalStorage) {
+	                storage = this.getLocalStorage(name);
+	            }
+	            else if (this.enableCookie && this.languageCodes.length > 0 && this.verifyCookie) {
+	                storage = this.getCookie(name);
+	            }
+	            if (storage != "") {
+	                // Looks for the 'u' (Unicode) extension.
+	                var index = storage.search("-u");
+	                if (index != -1) {
+	                    var extensions = storage.substring(index + 1).split("-");
+	                    switch (extensions.length) {
+	                        case 3:
+	                            if (extensions[1] == "nu") {
+	                                this.numberingSystem = extensions[2];
+	                            }
+	                            else if (extensions[1] == "ca") {
+	                                this.calendar = extensions[2];
+	                            }
+	                            break;
+	                        case 5:
+	                            this.numberingSystem = extensions[2];
+	                            this.calendar = extensions[4];
+	                            break;
+	                    }
+	                    // Extracts the codes.
+	                    storage = storage.substring(0, index);
+	                }
+	                // Splits the string to each hyphen.
+	                var codes = storage.split("-");
+	                switch (codes.length) {
+	                    case 1:
+	                        if (name == "locale") {
+	                            this.languageCode = codes[0];
+	                        }
+	                        else if (name == "currency") {
+	                            this.currencyCode = codes[0];
+	                        }
+	                        break;
+	                    case 2:
+	                        this.languageCode = codes[0];
+	                        this.countryCode = codes[1];
+	                        break;
+	                    case 3:
+	                        this.languageCode = codes[0];
+	                        this.scriptCode = codes[1];
+	                        this.countryCode = codes[2];
+	                        break;
+	                }
+	            }
+	        };
+	        /**
+	         * Checks browser support for Local Storage.
+	         *
+	         * @return True if Web Storage is supported.
+	         */
+	        LocaleService.prototype.verifyLocalStorage = function () {
+	            return typeof Storage != "undefined";
+	        };
+	        /**
+	         * Checks browser support for cookies.
+	         *
+	         * @return True if cookies are supported.
+	         */
+	        LocaleService.prototype.verifyCookie = function () {
+	            return typeof navigator.cookieEnabled != "undefined" && navigator.cookieEnabled;
+	        };
+	        /**
+	         * Sets the storage.
+	         *
+	         * @param name The name of the storage
+	         * @param value The value of the storage
+	         */
+	        LocaleService.prototype.setStorage = function (name, value) {
+	            if (this.enableLocalStorage && this.verifyLocalStorage) {
+	                this.setLocalStorage(name, value);
+	            }
+	            else if (this.enableCookie == true && this.languageCodes.length > 0 && this.verifyCookie) {
+	                this.setCookie(name, value, this.expiry);
+	            }
+	        };
+	        /**
+	         * Saves Local Storage value.
+	         *
+	         * @param name The name of the storage
+	         * @param value The value of the storage
+	         */
+	        LocaleService.prototype.setLocalStorage = function (name, value) {
+	            localStorage.setItem(name, value);
+	        };
+	        /**
+	         * Saves Local Storage value.
+	         *
+	         * @param name The name of the storage
+	         * @return The value of the storage
+	         */
+	        LocaleService.prototype.getLocalStorage = function (name) {
+	            // If the storage is not found, returns an empty string.
+	            return localStorage.getItem(name) != null ? localStorage.getItem(name) : "";
+	        };
+	        /**
+	         * Sets the cookie.
+	         *
+	         * @param name The name of the cookie
+	         * @param value The value of the cookie
+	         * @param days Number of days on the expiry
+	         */
+	        LocaleService.prototype.setCookie = function (name, value, days) {
+	            if (days != null) {
+	                // Adds the expiry date (in UTC time).
+	                var expirationDate = new Date();
+	                expirationDate.setTime(expirationDate.getTime() + (days * 24 * 60 * 60 * 1000));
+	                var expires = "; expires=" + expirationDate.toUTCString();
+	            }
+	            else {
+	                // By default, the cookie is deleted when the browser is closed.
+	                var expires = "";
+	            }
+	            // Creates the cookie.
+	            document.cookie = name + "=" + value + expires + "; path=/";
+	        };
+	        /**
+	         * Gets the cookie.
+	         *
+	         * @param name The name of the cookie
+	         * @return The value of the cookie
+	         */
+	        LocaleService.prototype.getCookie = function (name) {
+	            // The text to search for.
+	            name += "=";
+	            // Splits document.cookie on semicolons into an array.
+	            var ca = document.cookie.split(";");
+	            // Loops through the ca array, and reads out each value.
+	            for (var i = 0; i < ca.length; i++) {
+	                var c = ca[i];
+	                while (c.charAt(0) == " ") {
+	                    c = c.substring(1);
+	                }
+	                // If the cookie is found, returns the value of the cookie.
+	                if (c.indexOf(name) == 0) {
+	                    return c.substring(name.length, c.length);
+	                }
+	            }
+	            // If the cookie is not found, returns an empty string.
+	            return "";
+	        };
+	        /**
+	         * Reference counter for the service.
+	         */
+	        LocaleService.referenceCounter = 0;
+	        LocaleService.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        LocaleService.ctorParameters = [];
+	        LocaleService.propDecorators = {
+	            'languageCodeChanged': [{ type: _angular_core.Output },],
+	            'countryCodeChanged': [{ type: _angular_core.Output },],
+	            'currencyCodeChanged': [{ type: _angular_core.Output },],
+	            'scriptCodeChanged': [{ type: _angular_core.Output },],
+	            'numberingSystemChanged': [{ type: _angular_core.Output },],
+	            'calendarChanged': [{ type: _angular_core.Output },],
+	        };
+	        return LocaleService;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * IntlSupport class.
+	     * Provides the methods to check if Intl is supported.
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var IntlSupport = (function () {
+	        function IntlSupport() {
+	        }
+	        /**
+	         * Support for dates.
+	         *
+	         * @param defaultLocale The default locale
+	         * @return True if the browser supports locales for dates, otherwise false.
+	         */
+	        IntlSupport.DateTimeFormat = function (defaultLocale) {
+	            // Checking for support.
+	            try {
+	                new Intl.DateTimeFormat(defaultLocale).format(new Date());
+	            }
+	            catch (e) {
+	                return false;
+	            }
+	            return true;
+	        };
+	        /**
+	         * Support for numbers.
+	         *
+	         * @param defaultLocale The default locale
+	         * @return True if the browser supports locales for numbers, otherwise false.
+	         */
+	        IntlSupport.NumberFormat = function (defaultLocale) {
+	            // Checking for support.
+	            try {
+	                var n = 0;
+	                new Intl.NumberFormat(defaultLocale).format(n);
+	            }
+	            catch (e) {
+	                return false;
+	            }
+	            return true;
+	        };
+	        /**
+	         * Support for Collator.
+	         *
+	         * @param lang The current language code
+	         * @return True if the browser supports Collator, otherwise false.
+	         */
+	        IntlSupport.Collator = function (lang) {
+	            // Checking for support.
+	            try {
+	                var value1 = "a";
+	                var value2 = "b";
+	                new Intl.Collator(lang).compare(value1, value2);
+	            }
+	            catch (e) {
+	                return false;
+	            }
+	            return true;
+	        };
+	        return IntlSupport;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * LocalizationService class.
+	     * Gets the translation data and performs operations.
+	     *
+	     * Direct loading.
+	     *
+	     * To initialize LocalizationService for the direct loading, add the following code in the body of constructor of the bootstrap component:
+	     *
+	     * var translationEN = {
+	     *      TITLE: 'Angular 2 Localization',
+	     *      CHANGE_LANGUAGE: 'Change language',
+	     *      ...
+	     * }
+	     * // Add a new translation here.
+	     *
+	     * // Required: adds a new translation with the given language code.
+	     * this.localization.addTranslation('en', translationEN);
+	     * // Add a new translation with the given language code here.
+	     * this.localization.updateTranslation(); // Need to update the translation.
+	     *
+	     * Asynchronous loading.
+	     *
+	     * To initialize LocalizationService for the asynchronous loading, add the following code in the body of constructor of the bootstrap component:
+	     *
+	     * // Required: initializes the translation provider with the given path prefix.
+	     * this.localization.translationProvider('./resources/locale-');
+	     * this.localization.updateTranslation(); // Need to update the translation.
+	     *
+	     * and create the json files of the translations such as 'locale-en.json':
+	     *
+	     * {
+	     *     "TITLE": "Angular 2 Localization",
+	     *     "CHANGE_LANGUAGE": "Change language",
+	     *     ...
+	     * }
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var LocalizationService = (function () {
+	        function LocalizationService(http, locale) {
+	            var _this = this;
+	            this.http = http;
+	            this.locale = locale;
+	            /**
+	             * Output for event translation changed.
+	             */
+	            this.translationChanged = new _angular_core.EventEmitter();
+	            /**
+	             * The translation data: {languageCode: {key: value}}.
+	             */
+	            this.translationData = {};
+	            this.prefix = "";
+	            this.loadingMode = exports.LoadingMode.Unknown;
+	            this.languageCode = "";
+	            // Initializes the loading mode.
+	            this.loadingMode = exports.LoadingMode.Direct;
+	            // Initializes the service state.
+	            this.serviceState = exports.ServiceState.isWaiting;
+	            // When the language changes, subscribes to the event & call updateTranslation method.
+	            this.locale.languageCodeChanged.subscribe(
+	            // Generator or next.
+	            function (language) { return _this.updateTranslation(language); });
+	        }
+	        /**
+	         * Direct loading: adds new translation data.
+	         *
+	         * @param language The two-letter code of the language for the translation data
+	         * @param translation The new translation data
+	         */
+	        LocalizationService.prototype.addTranslation = function (language, translation) {
+	            // Adds the new translation data.
+	            this.translationData[language] = translation;
+	        };
+	        /**
+	         * Asynchronous loading: defines the translation provider.
+	         *
+	         * @param prefix The path prefix of the json files
+	         * @param dataFormat Data format: default value is 'json'.
+	         * @param webAPI True if the asynchronous loading uses a Web API to get the data.
+	         */
+	        LocalizationService.prototype.translationProvider = function (prefix, dataFormat, webAPI) {
+	            if (dataFormat === void 0) {
+	                dataFormat = "json";
+	            }
+	            if (webAPI === void 0) {
+	                webAPI = false;
+	            }
+	            this.prefix = prefix;
+	            this.dataFormat = dataFormat;
+	            this.webAPI = webAPI;
+	            // Updates the loading mode.
+	            this.loadingMode = exports.LoadingMode.Async;
+	        };
+	        /**
+	         * Translates a key.
+	         *
+	         * @param key The key to be translated
+	         * @params args Parameters
+	         * @return The value of translation
+	         */
+	        LocalizationService.prototype.translate = function (key, args) {
+	            var value;
+	            if (this.translationData[this.languageCode] != null) {
+	                // Gets the translation by language code. 
+	                var translation = this.translationData[this.languageCode];
+	                // Checks for composed key (see issue #21).
+	                var keys = key.split(".");
+	                do {
+	                    key = keys.shift();
+	                    if (translation[key] != null && (typeof translation[key] == "object")) {
+	                        translation = translation[key];
+	                    }
+	                } while (keys.length > 0);
+	                // Gets the value of translation by key.   
+	                value = translation[key];
+	            }
+	            // If the value of translation is not present, the same key is returned (see issue #1).
+	            if (value == null || value == "") {
+	                return key;
+	            }
+	            else if (args != null) {
+	                var TEMPLATE_REGEXP = /{{\s?([^{}\s]*)\s?}}/g;
+	                return value.replace(TEMPLATE_REGEXP, function (substring, parsedKey) {
+	                    var response = args[parsedKey];
+	                    return (typeof response !== 'undefined') ? response : substring;
+	                });
+	            }
+	            return value;
+	        };
+	        /**
+	         * Translates a key.
+	         *
+	         * @param key The key to be translated
+	         * @params args Parameters
+	         * @return An observable of the value of translation
+	         */
+	        LocalizationService.prototype.translateAsync = function (key, args) {
+	            var _this = this;
+	            return new rxjs_Observable.Observable(function (observer) {
+	                // Gets the value of translation for the key.
+	                var value = _this.translate(key, args);
+	                observer.next(value);
+	                observer.complete();
+	            });
+	        };
+	        /**
+	         * Updates the language code and loads the translation data for the asynchronous loading.
+	         *
+	         * @param language The two-letter or three-letter code of the language
+	         */
+	        LocalizationService.prototype.updateTranslation = function (language) {
+	            if (language === void 0) {
+	                language = this.locale.getCurrentLanguage();
+	            }
+	            if (language != "" && language != this.languageCode) {
+	                // Asynchronous loading.
+	                if (this.loadingMode == exports.LoadingMode.Async) {
+	                    // Updates the translation data.  
+	                    this.getTranslation(language);
+	                }
+	                else {
+	                    // Updates the language code of the service.
+	                    this.languageCode = language;
+	                    // Updates the service state.
+	                    this.serviceState = exports.ServiceState.isReady;
+	                }
+	            }
+	        };
+	        /* Intl.Collator */
+	        /**
+	         * Compares two keys by the value of translation & the current language code.
+	         *
+	         * @param key1, key2 The keys of the values to compare
+	         * @param extension
+	         * @param options
+	         * @return A negative value if the value of translation of key1 comes before the value of translation of key2; a positive value if key1 comes after key2; 0 if they are considered equal or Intl.Collator is not supported
+	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
+	         */
+	        LocalizationService.prototype.compare = function (key1, key2, extension, options) {
+	            // Checks for support for Intl.
+	            if (IntlSupport.Collator(this.languageCode) == false) {
+	                return 0;
+	            }
+	            // Gets the value of translation for the keys.
+	            var value1 = this.translate(key1);
+	            var value2 = this.translate(key2);
+	            var locale = this.addExtension(this.languageCode, extension);
+	            return new Intl.Collator(locale).compare(value1, value2);
+	        };
+	        /**
+	         * Sorts an array of objects or an array of arrays by the current language code.
+	         *
+	         * @param list The array to be sorted
+	         * @param keyName The column that contains the keys of the values to be ordered
+	         * @param order 'asc' or 'desc'. The default value is 'asc'.
+	         * @param extension
+	         * @param options
+	         * @return The same sorted list or the same list if Intl.Collator is not supported
+	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
+	         */
+	        LocalizationService.prototype.sort = function (list, keyName, order, extension, options) {
+	            if (list == null || keyName == null || IntlSupport.Collator(this.languageCode) == false) {
+	                return list;
+	            }
+	            // Gets the value of translation for the keys.
+	            for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
+	                var item = list_1[_i];
+	                // Gets the value of translation for the key.
+	                var value = this.translate(item[keyName]);
+	                // Adds a new column for translated values.
+	                var translated = keyName.concat("Translated");
+	                // Updates the value in the list.
+	                item[translated] = value;
+	            }
+	            var locale = this.addExtension(this.languageCode, extension);
+	            // Intl.Collator.
+	            var collator = new Intl.Collator(locale, options); // It can be passed directly to Array.prototype.sort.
+	            list.sort(function (a, b) {
+	                return collator.compare(a[translated], b[translated]);
+	            });
+	            // Removes the column of translated values.
+	            var index = list.indexOf(translated, 0);
+	            if (index > -1) {
+	                list.splice(index, 1);
+	            }
+	            // Descending order.
+	            if (order != null && order == "desc") {
+	                list.reverse();
+	            }
+	            return list;
+	        };
+	        /**
+	         * Sorts an array of objects or an array of arrays by the current language code.
+	         *
+	         * @param list The array to be sorted
+	         * @param keyName The column that contains the keys of the values to be ordered
+	         * @param order 'asc' or 'desc'. The default value is 'asc'.
+	         * @param extension
+	         * @param options
+	         * @return An observable of the sorted list or of the same list if Intl.Collator is not supported
+	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
+	         */
+	        LocalizationService.prototype.sortAsync = function (list, keyName, order, extension, options) {
+	            var _this = this;
+	            return new rxjs_Observable.Observable(function (observer) {
+	                // Gets the sorted list.
+	                observer.next(_this.sort(list, keyName, order, extension, options));
+	                observer.complete();
+	            });
+	        };
+	        /**
+	         * Matches a string into an array of objects or an array of arrays.
+	         *
+	         * @param s The string to search
+	         * @param list The array to look for
+	         * @param keyNames An array that contains the columns to look for
+	         * @param options
+	         * @return A filtered list or the same list if Intl.Collator is not supported
+	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
+	         */
+	        LocalizationService.prototype.search = function (s, list, keyNames, options) {
+	            var _this = this;
+	            if (options === void 0) {
+	                options = { usage: 'search' };
+	            }
+	            if (list == null || keyNames == null || s == "" || IntlSupport.Collator(this.languageCode) == false) {
+	                return list;
+	            }
+	            // Gets the value of translation for the each column.
+	            var translated = new Array();
+	            var i = 0;
+	            for (var i = 0; i < keyNames.length; i++) {
+	                // Adds a new column for translated values.
+	                translated.push(keyNames[i].concat("Translated"));
+	                for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
+	                    var item = list_2[_i];
+	                    // Gets the values of translation for the column.
+	                    var value = this.translate(item[keyNames[i]]);
+	                    // Updates the value in the list.
+	                    item[translated[i]] = value;
+	                }
+	            }
+	            var locale = this.languageCode;
+	            // Intl.Collator.
+	            var collator = new Intl.Collator(locale, options);
+	            var matches = list.filter(function (v) {
+	                var found = false;
+	                for (var i = 0; i < translated.length; i++) {
+	                    // Calls matching algorithm.
+	                    if (_this.match(v[translated[i]], s, collator)) {
+	                        found = true;
+	                        break;
+	                    }
+	                }
+	                return found;
+	            });
+	            // Removes the columns of translated values.
+	            for (var i = 0; i < translated.length; i++) {
+	                var index = matches.indexOf(translated[i], 0);
+	                if (index > -1) {
+	                    matches.splice(index, 1);
+	                }
+	            }
+	            return matches;
+	        };
+	        /**
+	         * Matches a string into an array of objects or an array of arrays.
+	         *
+	         * @param s The string to search
+	         * @param list The array to look for
+	         * @param keyNames An array that contains the columns to look for
+	         * @param options
+	         * @return An observable for each element of the filtered list or the same list if Intl.Collator is not supported
+	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
+	         */
+	        LocalizationService.prototype.searchAsync = function (s, list, keyNames, options) {
+	            var _this = this;
+	            if (options === void 0) {
+	                options = { usage: 'search' };
+	            }
+	            if (list == null) {
+	                return null;
+	            }
+	            if (keyNames == null || s == "" || IntlSupport.Collator(this.languageCode) == false) {
+	                return new rxjs_Observable.Observable(function (observer) {
+	                    for (var _i = 0, list_3 = list; _i < list_3.length; _i++) {
+	                        var item = list_3[_i];
+	                        observer.next(item);
+	                    }
+	                    observer.complete();
+	                });
+	            }
+	            return new rxjs_Observable.Observable(function (observer) {
+	                // Gets the value of translation for the each column.
+	                var translated = new Array();
+	                var i = 0;
+	                for (var i = 0; i < keyNames.length; i++) {
+	                    // Adds a new column for translated values.
+	                    translated.push(keyNames[i].concat("Translated"));
+	                    for (var _i = 0, list_4 = list; _i < list_4.length; _i++) {
+	                        var item = list_4[_i];
+	                        // Gets the values of translation for the column.
+	                        var value = _this.translate(item[keyNames[i]]);
+	                        // Updates the value in the list.
+	                        item[translated[i]] = value;
+	                    }
+	                }
+	                var locale = _this.languageCode;
+	                // Intl.Collator.
+	                var collator = new Intl.Collator(locale, options);
+	                for (var _a = 0, list_5 = list; _a < list_5.length; _a++) {
+	                    var v = list_5[_a];
+	                    for (var i = 0; i < translated.length; i++) {
+	                        // Calls matching algorithm.
+	                        if (_this.match(v[translated[i]], s, collator)) {
+	                            observer.next(v);
+	                            break;
+	                        }
+	                    }
+	                }
+	                // Removes the columns of translated values.
+	                for (var i = 0; i < translated.length; i++) {
+	                    var index = list.indexOf(translated[i], 0);
+	                    if (index > -1) {
+	                        list.splice(index, 1);
+	                    }
+	                }
+	                observer.complete();
+	            });
+	        };
+	        LocalizationService.prototype.addExtension = function (locale, extension) {
+	            // Adds extension.
+	            if (extension != null && extension != "") {
+	                locale = locale + "-" + extension;
+	            }
+	            return locale;
+	        };
+	        /**
+	         * Matching algorithm.
+	         *
+	         * @param v The value
+	         * @param s The string to search
+	         * return True if match, otherwise false
+	         */
+	        LocalizationService.prototype.match = function (v, s, collator) {
+	            var vLength = v.length;
+	            var sLength = s.length;
+	            if (sLength > vLength) {
+	                return false;
+	            } // The search string is longer than value.
+	            if (sLength == vLength) {
+	                return collator.compare(v, s) === 0;
+	            }
+	            // Tries to search the substring.
+	            var found = false;
+	            for (var i = 0; i < vLength - (sLength - 1); i++) {
+	                var str = v.substr(i, sLength);
+	                if (collator.compare(str, s) === 0) {
+	                    found = true;
+	                    break;
+	                }
+	            }
+	            return found;
+	        };
+	        /**
+	         * Asynchronous loading: gets translation data.
+	         *
+	         * @param language The two-letter or three-letter code of the language
+	         */
+	        LocalizationService.prototype.getTranslation = function (language) {
+	            var _this = this;
+	            // Initializes the translation data & the service state.
+	            this.translationData = {};
+	            this.serviceState = exports.ServiceState.isLoading;
+	            // Builds the URL.
+	            var url = this.prefix;
+	            if (this.webAPI == true) {
+	                // Absolute URL for Web API.
+	                url += language;
+	            }
+	            else {
+	                // Relative server path for 'json' files.
+	                url += language + "." + this.dataFormat;
+	            }
+	            // Angular 2 Http module.
+	            this.http.get(url)
+	                .map(function (res) { return res.json(); })
+	                .subscribe(
+	            // Observer or next.
+	            function (res) {
+	                // Assigns the observer to the translation data.
+	                _this.translationData[language] = res;
+	            }, 
+	            // Error.
+	            function (error) {
+	                console.error("Localization service:", error);
+	            }, 
+	            // Complete.
+	            function () {
+	                // Updates the service state.
+	                _this.serviceState = exports.ServiceState.isReady;
+	                // Updates the language code of the service.
+	                _this.languageCode = language;
+	                // Sends an event.
+	                _this.translationChanged.emit(null);
+	            });
+	        };
+	        LocalizationService.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        LocalizationService.ctorParameters = [
+	            { type: _angular_http.Http, },
+	            { type: LocaleService, },
+	        ];
+	        LocalizationService.propDecorators = {
+	            'translationChanged': [{ type: _angular_core.Output },],
+	        };
+	        return LocalizationService;
+	    }());
+	    /**
+	     * Defines the service state.
+	     */
+	    (function (ServiceState) {
+	        /**
+	         * The translation data has been loaded.
+	         */
+	        ServiceState[ServiceState["isReady"] = 0] = "isReady";
+	        /**
+	         * The service is loading the data.
+	         */
+	        ServiceState[ServiceState["isLoading"] = 1] = "isLoading";
+	        /**
+	         * The service is waiting for the data.
+	         */
+	        ServiceState[ServiceState["isWaiting"] = 2] = "isWaiting";
+	    })(exports.ServiceState || (exports.ServiceState = {}));
+	    /**
+	     * Defines the loading mode.
+	     */
+	    (function (LoadingMode) {
+	        /**
+	         * Initial state.
+	         */
+	        LoadingMode[LoadingMode["Unknown"] = 0] = "Unknown";
+	        /**
+	         * Direct loading.
+	         */
+	        LoadingMode[LoadingMode["Direct"] = 1] = "Direct";
+	        /**
+	         * Asynchronous loading.
+	         */
+	        LoadingMode[LoadingMode["Async"] = 2] = "Async";
+	    })(exports.LoadingMode || (exports.LoadingMode = {}));
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * Locale superclass.
+	     * Provides the methods for localization.
+	     *
+	     * Extend this class in components to provide the necessary methods for localization:
+	     *
+	     * export class AppComponent extends Locale {
+	     *
+	     *     constructor(public locale: LocaleService, public localization: LocalizationService) {
+	     *         super(locale, localization);
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var Locale = (function () {
+	        function Locale(locale, localization) {
+	            this.locale = locale;
+	            this.localization = localization;
+	        }
+	        Object.defineProperty(Locale.prototype, "lang", {
+	            // Gets the language code for the LocalizationService.
+	            get: function () {
+	                return this.localization.languageCode;
+	            },
+	            enumerable: true,
+	            configurable: true
+	        });
+	        Object.defineProperty(Locale.prototype, "defaultLocale", {
+	            // Gets the default locale.
+	            get: function () {
+	                return this.locale.getDefaultLocale();
+	            },
+	            enumerable: true,
+	            configurable: true
+	        });
+	        Object.defineProperty(Locale.prototype, "currency", {
+	            // Gets the current currency.
+	            get: function () {
+	                return this.locale.getCurrentCurrency();
+	            },
+	            enumerable: true,
+	            configurable: true
+	        });
+	        return Locale;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    var __extends = (undefined && undefined.__extends) || function (d, b) {
+	        for (var p in b)
+	            if (b.hasOwnProperty(p))
+	                d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    function isPresent(obj) {
+	        return obj !== undefined && obj !== null;
+	    }
+	    /**
+	     * LocaleParser class.
+	     * Parses a string and returns a number by default locale.
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var LocaleParser = (function () {
+	        function LocaleParser() {
+	        }
+	        /**
+	         * Builds the regular expression for a number by default locale.
+	         *
+	         * @param defaultLocale The default locale
+	         * @param digits The digit info: {minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}
+	         * @return A RegExp object
+	         */
+	        LocaleParser.NumberRegExpFactory = function (defaultLocale, digits) {
+	            // Gets digits.
+	            var minInt = 1;
+	            var minFraction = 0;
+	            var maxFraction = 3;
+	            var NUMBER_FORMAT_REGEXP = /^(\d+)?\.((\d+)(\-(\d+))?)?$/;
+	            if (isPresent(digits)) {
+	                var parts = digits.match(NUMBER_FORMAT_REGEXP);
+	                if (parts === null) {
+	                    throw new Error(digits + " is not a valid digit info for number");
+	                }
+	                if (isPresent(parts[1])) {
+	                    minInt = NumberWrapper.parseIntAutoRadix(parts[1]);
+	                }
+	                if (isPresent(parts[3])) {
+	                    minFraction = NumberWrapper.parseIntAutoRadix(parts[3]);
+	                }
+	                if (isPresent(parts[5])) {
+	                    maxFraction = NumberWrapper.parseIntAutoRadix(parts[5]);
+	                }
+	            }
+	            // Converts numbers & signs to Unicode by default locale.
+	            var codes = new DecimalCode(defaultLocale);
+	            var minusSign = codes.minusSign;
+	            var zero = codes.numbers[0];
+	            var decimalSeparator = codes.decimalSeparator;
+	            var nine = codes.numbers[9];
+	            // Pattern for 1.2-2 digits: /^-?[0-9]{1,}\.[0-9]{2,2}$/
+	            // Unicode pattern = "^\u002d?[\u0030-\u0039]{1,}\\u002e[\u0030-\u0039]{2,2}$";
+	            var pattern;
+	            if (minFraction > 0 && maxFraction > 0) {
+	                pattern = "^"
+	                    + minusSign
+	                    + "?[" + zero + "-" + nine
+	                    + "]{" + minInt + ",}\\"
+	                    + decimalSeparator
+	                    + "[" + zero + "-" + nine
+	                    + "]{" + minFraction + "," + maxFraction
+	                    + "}$";
+	            }
+	            else if (minFraction == 0 && maxFraction > 0) {
+	                // Decimal separator is optional.
+	                pattern = "^"
+	                    + minusSign
+	                    + "?[" + zero + "-" + nine
+	                    + "]{" + minInt + ",}\\"
+	                    + decimalSeparator
+	                    + "?[" + zero + "-" + nine
+	                    + "]{" + minFraction + "," + maxFraction
+	                    + "}$";
+	            }
+	            else {
+	                // Integer number.
+	                pattern = "^"
+	                    + minusSign
+	                    + "?[" + zero + "-" + nine
+	                    + "]{" + minInt + ",}$";
+	            }
+	            pattern = codes.UnicodeToChar(pattern);
+	            var regExp = new RegExp(pattern);
+	            return regExp;
+	            // Wonderful, it works!
+	        };
+	        /**
+	         * Parses a string and returns a number by default locale.
+	         *
+	         * @param s The string to be parsed
+	         * @param defaultLocale The default locale
+	         * @return A number. If the string cannot be converted to a number, returns NaN
+	         */
+	        LocaleParser.Number = function (s, defaultLocale) {
+	            if (s == "" || defaultLocale == "" || defaultLocale == null) {
+	                return null;
+	            }
+	            var codes = new DecimalCode(defaultLocale);
+	            return codes.parse(s);
+	        };
+	        return LocaleParser;
+	    }());
+	    /**
+	     * NumberCode abstract superclass.
+	     *
+	     * Converts numbers to Unicode by locales.
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var NumberCode = (function () {
+	        function NumberCode(defaultLocale) {
+	            this.defaultLocale = defaultLocale;
+	            /**
+	             * Unicode for numbers from 0 to 9.
+	             */
+	            this.numbers = [];
+	            for (var i = 0; i <= 9; i++) {
+	                this.numbers.push(this.Unicode(i.toString()));
+	            }
+	            // Checks for support for Intl.
+	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
+	                // Updates Unicode for numbers by default locale.
+	                for (var i = 0; i <= 9; i++) {
+	                    var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
+	                    this.numbers[i] = this.Unicode(localeDecimal.transform(i, '1.0-0'));
+	                }
+	            }
+	        }
+	        NumberCode.prototype.Unicode = function (c) {
+	            return "\\u" + this.HexEncode(c.charCodeAt(0));
+	        };
+	        NumberCode.prototype.HexEncode = function (value) {
+	            var hex = value.toString(16).toUpperCase();
+	            // With padding.
+	            hex = "0000".substr(0, 4 - hex.length) + hex;
+	            return hex;
+	        };
+	        return NumberCode;
+	    }());
+	    /**
+	     * DecimalCode class.
+	     *
+	     * Converts numbers & signs to Unicode by locales.
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var DecimalCode = (function (_super) {
+	        __extends(DecimalCode, _super);
+	        function DecimalCode(defaultLocale) {
+	            _super.call(this, defaultLocale);
+	            this.defaultLocale = defaultLocale;
+	            this.minusSign = this.Unicode("-");
+	            this.decimalSeparator = this.Unicode(".");
+	            // Checks for support for Intl.
+	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
+	                // Updates Unicode for signs by default locale.
+	                var value = -0.9; // Reference value.
+	                var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
+	                var localeValue = localeDecimal.transform(value, '1.1-1');
+	                // Checks Unicode character 'RIGHT-TO-LEFT MARK' (U+200F).
+	                var index;
+	                if (this.Unicode(localeValue.charAt(0)) != "\\u200F") {
+	                    // Left to right.
+	                    index = 0;
+	                }
+	                else {
+	                    // Right to left.
+	                    index = 1;
+	                }
+	                this.minusSign = this.Unicode(localeValue.charAt(index));
+	                this.decimalSeparator = this.Unicode(localeValue.charAt(index + 2));
+	            }
+	        }
+	        DecimalCode.prototype.parse = function (s) {
+	            // Splits the String object into an array of characters.
+	            var characters = s.split("");
+	            // Builds the value.
+	            var value = "";
+	            for (var _i = 0, characters_1 = characters; _i < characters_1.length; _i++) {
+	                var char = characters_1[_i];
+	                var charCode = this.Unicode(char);
+	                // Tries to look for the char code in numbers and signs.
+	                var index = this.numbers.indexOf(charCode);
+	                if (index != -1) {
+	                    value += index;
+	                }
+	                else if (charCode == this.minusSign) {
+	                    value += "-";
+	                }
+	                else if (charCode == this.decimalSeparator) {
+	                    value += ".";
+	                }
+	                else {
+	                    return NaN;
+	                }
+	            }
+	            return parseFloat(value);
+	        };
+	        DecimalCode.prototype.UnicodeToChar = function (pattern) {
+	            return pattern.replace(/\\u[\dA-F]{4}/gi, function (match) {
+	                return String.fromCharCode(parseInt(match.replace(/\\u/g, ""), 16));
+	            });
+	        };
+	        return DecimalCode;
+	    }(NumberCode));
+	    var NumberWrapper = (function () {
+	        function NumberWrapper() {
+	        }
+	        NumberWrapper.parseIntAutoRadix = function (text) {
+	            var result = parseInt(text, null);
+	            if (isNaN(result)) {
+	                throw new Error('Invalid integer literal when parsing ' + text);
+	            }
+	            return result;
+	        };
+	        NumberWrapper.parseInt = function (text, radix) {
+	            if (radix == 10) {
+	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
+	                    return parseInt(text, radix);
+	                }
+	            }
+	            else if (radix == 16) {
+	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
+	                    return parseInt(text, radix);
+	                }
+	            }
+	            else {
+	                var result = parseInt(text, radix);
+	                if (!isNaN(result)) {
+	                    return result;
+	                }
+	            }
+	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
+	        };
+	        return NumberWrapper;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * 'translate' pipe function.
+	     */
+	    /**
+	     * TranslatePipe class.
+	     * Translates messages.
+	     *
+	     * Getting the message translation:
+	     *
+	     * expression | translate:lang
+	     *
+	     * where 'expression' is a string key that indicates the message to translate and 'lang' is the language code for the LocalizationService.
+	     *
+	     * For example, to get the translation, add in the template:
+	     *
+	     * {{ 'TITLE' | translate:lang }}
+	     *
+	     * and include in the component:
+	     *
+	     * import {LocalizationService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public localization: LocalizationService) {
+	     *         ...
+	     *     }
+	     *
+	     *     // Gets the language code for the LocalizationService.
+	     *     get lang(): string {
+	     *
+	     *         return this.localization.languageCode;
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * With Angular 2 I18nSelectPipe that displays the string that matches the current value:
+	     *
+	     * {{ expression | i18nSelect:mapping | translate:lang }}
+	     *
+	     * With Angular 2 I18nPluralPipe that pluralizes the value properly:
+	     *
+	     * {{ expression | i18nPlural:mapping | translate:lang }}
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var TranslatePipe = (function () {
+	        function TranslatePipe(localization, locale) {
+	            this.localization = localization;
+	            this.locale = locale;
+	        }
+	        /**
+	         * TranslatePipe transform method.
+	         *
+	         * @param key The key to be translated
+	         * @param lang The current language code for the LocalizationService
+	         * @param args Optional parameters
+	         * @return The value of translation
+	         */
+	        TranslatePipe.prototype.transform = function (key, lang) {
+	            var args = [];
+	            for (var _i = 2; _i < arguments.length; _i++) {
+	                args[_i - 2] = arguments[_i];
+	            }
+	            // Checks the service state.
+	            if (this.localization.serviceState == exports.ServiceState.isReady) {
+	                var REGEXP = /^\d+\b/;
+	                var keyStr = key;
+	                // i18n plural.
+	                if (REGEXP.exec(key) != null) {
+	                    // Tries to extract the number.
+	                    var keyNum = parseFloat(key);
+	                    // Tries to extract the string. 
+	                    keyStr = key.replace(REGEXP, "");
+	                    keyStr = keyStr.trim();
+	                    // Checks the number & support for Intl.
+	                    if (!isNaN(keyNum) && IntlSupport.NumberFormat(this.locale.getDefaultLocale()) == true) {
+	                        var localeDecimal = new _angular_common.DecimalPipe(this.locale.getDefaultLocale());
+	                        // Localizes the number.
+	                        key = key.replace(/^\d+/, localeDecimal.transform(keyNum, '1.0-3'));
+	                    }
+	                }
+	                // Gets the value of translation for the key string.
+	                var value = this.localization.translate(keyStr, args[0]);
+	                return key.replace(keyStr, value);
+	            }
+	            return key;
+	        };
+	        TranslatePipe.decorators = [
+	            { type: _angular_core.Pipe, args: [{
+	                        name: 'translate',
+	                        pure: true
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        TranslatePipe.ctorParameters = [
+	            { type: LocalizationService, },
+	            { type: LocaleService, },
+	        ];
+	        return TranslatePipe;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * 'localedate' pipe function.
+	     */
+	    /**
+	     * LocaleDatePipe class.
+	     * Localizes dates.
+	     *
+	     * Getting the local date:
+	     *
+	     * expression | localedate[:defaultLocale[:format]]
+	     *
+	     * where 'expression' is a date object or a number (milliseconds since UTC epoch) and 'format' indicates which date/time components to include.
+	     *
+	     * For example, to get the local date, add in the template:
+	     *
+	     * {{ today | localedate:defaultLocale:'fullDate' }}
+	     *
+	     * and include in the component:
+	     *
+	     * import {LocaleService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService) {
+	     *         ...
+	     *     }
+	     *
+	     *     // Gets the default locale.
+	     *     get defaultLocale(): string {
+	     *
+	     *         return this.locale.getDefaultLocale();
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * @author Roberto Simonetti
+	     * @see Angular 2 DatePipe for further information
+	     */
+	    var LocaleDatePipe = (function () {
+	        function LocaleDatePipe() {
+	        }
+	        /**
+	         * LocaleDatePipe transform method.
+	         *
+	         * @param value The date to be localized
+	         * @param defaultLocale The default locale
+	         * @param pattern The format of the date
+	         * @return The locale date
+	         */
+	        LocaleDatePipe.prototype.transform = function (value, defaultLocale, pattern) {
+	            if (pattern === void 0) {
+	                pattern = 'mediumDate';
+	            }
+	            // Checks for support for Intl.
+	            if (IntlSupport.DateTimeFormat(defaultLocale) == true) {
+	                var localeDate = new _angular_common.DatePipe(defaultLocale);
+	                return localeDate.transform(value, pattern);
+	            }
+	            // Returns the date without localization.
+	            return value;
+	        };
+	        LocaleDatePipe.decorators = [
+	            { type: _angular_core.Pipe, args: [{
+	                        name: 'localeDate',
+	                        pure: true
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocaleDatePipe.ctorParameters = [];
+	        return LocaleDatePipe;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * 'localeDecimal' pipe function.
+	     */
+	    /**
+	     * LocaleDecimalPipe class.
+	     * Localizes decimal numbers.
+	     *
+	     * Getting the local decimal:
+	     *
+	     * expression | localeDecimal[:defaultLocale:[digitInfo]]
+	     *
+	     * where 'expression' is a number and 'digitInfo' has the following format:
+	     *
+	     * {minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}
+	     *
+	     * For example, to get the local decimal, add in the template:
+	     *
+	     * {{ pi | localeDecimal:defaultLocale:'1.5-5' }}
+	     *
+	     * and include in the component:
+	     *
+	     * import {LocaleService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService) {
+	     *         ...
+	     *     }
+	     *
+	     *     // Gets the default locale.
+	     *     get defaultLocale(): string {
+	     *
+	     *         return this.locale.getDefaultLocale();
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * @author Roberto Simonetti
+	     * @see Angular 2 DecimalPipe for further information
+	     */
+	    var LocaleDecimalPipe = (function () {
+	        function LocaleDecimalPipe() {
+	        }
+	        /**
+	         * LocaleDecimalPipe transform method.
+	         *
+	         * @param value The number to be localized
+	         * @param defaultLocale The default locale
+	         * @param digits The format of the number
+	         * @return The locale decimal
+	         */
+	        LocaleDecimalPipe.prototype.transform = function (value, defaultLocale, digits) {
+	            if (digits === void 0) {
+	                digits = null;
+	            }
+	            // Checks for support for Intl.
+	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
+	                var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
+	                return localeDecimal.transform(value, digits);
+	            }
+	            // Returns the number without localization.
+	            return value;
+	        };
+	        LocaleDecimalPipe.decorators = [
+	            { type: _angular_core.Pipe, args: [{
+	                        name: 'localeDecimal',
+	                        pure: true
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocaleDecimalPipe.ctorParameters = [];
+	        return LocaleDecimalPipe;
+	    }());
+	    /**
+	     * 'localePercent' pipe function.
+	     */
+	    /**
+	     * LocalePercentPipe class.
+	     * Localizes percent numbers.
+	     *
+	     * Getting the local percentage:
+	     *
+	     * expression | localePercent[:defaultLocale:[digitInfo]]
+	     *
+	     * For example, to get the local percentage, add in the template:
+	     *
+	     * {{ a | localePercent:defaultLocale:'1.1-1' }}
+	     *
+	     * and include in the component:
+	     *
+	     * import {LocaleService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService) {
+	     *         ...
+	     *     }
+	     *
+	     *     // Gets the default locale.
+	     *     get defaultLocale(): string {
+	     *
+	     *         return this.locale.getDefaultLocale();
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * @author Roberto Simonetti
+	     * @see Angular 2 PercentPipe for further information
+	     */
+	    var LocalePercentPipe = (function () {
+	        function LocalePercentPipe() {
+	        }
+	        /**
+	         * LocalePercentPipe transform method.
+	         *
+	         * @param value The number to be localized
+	         * @param defaultLocale The default locale
+	         * @param digits The format of the number
+	         * @return The locale percent
+	         */
+	        LocalePercentPipe.prototype.transform = function (value, defaultLocale, digits) {
+	            if (digits === void 0) {
+	                digits = null;
+	            }
+	            // Checks for support for Intl.
+	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
+	                var localePercent = new _angular_common.PercentPipe(defaultLocale);
+	                return localePercent.transform(value, digits);
+	            }
+	            // Returns the number without localization.
+	            return value;
+	        };
+	        LocalePercentPipe.decorators = [
+	            { type: _angular_core.Pipe, args: [{
+	                        name: 'localePercent',
+	                        pure: true
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocalePercentPipe.ctorParameters = [];
+	        return LocalePercentPipe;
+	    }());
+	    /**
+	     * 'localeCurrency' pipe function.
+	     */
+	    /**
+	     * LocaleCurrencyPipe class.
+	     * Localizes currencies.
+	     *
+	     * Getting the local currency:
+	     *
+	     * expression | localeCurrency[:defaultLocale[:currency[:symbolDisplay[:digitInfo]]]]
+	     *
+	     * where 'symbolDisplay' is a boolean indicating whether to use the currency symbol (e.g. $) or the currency code (e.g. USD) in the output.
+	     *
+	     * For example, to get the local currency, add in the template:
+	     *
+	     * {{ b | localeCurrency:defaultLocale:currency:true:'1.2-2' }}
+	     *
+	     * and include in the component:
+	     *
+	     * import {LocaleService} from 'angular2localization';
+	     * ...
+	     * export class AppComponent {
+	     *
+	     *     constructor(public locale: LocaleService) {
+	     *         ...
+	     *     }
+	     *
+	     *     // Gets the default locale.
+	     *     get defaultLocale(): string {
+	     *
+	     *         return this.locale.getDefaultLocale();
+	     *
+	     *     }
+	     *
+	     *     // Gets the current currency.
+	     *     get currency(): string {
+	     *
+	     *         return this.locale.getCurrentCurrency();
+	     *
+	     *     }
+	     *
+	     * }
+	     *
+	     * @author Roberto Simonetti
+	     * @see Angular 2 CurrencyPipe for further information
+	     */
+	    var LocaleCurrencyPipe = (function () {
+	        function LocaleCurrencyPipe() {
+	        }
+	        /**
+	         * LocaleCurrencyPipe transform method.
+	         *
+	         * @param value The number to be localized
+	         * @param defaultLocale The default locale
+	         * @param currency The current currency
+	         * @param symbolDisplay Indicates whether to use the currency symbol
+	         * @param digits The format of the number
+	         * @return The locale currency
+	         */
+	        LocaleCurrencyPipe.prototype.transform = function (value, defaultLocale, currency, symbolDisplay, digits) {
+	            if (symbolDisplay === void 0) {
+	                symbolDisplay = false;
+	            }
+	            if (digits === void 0) {
+	                digits = null;
+	            }
+	            // Checks for support for Intl.
+	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
+	                var localeCurrency = new _angular_common.CurrencyPipe(defaultLocale);
+	                return localeCurrency.transform(value, currency, symbolDisplay, digits);
+	            }
+	            // Returns the number without localization & currency.
+	            return value + " " + currency;
+	        };
+	        LocaleCurrencyPipe.decorators = [
+	            { type: _angular_core.Pipe, args: [{
+	                        name: 'localeCurrency',
+	                        pure: true
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocaleCurrencyPipe.ctorParameters = [];
+	        return LocaleCurrencyPipe;
+	    }());
+	    /**
+	     * ANGULAR 2 LOCALIZATION
+	     * An Angular 2 library to translate messages, dates and numbers.
+	     * Written by Roberto Simonetti.
+	     * MIT license.
+	     * https://github.com/robisim74/angular2localization
+	     */
+	    /**
+	     * Function that takes a Control and returns either null when it’s valid, or and error object if it’s not.
+	     *
+	     * @param locale The reference to LocaleService
+	     * @param digits The format of the number
+	     * @param MIN_VALUE The minimum value for the number
+	     * @param MAX_VALUE The maximum value for the number
+	     * @return An error object: 'format', 'minValue' or 'maxValue'; null in case the value is valid
+	     */
+	    function validateLocaleNumber(locale, digits, MIN_VALUE, MAX_VALUE) {
+	        if (MIN_VALUE === void 0) {
+	            MIN_VALUE = Number.MIN_VALUE;
+	        }
+	        if (MAX_VALUE === void 0) {
+	            MAX_VALUE = Number.MAX_VALUE;
+	        }
+	        var defaultLocale;
+	        var NUMBER_REGEXP;
+	        return function (c) {
+	            // Checks if the default locale has changed. 
+	            if (defaultLocale != locale.getDefaultLocale()) {
+	                NUMBER_REGEXP = LocaleParser.NumberRegExpFactory(locale.getDefaultLocale(), digits);
+	                defaultLocale = locale.getDefaultLocale();
+	            }
+	            // Checks the format.
+	            if (NUMBER_REGEXP.test(c.value)) {
+	                var parsedValue;
+	                parsedValue = LocaleParser.Number(c.value, locale.getDefaultLocale());
+	                if (parsedValue < MIN_VALUE) {
+	                    return { minValue: false };
+	                }
+	                else if (parsedValue > MAX_VALUE) {
+	                    return { maxValue: false };
+	                }
+	                return null; // The number is valid.
+	            }
+	            else {
+	                return { format: false };
+	            }
+	        };
+	    }
+	    /**
+	     * LocaleNumberValidator class.
+	     * Validates a number by default locale.
+	     *
+	     * @author Roberto Simonetti
+	     */
+	    var LocaleNumberValidator = (function () {
+	        function LocaleNumberValidator(locale) {
+	            this.locale = locale;
+	            this.MIN_VALUE = Number.MIN_VALUE;
+	            this.MAX_VALUE = Number.MAX_VALUE;
+	        }
+	        Object.defineProperty(LocaleNumberValidator.prototype, "minValue", {
+	            set: function (value) {
+	                this.MIN_VALUE = value || this.MIN_VALUE;
+	            },
+	            enumerable: true,
+	            configurable: true
+	        });
+	        Object.defineProperty(LocaleNumberValidator.prototype, "maxValue", {
+	            set: function (value) {
+	                this.MAX_VALUE = value || this.MAX_VALUE;
+	            },
+	            enumerable: true,
+	            configurable: true
+	        });
+	        LocaleNumberValidator.prototype.ngOnInit = function () {
+	            this.validator = validateLocaleNumber(this.locale, this.digits, this.MIN_VALUE, this.MAX_VALUE);
+	        };
+	        LocaleNumberValidator.prototype.validate = function (c) {
+	            return this.validator(c);
+	        };
+	        LocaleNumberValidator.decorators = [
+	            { type: _angular_core.Directive, args: [{
+	                        selector: '[validateLocaleNumber][ngModel],[validateLocaleNumber][formControl]',
+	                        providers: [
+	                            { provide: _angular_forms.NG_VALIDATORS, useExisting: _angular_core.forwardRef(function () { return LocaleNumberValidator; }), multi: true }
+	                        ]
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocaleNumberValidator.ctorParameters = [
+	            { type: LocaleService, },
+	        ];
+	        LocaleNumberValidator.propDecorators = {
+	            'digits': [{ type: _angular_core.Input, args: ['validateLocaleNumber',] },],
+	            'minValue': [{ type: _angular_core.Input },],
+	            'maxValue': [{ type: _angular_core.Input },],
+	        };
+	        return LocaleNumberValidator;
+	    }());
+	    // Exports services, pipes & directives.
+	    var LocaleModule = (function () {
+	        function LocaleModule() {
+	        }
+	        LocaleModule.forRoot = function () {
+	            return {
+	                ngModule: LocaleModule,
+	                providers: [LocaleService]
+	            };
+	        };
+	        LocaleModule.forChild = function () {
+	            return {
+	                ngModule: LocaleModule,
+	                providers: [LocaleService]
+	            };
+	        };
+	        LocaleModule.decorators = [
+	            { type: _angular_core.NgModule, args: [{
+	                        declarations: [
+	                            LocaleDatePipe,
+	                            LocaleDecimalPipe,
+	                            LocalePercentPipe,
+	                            LocaleCurrencyPipe,
+	                            LocaleNumberValidator
+	                        ],
+	                        exports: [
+	                            LocaleDatePipe,
+	                            LocaleDecimalPipe,
+	                            LocalePercentPipe,
+	                            LocaleCurrencyPipe,
+	                            LocaleNumberValidator
+	                        ]
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocaleModule.ctorParameters = [];
+	        return LocaleModule;
+	    }());
+	    var LocalizationModule = (function () {
+	        function LocalizationModule() {
+	        }
+	        LocalizationModule.forRoot = function () {
+	            return {
+	                ngModule: LocalizationModule,
+	                providers: [LocalizationService]
+	            };
+	        };
+	        LocalizationModule.forChild = function () {
+	            return {
+	                ngModule: LocalizationModule,
+	                providers: [LocalizationService]
+	            };
+	        };
+	        LocalizationModule.decorators = [
+	            { type: _angular_core.NgModule, args: [{
+	                        declarations: [
+	                            TranslatePipe
+	                        ],
+	                        exports: [
+	                            TranslatePipe
+	                        ]
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        LocalizationModule.ctorParameters = [];
+	        return LocalizationModule;
+	    }());
+	    exports.LocaleModule = LocaleModule;
+	    exports.LocalizationModule = LocalizationModule;
+	    exports.LocalizationService = LocalizationService;
+	    exports.LocaleService = LocaleService;
+	    exports.Locale = Locale;
+	    exports.IntlSupport = IntlSupport;
+	    exports.LocaleParser = LocaleParser;
+	    exports.NumberCode = NumberCode;
+	    exports.TranslatePipe = TranslatePipe;
+	    exports.LocaleDatePipe = LocaleDatePipe;
+	    exports.LocaleDecimalPipe = LocaleDecimalPipe;
+	    exports.LocalePercentPipe = LocalePercentPipe;
+	    exports.LocaleCurrencyPipe = LocaleCurrencyPipe;
+	    exports.LocaleNumberValidator = LocaleNumberValidator;
+	    exports.validateLocaleNumber = validateLocaleNumber;
+	    Object.defineProperty(exports, '__esModule', { value: true });
+	})));
+
+
+/***/ },
+/* 30 */
+/*!*********************************************!*\
+  !*** ./~/@angular/http/bundles/http.umd.js ***!
+  \*********************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * @license Angular v2.0.0
+	 * (c) 2010-2016 Google, Inc. https://angular.io/
+	 * License: MIT
+	 */
+	(function (global, factory) {
+	     true ? factory(exports, __webpack_require__(/*! @angular/core */ 3), __webpack_require__(/*! rxjs/Observable */ 5), __webpack_require__(/*! @angular/platform-browser */ 21)) :
+	    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/Observable', '@angular/platform-browser'], factory) :
+	    (factory((global.ng = global.ng || {}, global.ng.http = global.ng.http || {}),global.ng.core,global.Rx,global.ng.platformBrowser));
+	}(this, function (exports,_angular_core,rxjs_Observable,_angular_platformBrowser) { 'use strict';
+	
+	    /**
+	     * A backend for http that uses the `XMLHttpRequest` browser API.
+	     *
+	     * Take care not to evaluate this in non-browser contexts.
+	     *
+	     * @experimental
+	     */
+	    var BrowserXhr = (function () {
+	        function BrowserXhr() {
+	        }
+	        BrowserXhr.prototype.build = function () { return (new XMLHttpRequest()); };
+	        BrowserXhr.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        BrowserXhr.ctorParameters = [];
+	        return BrowserXhr;
+	    }());
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var globalScope;
+	    if (typeof window === 'undefined') {
+	        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
+	            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
+	            globalScope = self;
+	        }
+	        else {
+	            globalScope = global;
+	        }
+	    }
+	    else {
+	        globalScope = window;
+	    }
+	    // Need to declare a new variable for global here since TypeScript
+	    // exports the original value of the symbol.
+	    var global$1 = globalScope;
+	    // TODO: remove calls to assert in production environment
+	    // Note: Can't just export this and import in in other files
+	    // as `assert` is a reserved keyword in Dart
+	    global$1.assert = function assert(condition) {
+	        // TODO: to be fixed properly via #2830, noop for now
+	    };
+	    function isPresent(obj) {
+	        return obj !== undefined && obj !== null;
+	    }
+	    function isBlank(obj) {
+	        return obj === undefined || obj === null;
+	    }
+	    function isString(obj) {
+	        return typeof obj === 'string';
+	    }
+	    function isArray(obj) {
+	        return Array.isArray(obj);
+	    }
+	    var StringWrapper = (function () {
+	        function StringWrapper() {
+	        }
+	        StringWrapper.fromCharCode = function (code) { return String.fromCharCode(code); };
+	        StringWrapper.charCodeAt = function (s, index) { return s.charCodeAt(index); };
+	        StringWrapper.split = function (s, regExp) { return s.split(regExp); };
+	        StringWrapper.equals = function (s, s2) { return s === s2; };
+	        StringWrapper.stripLeft = function (s, charVal) {
+	            if (s && s.length) {
+	                var pos = 0;
+	                for (var i = 0; i < s.length; i++) {
+	                    if (s[i] != charVal)
+	                        break;
+	                    pos++;
+	                }
+	                s = s.substring(pos);
+	            }
+	            return s;
+	        };
+	        StringWrapper.stripRight = function (s, charVal) {
+	            if (s && s.length) {
+	                var pos = s.length;
+	                for (var i = s.length - 1; i >= 0; i--) {
+	                    if (s[i] != charVal)
+	                        break;
+	                    pos--;
+	                }
+	                s = s.substring(0, pos);
+	            }
+	            return s;
+	        };
+	        StringWrapper.replace = function (s, from, replace) {
+	            return s.replace(from, replace);
+	        };
+	        StringWrapper.replaceAll = function (s, from, replace) {
+	            return s.replace(from, replace);
+	        };
+	        StringWrapper.slice = function (s, from, to) {
+	            if (from === void 0) { from = 0; }
+	            if (to === void 0) { to = null; }
+	            return s.slice(from, to === null ? undefined : to);
+	        };
+	        StringWrapper.replaceAllMapped = function (s, from, cb) {
+	            return s.replace(from, function () {
+	                var matches = [];
+	                for (var _i = 0; _i < arguments.length; _i++) {
+	                    matches[_i - 0] = arguments[_i];
+	                }
+	                // Remove offset & string from the result array
+	                matches.splice(-2, 2);
+	                // The callback receives match, p1, ..., pn
+	                return cb(matches);
+	            });
+	        };
+	        StringWrapper.contains = function (s, substr) { return s.indexOf(substr) != -1; };
+	        StringWrapper.compare = function (a, b) {
+	            if (a < b) {
+	                return -1;
+	            }
+	            else if (a > b) {
+	                return 1;
+	            }
+	            else {
+	                return 0;
+	            }
+	        };
+	        return StringWrapper;
+	    }());
+	    var NumberWrapper = (function () {
+	        function NumberWrapper() {
+	        }
+	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
+	        NumberWrapper.equal = function (a, b) { return a === b; };
+	        NumberWrapper.parseIntAutoRadix = function (text) {
+	            var result = parseInt(text);
+	            if (isNaN(result)) {
+	                throw new Error('Invalid integer literal when parsing ' + text);
+	            }
+	            return result;
+	        };
+	        NumberWrapper.parseInt = function (text, radix) {
+	            if (radix == 10) {
+	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
+	                    return parseInt(text, radix);
+	                }
+	            }
+	            else if (radix == 16) {
+	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
+	                    return parseInt(text, radix);
+	                }
+	            }
+	            else {
+	                var result = parseInt(text, radix);
+	                if (!isNaN(result)) {
+	                    return result;
+	                }
+	            }
+	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
+	        };
+	        Object.defineProperty(NumberWrapper, "NaN", {
+	            get: function () { return NaN; },
+	            enumerable: true,
+	            configurable: true
+	        });
+	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
+	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
+	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
+	        return NumberWrapper;
+	    }());
+	    function isJsObject(o) {
+	        return o !== null && (typeof o === 'function' || typeof o === 'object');
+	    }
+	    // Can't be all uppercase as our transpiler would think it is a special directive...
+	    var Json = (function () {
+	        function Json() {
+	        }
+	        Json.parse = function (s) { return global$1.JSON.parse(s); };
+	        Json.stringify = function (data) {
+	            // Dart doesn't take 3 arguments
+	            return global$1.JSON.stringify(data, null, 2);
+	        };
+	        return Json;
+	    }());
+	    var _symbolIterator = null;
+	    function getSymbolIterator() {
+	        if (isBlank(_symbolIterator)) {
+	            if (isPresent(globalScope.Symbol) && isPresent(Symbol.iterator)) {
+	                _symbolIterator = Symbol.iterator;
+	            }
+	            else {
+	                // es6-shim specific logic
+	                var keys = Object.getOwnPropertyNames(Map.prototype);
+	                for (var i = 0; i < keys.length; ++i) {
+	                    var key = keys[i];
+	                    if (key !== 'entries' && key !== 'size' &&
+	                        Map.prototype[key] === Map.prototype['entries']) {
+	                        _symbolIterator = key;
+	                    }
+	                }
+	            }
+	        }
+	        return _symbolIterator;
+	    }
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    /**
+	     * Supported http methods.
+	     * @experimental
+	     */
+	    exports.RequestMethod;
+	    (function (RequestMethod) {
+	        RequestMethod[RequestMethod["Get"] = 0] = "Get";
+	        RequestMethod[RequestMethod["Post"] = 1] = "Post";
+	        RequestMethod[RequestMethod["Put"] = 2] = "Put";
+	        RequestMethod[RequestMethod["Delete"] = 3] = "Delete";
+	        RequestMethod[RequestMethod["Options"] = 4] = "Options";
+	        RequestMethod[RequestMethod["Head"] = 5] = "Head";
+	        RequestMethod[RequestMethod["Patch"] = 6] = "Patch";
+	    })(exports.RequestMethod || (exports.RequestMethod = {}));
+	    /**
+	     * All possible states in which a connection can be, based on
+	     * [States](http://www.w3.org/TR/XMLHttpRequest/#states) from the `XMLHttpRequest` spec, but with an
+	     * additional "CANCELLED" state.
+	     * @experimental
+	     */
+	    exports.ReadyState;
+	    (function (ReadyState) {
+	        ReadyState[ReadyState["Unsent"] = 0] = "Unsent";
+	        ReadyState[ReadyState["Open"] = 1] = "Open";
+	        ReadyState[ReadyState["HeadersReceived"] = 2] = "HeadersReceived";
+	        ReadyState[ReadyState["Loading"] = 3] = "Loading";
+	        ReadyState[ReadyState["Done"] = 4] = "Done";
+	        ReadyState[ReadyState["Cancelled"] = 5] = "Cancelled";
+	    })(exports.ReadyState || (exports.ReadyState = {}));
+	    /**
+	     * Acceptable response types to be associated with a {@link Response}, based on
+	     * [ResponseType](https://fetch.spec.whatwg.org/#responsetype) from the Fetch spec.
+	     * @experimental
+	     */
+	    exports.ResponseType;
+	    (function (ResponseType) {
+	        ResponseType[ResponseType["Basic"] = 0] = "Basic";
+	        ResponseType[ResponseType["Cors"] = 1] = "Cors";
+	        ResponseType[ResponseType["Default"] = 2] = "Default";
+	        ResponseType[ResponseType["Error"] = 3] = "Error";
+	        ResponseType[ResponseType["Opaque"] = 4] = "Opaque";
+	    })(exports.ResponseType || (exports.ResponseType = {}));
+	    /**
+	     * Supported content type to be automatically associated with a {@link Request}.
+	     * @experimental
+	     */
+	    var ContentType;
+	    (function (ContentType) {
+	        ContentType[ContentType["NONE"] = 0] = "NONE";
+	        ContentType[ContentType["JSON"] = 1] = "JSON";
+	        ContentType[ContentType["FORM"] = 2] = "FORM";
+	        ContentType[ContentType["FORM_DATA"] = 3] = "FORM_DATA";
+	        ContentType[ContentType["TEXT"] = 4] = "TEXT";
+	        ContentType[ContentType["BLOB"] = 5] = "BLOB";
+	        ContentType[ContentType["ARRAY_BUFFER"] = 6] = "ARRAY_BUFFER";
+	    })(ContentType || (ContentType = {}));
+	    /**
+	     * Define which buffer to use to store the response
+	     * @experimental
+	     */
+	    exports.ResponseContentType;
+	    (function (ResponseContentType) {
+	        ResponseContentType[ResponseContentType["Text"] = 0] = "Text";
+	        ResponseContentType[ResponseContentType["Json"] = 1] = "Json";
+	        ResponseContentType[ResponseContentType["ArrayBuffer"] = 2] = "ArrayBuffer";
+	        ResponseContentType[ResponseContentType["Blob"] = 3] = "Blob";
+	    })(exports.ResponseContentType || (exports.ResponseContentType = {}));
+	
+	    var Map$1 = global$1.Map;
+	    var Set = global$1.Set;
+	    // Safari and Internet Explorer do not support the iterable parameter to the
+	    // Map constructor.  We work around that by manually adding the items.
+	    var createMapFromPairs = (function () {
+	        try {
+	            if (new Map$1([[1, 2]]).size === 1) {
+	                return function createMapFromPairs(pairs) { return new Map$1(pairs); };
+	            }
+	        }
+	        catch (e) {
+	        }
+	        return function createMapAndPopulateFromPairs(pairs) {
+	            var map = new Map$1();
+	            for (var i = 0; i < pairs.length; i++) {
+	                var pair = pairs[i];
+	                map.set(pair[0], pair[1]);
+	            }
+	            return map;
+	        };
+	    })();
+	    var createMapFromMap = (function () {
+	        try {
+	            if (new Map$1(new Map$1())) {
+	                return function createMapFromMap(m) { return new Map$1(m); };
+	            }
+	        }
+	        catch (e) {
+	        }
+	        return function createMapAndPopulateFromMap(m) {
+	            var map = new Map$1();
+	            m.forEach(function (v, k) { map.set(k, v); });
+	            return map;
+	        };
+	    })();
+	    var _clearValues = (function () {
+	        if ((new Map$1()).keys().next) {
+	            return function _clearValues(m) {
+	                var keyIterator = m.keys();
+	                var k;
+	                while (!((k = keyIterator.next()).done)) {
+	                    m.set(k.value, null);
+	                }
+	            };
+	        }
+	        else {
+	            return function _clearValuesWithForeEach(m) {
+	                m.forEach(function (v, k) { m.set(k, null); });
+	            };
+	        }
+	    })();
+	    // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
+	    // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
+	    var _arrayFromMap = (function () {
+	        try {
+	            if ((new Map$1()).values().next) {
+	                return function createArrayFromMap(m, getValues) {
+	                    return getValues ? Array.from(m.values()) : Array.from(m.keys());
+	                };
+	            }
+	        }
+	        catch (e) {
+	        }
+	        return function createArrayFromMapWithForeach(m, getValues) {
+	            var res = ListWrapper.createFixedSize(m.size), i = 0;
+	            m.forEach(function (v, k) {
+	                res[i] = getValues ? v : k;
+	                i++;
+	            });
+	            return res;
+	        };
+	    })();
+	    var MapWrapper = (function () {
+	        function MapWrapper() {
+	        }
+	        MapWrapper.clone = function (m) { return createMapFromMap(m); };
+	        MapWrapper.createFromStringMap = function (stringMap) {
+	            var result = new Map$1();
+	            for (var prop in stringMap) {
+	                result.set(prop, stringMap[prop]);
+	            }
+	            return result;
+	        };
+	        MapWrapper.toStringMap = function (m) {
+	            var r = {};
+	            m.forEach(function (v, k) { return r[k] = v; });
+	            return r;
+	        };
+	        MapWrapper.createFromPairs = function (pairs) { return createMapFromPairs(pairs); };
+	        MapWrapper.clearValues = function (m) { _clearValues(m); };
+	        MapWrapper.iterable = function (m) { return m; };
+	        MapWrapper.keys = function (m) { return _arrayFromMap(m, false); };
+	        MapWrapper.values = function (m) { return _arrayFromMap(m, true); };
+	        return MapWrapper;
+	    }());
+	    /**
+	     * Wraps Javascript Objects
+	     */
+	    var StringMapWrapper = (function () {
+	        function StringMapWrapper() {
+	        }
+	        StringMapWrapper.create = function () {
+	            // Note: We are not using Object.create(null) here due to
+	            // performance!
+	            // http://jsperf.com/ng2-object-create-null
+	            return {};
+	        };
+	        StringMapWrapper.contains = function (map, key) {
+	            return map.hasOwnProperty(key);
+	        };
+	        StringMapWrapper.get = function (map, key) {
+	            return map.hasOwnProperty(key) ? map[key] : undefined;
+	        };
+	        StringMapWrapper.set = function (map, key, value) { map[key] = value; };
+	        StringMapWrapper.keys = function (map) { return Object.keys(map); };
+	        StringMapWrapper.values = function (map) {
+	            return Object.keys(map).map(function (k) { return map[k]; });
+	        };
+	        StringMapWrapper.isEmpty = function (map) {
+	            for (var prop in map) {
+	                return false;
+	            }
+	            return true;
+	        };
+	        StringMapWrapper.delete = function (map, key) { delete map[key]; };
+	        StringMapWrapper.forEach = function (map, callback) {
+	            for (var _i = 0, _a = Object.keys(map); _i < _a.length; _i++) {
+	                var k = _a[_i];
+	                callback(map[k], k);
+	            }
+	        };
+	        StringMapWrapper.merge = function (m1, m2) {
+	            var m = {};
+	            for (var _i = 0, _a = Object.keys(m1); _i < _a.length; _i++) {
+	                var k = _a[_i];
+	                m[k] = m1[k];
+	            }
+	            for (var _b = 0, _c = Object.keys(m2); _b < _c.length; _b++) {
+	                var k = _c[_b];
+	                m[k] = m2[k];
+	            }
+	            return m;
+	        };
+	        StringMapWrapper.equals = function (m1, m2) {
+	            var k1 = Object.keys(m1);
+	            var k2 = Object.keys(m2);
+	            if (k1.length != k2.length) {
+	                return false;
+	            }
+	            for (var i = 0; i < k1.length; i++) {
+	                var key = k1[i];
+	                if (m1[key] !== m2[key]) {
+	                    return false;
+	                }
+	            }
+	            return true;
+	        };
+	        return StringMapWrapper;
+	    }());
+	    var ListWrapper = (function () {
+	        function ListWrapper() {
+	        }
+	        // JS has no way to express a statically fixed size list, but dart does so we
+	        // keep both methods.
+	        ListWrapper.createFixedSize = function (size) { return new Array(size); };
+	        ListWrapper.createGrowableSize = function (size) { return new Array(size); };
+	        ListWrapper.clone = function (array) { return array.slice(0); };
+	        ListWrapper.forEachWithIndex = function (array, fn) {
+	            for (var i = 0; i < array.length; i++) {
+	                fn(array[i], i);
+	            }
+	        };
+	        ListWrapper.first = function (array) {
+	            if (!array)
+	                return null;
+	            return array[0];
+	        };
+	        ListWrapper.last = function (array) {
+	            if (!array || array.length == 0)
+	                return null;
+	            return array[array.length - 1];
+	        };
+	        ListWrapper.indexOf = function (array, value, startIndex) {
+	            if (startIndex === void 0) { startIndex = 0; }
+	            return array.indexOf(value, startIndex);
+	        };
+	        ListWrapper.contains = function (list, el) { return list.indexOf(el) !== -1; };
+	        ListWrapper.reversed = function (array) {
+	            var a = ListWrapper.clone(array);
+	            return a.reverse();
+	        };
+	        ListWrapper.concat = function (a, b) { return a.concat(b); };
+	        ListWrapper.insert = function (list, index, value) { list.splice(index, 0, value); };
+	        ListWrapper.removeAt = function (list, index) {
+	            var res = list[index];
+	            list.splice(index, 1);
+	            return res;
+	        };
+	        ListWrapper.removeAll = function (list, items) {
+	            for (var i = 0; i < items.length; ++i) {
+	                var index = list.indexOf(items[i]);
+	                list.splice(index, 1);
+	            }
+	        };
+	        ListWrapper.remove = function (list, el) {
+	            var index = list.indexOf(el);
+	            if (index > -1) {
+	                list.splice(index, 1);
+	                return true;
+	            }
+	            return false;
+	        };
+	        ListWrapper.clear = function (list) { list.length = 0; };
+	        ListWrapper.isEmpty = function (list) { return list.length == 0; };
+	        ListWrapper.fill = function (list, value, start, end) {
+	            if (start === void 0) { start = 0; }
+	            if (end === void 0) { end = null; }
+	            list.fill(value, start, end === null ? list.length : end);
+	        };
+	        ListWrapper.equals = function (a, b) {
+	            if (a.length != b.length)
+	                return false;
+	            for (var i = 0; i < a.length; ++i) {
+	                if (a[i] !== b[i])
+	                    return false;
+	            }
+	            return true;
+	        };
+	        ListWrapper.slice = function (l, from, to) {
+	            if (from === void 0) { from = 0; }
+	            if (to === void 0) { to = null; }
+	            return l.slice(from, to === null ? undefined : to);
+	        };
+	        ListWrapper.splice = function (l, from, length) { return l.splice(from, length); };
+	        ListWrapper.sort = function (l, compareFn) {
+	            if (isPresent(compareFn)) {
+	                l.sort(compareFn);
+	            }
+	            else {
+	                l.sort();
+	            }
+	        };
+	        ListWrapper.toString = function (l) { return l.toString(); };
+	        ListWrapper.toJSON = function (l) { return JSON.stringify(l); };
+	        ListWrapper.maximum = function (list, predicate) {
+	            if (list.length == 0) {
+	                return null;
+	            }
+	            var solution = null;
+	            var maxValue = -Infinity;
+	            for (var index = 0; index < list.length; index++) {
+	                var candidate = list[index];
+	                if (isBlank(candidate)) {
+	                    continue;
+	                }
+	                var candidateValue = predicate(candidate);
+	                if (candidateValue > maxValue) {
+	                    solution = candidate;
+	                    maxValue = candidateValue;
+	                }
+	            }
+	            return solution;
+	        };
+	        ListWrapper.flatten = function (list) {
+	            var target = [];
+	            _flattenArray(list, target);
+	            return target;
+	        };
+	        ListWrapper.addAll = function (list, source) {
+	            for (var i = 0; i < source.length; i++) {
+	                list.push(source[i]);
+	            }
+	        };
+	        return ListWrapper;
+	    }());
+	    function _flattenArray(source, target) {
+	        if (isPresent(source)) {
+	            for (var i = 0; i < source.length; i++) {
+	                var item = source[i];
+	                if (isArray(item)) {
+	                    _flattenArray(item, target);
+	                }
+	                else {
+	                    target.push(item);
+	                }
+	            }
+	        }
+	        return target;
+	    }
+	    function isListLikeIterable(obj) {
+	        if (!isJsObject(obj))
+	            return false;
+	        return isArray(obj) ||
+	            (!(obj instanceof Map$1) &&
+	                getSymbolIterator() in obj); // JS Iterable have a Symbol.iterator prop
+	    }
+	    function iterateListLike(obj, fn) {
+	        if (isArray(obj)) {
+	            for (var i = 0; i < obj.length; i++) {
+	                fn(obj[i]);
+	            }
+	        }
+	        else {
+	            var iterator = obj[getSymbolIterator()]();
+	            var item;
+	            while (!((item = iterator.next()).done)) {
+	                fn(item.value);
+	            }
+	        }
+	    }
+	    // Safari and Internet Explorer do not support the iterable parameter to the
+	    // Set constructor.  We work around that by manually adding the items.
+	    var createSetFromList = (function () {
+	        var test = new Set([1, 2, 3]);
+	        if (test.size === 3) {
+	            return function createSetFromList(lst) { return new Set(lst); };
+	        }
+	        else {
+	            return function createSetAndPopulateFromList(lst) {
+	                var res = new Set(lst);
+	                if (res.size !== lst.length) {
+	                    for (var i = 0; i < lst.length; i++) {
+	                        res.add(lst[i]);
+	                    }
+	                }
+	                return res;
+	            };
+	        }
+	    })();
+	
+	    /**
+	     * Polyfill for [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers/Headers), as
+	     * specified in the [Fetch Spec](https://fetch.spec.whatwg.org/#headers-class).
+	     *
+	     * The only known difference between this `Headers` implementation and the spec is the
+	     * lack of an `entries` method.
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/MTdwT6?p=preview))
+	     *
+	     * ```
+	     * import {Headers} from '@angular/http';
+	     *
+	     * var firstHeaders = new Headers();
+	     * firstHeaders.append('Content-Type', 'image/jpeg');
+	     * console.log(firstHeaders.get('Content-Type')) //'image/jpeg'
+	     *
+	     * // Create headers from Plain Old JavaScript Object
+	     * var secondHeaders = new Headers({
+	     *   'X-My-Custom-Header': 'Angular'
+	     * });
+	     * console.log(secondHeaders.get('X-My-Custom-Header')); //'Angular'
+	     *
+	     * var thirdHeaders = new Headers(secondHeaders);
+	     * console.log(thirdHeaders.get('X-My-Custom-Header')); //'Angular'
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var Headers = (function () {
+	        function Headers(headers) {
+	            var _this = this;
+	            if (headers instanceof Headers) {
+	                this._headersMap = new Map$1(headers._headersMap);
+	                return;
+	            }
+	            this._headersMap = new Map$1();
+	            if (isBlank(headers)) {
+	                return;
+	            }
+	            // headers instanceof StringMap
+	            StringMapWrapper.forEach(headers, function (v, k) {
+	                _this._headersMap.set(normalize(k), isListLikeIterable(v) ? v : [v]);
+	            });
+	        }
+	        /**
+	         * Returns a new Headers instance from the given DOMString of Response Headers
+	         */
+	        Headers.fromResponseHeaderString = function (headersString) {
+	            var headers = new Headers();
+	            headersString.split('\n').forEach(function (line) {
+	                var index = line.indexOf(':');
+	                if (index > 0) {
+	                    var key = line.substring(0, index);
+	                    var value = line.substring(index + 1).trim();
+	                    headers.set(key, value);
+	                }
+	            });
+	            return headers;
+	        };
+	        /**
+	         * Appends a header to existing list of header values for a given header name.
+	         */
+	        Headers.prototype.append = function (name, value) {
+	            name = normalize(name);
+	            var mapName = this._headersMap.get(name);
+	            var list = isListLikeIterable(mapName) ? mapName : [];
+	            list.push(value);
+	            this._headersMap.set(name, list);
+	        };
+	        /**
+	         * Deletes all header values for the given name.
+	         */
+	        Headers.prototype.delete = function (name) { this._headersMap.delete(normalize(name)); };
+	        Headers.prototype.forEach = function (fn) {
+	            this._headersMap.forEach(fn);
+	        };
+	        /**
+	         * Returns first header that matches given name.
+	         */
+	        Headers.prototype.get = function (header) { return ListWrapper.first(this._headersMap.get(normalize(header))); };
+	        /**
+	         * Check for existence of header by given name.
+	         */
+	        Headers.prototype.has = function (header) { return this._headersMap.has(normalize(header)); };
+	        /**
+	         * Provides names of set headers
+	         */
+	        Headers.prototype.keys = function () { return MapWrapper.keys(this._headersMap); };
+	        /**
+	         * Sets or overrides header value for given name.
+	         */
+	        Headers.prototype.set = function (header, value) {
+	            var list = [];
+	            if (isListLikeIterable(value)) {
+	                var pushValue = value.join(',');
+	                list.push(pushValue);
+	            }
+	            else {
+	                list.push(value);
+	            }
+	            this._headersMap.set(normalize(header), list);
+	        };
+	        /**
+	         * Returns values of all headers.
+	         */
+	        Headers.prototype.values = function () { return MapWrapper.values(this._headersMap); };
+	        /**
+	         * Returns string of all headers.
+	         */
+	        Headers.prototype.toJSON = function () {
+	            var serializableHeaders = {};
+	            this._headersMap.forEach(function (values, name) {
+	                var list = [];
+	                iterateListLike(values, function (val /** TODO #9100 */) { return list = ListWrapper.concat(list, val.split(',')); });
+	                serializableHeaders[normalize(name)] = list;
+	            });
+	            return serializableHeaders;
+	        };
+	        /**
+	         * Returns list of header values for a given name.
+	         */
+	        Headers.prototype.getAll = function (header) {
+	            var headers = this._headersMap.get(normalize(header));
+	            return isListLikeIterable(headers) ? headers : [];
+	        };
+	        /**
+	         * This method is not implemented.
+	         */
+	        Headers.prototype.entries = function () { throw new Error('"entries" method is not implemented on Headers class'); };
+	        return Headers;
+	    }());
+	    // "HTTP character sets are identified by case-insensitive tokens"
+	    // Spec at https://tools.ietf.org/html/rfc2616
+	    // This implementation is same as NodeJS.
+	    // see https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_message_headers
+	    function normalize(name) {
+	        return name.toLowerCase();
+	    }
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var __extends$1 = (this && this.__extends) || function (d, b) {
+	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    /**
+	     * Creates a response options object to be optionally provided when instantiating a
+	     * {@link Response}.
+	     *
+	     * This class is based on the `ResponseInit` description in the [Fetch
+	     * Spec](https://fetch.spec.whatwg.org/#responseinit).
+	     *
+	     * All values are null by default. Typical defaults can be found in the
+	     * {@link BaseResponseOptions} class, which sub-classes `ResponseOptions`.
+	     *
+	     * This class may be used in tests to build {@link Response Responses} for
+	     * mock responses (see {@link MockBackend}).
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/P9Jkk8e8cz6NVzbcxEsD?p=preview))
+	     *
+	     * ```typescript
+	     * import {ResponseOptions, Response} from '@angular/http';
+	     *
+	     * var options = new ResponseOptions({
+	     *   body: '{"name":"Jeff"}'
+	     * });
+	     * var res = new Response(options);
+	     *
+	     * console.log('res.json():', res.json()); // Object {name: "Jeff"}
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var ResponseOptions = (function () {
+	        function ResponseOptions(_a) {
+	            var _b = _a === void 0 ? {} : _a, body = _b.body, status = _b.status, headers = _b.headers, statusText = _b.statusText, type = _b.type, url = _b.url;
+	            this.body = isPresent(body) ? body : null;
+	            this.status = isPresent(status) ? status : null;
+	            this.headers = isPresent(headers) ? headers : null;
+	            this.statusText = isPresent(statusText) ? statusText : null;
+	            this.type = isPresent(type) ? type : null;
+	            this.url = isPresent(url) ? url : null;
+	        }
+	        /**
+	         * Creates a copy of the `ResponseOptions` instance, using the optional input as values to
+	         * override
+	         * existing values. This method will not change the values of the instance on which it is being
+	         * called.
+	         *
+	         * This may be useful when sharing a base `ResponseOptions` object inside tests,
+	         * where certain properties may change from test to test.
+	         *
+	         * ### Example ([live demo](http://plnkr.co/edit/1lXquqFfgduTFBWjNoRE?p=preview))
+	         *
+	         * ```typescript
+	         * import {ResponseOptions, Response} from '@angular/http';
+	         *
+	         * var options = new ResponseOptions({
+	         *   body: {name: 'Jeff'}
+	         * });
+	         * var res = new Response(options.merge({
+	         *   url: 'https://google.com'
+	         * }));
+	         * console.log('options.url:', options.url); // null
+	         * console.log('res.json():', res.json()); // Object {name: "Jeff"}
+	         * console.log('res.url:', res.url); // https://google.com
+	         * ```
+	         */
+	        ResponseOptions.prototype.merge = function (options) {
+	            return new ResponseOptions({
+	                body: isPresent(options) && isPresent(options.body) ? options.body : this.body,
+	                status: isPresent(options) && isPresent(options.status) ? options.status : this.status,
+	                headers: isPresent(options) && isPresent(options.headers) ? options.headers : this.headers,
+	                statusText: isPresent(options) && isPresent(options.statusText) ? options.statusText :
+	                    this.statusText,
+	                type: isPresent(options) && isPresent(options.type) ? options.type : this.type,
+	                url: isPresent(options) && isPresent(options.url) ? options.url : this.url,
+	            });
+	        };
+	        return ResponseOptions;
+	    }());
+	    /**
+	     * Subclass of {@link ResponseOptions}, with default values.
+	     *
+	     * Default values:
+	     *  * status: 200
+	     *  * headers: empty {@link Headers} object
+	     *
+	     * This class could be extended and bound to the {@link ResponseOptions} class
+	     * when configuring an {@link Injector}, in order to override the default options
+	     * used by {@link Http} to create {@link Response Responses}.
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/qv8DLT?p=preview))
+	     *
+	     * ```typescript
+	     * import {provide} from '@angular/core';
+	     * import {bootstrap} from '@angular/platform-browser/browser';
+	     * import {HTTP_PROVIDERS, Headers, Http, BaseResponseOptions, ResponseOptions} from
+	     * '@angular/http';
+	     * import {App} from './myapp';
+	     *
+	     * class MyOptions extends BaseResponseOptions {
+	     *   headers:Headers = new Headers({network: 'github'});
+	     * }
+	     *
+	     * bootstrap(App, [HTTP_PROVIDERS, {provide: ResponseOptions, useClass: MyOptions}]);
+	     * ```
+	     *
+	     * The options could also be extended when manually creating a {@link Response}
+	     * object.
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/VngosOWiaExEtbstDoix?p=preview))
+	     *
+	     * ```
+	     * import {BaseResponseOptions, Response} from '@angular/http';
+	     *
+	     * var options = new BaseResponseOptions();
+	     * var res = new Response(options.merge({
+	     *   body: 'Angular',
+	     *   headers: new Headers({framework: 'angular'})
+	     * }));
+	     * console.log('res.headers.get("framework"):', res.headers.get('framework')); // angular
+	     * console.log('res.text():', res.text()); // Angular;
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var BaseResponseOptions = (function (_super) {
+	        __extends$1(BaseResponseOptions, _super);
+	        function BaseResponseOptions() {
+	            _super.call(this, { status: 200, statusText: 'Ok', type: exports.ResponseType.Default, headers: new Headers() });
+	        }
+	        BaseResponseOptions.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        BaseResponseOptions.ctorParameters = [];
+	        return BaseResponseOptions;
+	    }(ResponseOptions));
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    /**
+	     * Abstract class from which real backends are derived.
+	     *
+	     * The primary purpose of a `ConnectionBackend` is to create new connections to fulfill a given
+	     * {@link Request}.
+	     *
+	     * @experimental
+	     */
+	    var ConnectionBackend = (function () {
+	        function ConnectionBackend() {
+	        }
+	        return ConnectionBackend;
+	    }());
+	    /**
+	     * Abstract class from which real connections are derived.
+	     *
+	     * @experimental
+	     */
+	    var Connection = (function () {
+	        function Connection() {
+	        }
+	        return Connection;
+	    }());
+	    /**
+	     * An XSRFStrategy configures XSRF protection (e.g. via headers) on an HTTP request.
+	     *
+	     * @experimental
+	     */
+	    var XSRFStrategy = (function () {
+	        function XSRFStrategy() {
+	        }
+	        return XSRFStrategy;
+	    }());
+	
+	    function normalizeMethodName(method) {
+	        if (isString(method)) {
+	            var originalMethod = method;
+	            method = method
+	                .replace(/(\w)(\w*)/g, function (g0, g1, g2) { return g1.toUpperCase() + g2.toLowerCase(); });
+	            method = exports.RequestMethod[method];
+	            if (typeof method !== 'number')
+	                throw new Error("Invalid request method. The method \"" + originalMethod + "\" is not supported.");
+	        }
+	        return method;
+	    }
+	    var isSuccess = function (status) { return (status >= 200 && status < 300); };
+	    function getResponseURL(xhr) {
+	        if ('responseURL' in xhr) {
+	            return xhr.responseURL;
+	        }
+	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
+	            return xhr.getResponseHeader('X-Request-URL');
+	        }
+	        return;
+	    }
+	    function stringToArrayBuffer(input) {
+	        var view = new Uint16Array(input.length);
+	        for (var i = 0, strLen = input.length; i < strLen; i++) {
+	            view[i] = input.charCodeAt(i);
+	        }
+	        return view.buffer;
+	    }
+	
+	    function paramParser(rawParams) {
+	        if (rawParams === void 0) { rawParams = ''; }
+	        var map = new Map$1();
+	        if (rawParams.length > 0) {
+	            var params = rawParams.split('&');
+	            params.forEach(function (param) {
+	                var eqIdx = param.indexOf('=');
+	                var _a = eqIdx == -1 ? [param, ''] : [param.slice(0, eqIdx), param.slice(eqIdx + 1)], key = _a[0], val = _a[1];
+	                var list = map.get(key) || [];
+	                list.push(val);
+	                map.set(key, list);
+	            });
+	        }
+	        return map;
+	    }
+	    /**
+	     * @experimental
+	     **/
+	    var QueryEncoder = (function () {
+	        function QueryEncoder() {
+	        }
+	        QueryEncoder.prototype.encodeKey = function (k) { return standardEncoding(k); };
+	        QueryEncoder.prototype.encodeValue = function (v) { return standardEncoding(v); };
+	        return QueryEncoder;
+	    }());
+	    function standardEncoding(v) {
+	        return encodeURIComponent(v)
+	            .replace(/%40/gi, '@')
+	            .replace(/%3A/gi, ':')
+	            .replace(/%24/gi, '$')
+	            .replace(/%2C/gi, ',')
+	            .replace(/%3B/gi, ';')
+	            .replace(/%2B/gi, '+')
+	            .replace(/%3D/gi, '=')
+	            .replace(/%3F/gi, '?')
+	            .replace(/%2F/gi, '/');
+	    }
+	    /**
+	     * Map-like representation of url search parameters, based on
+	     * [URLSearchParams](https://url.spec.whatwg.org/#urlsearchparams) in the url living standard,
+	     * with several extensions for merging URLSearchParams objects:
+	     *   - setAll()
+	     *   - appendAll()
+	     *   - replaceAll()
+	     *
+	     * This class accepts an optional second parameter of ${@link QueryEncoder},
+	     * which is used to serialize parameters before making a request. By default,
+	     * `QueryEncoder` encodes keys and values of parameters using `encodeURIComponent`,
+	     * and then un-encodes certain characters that are allowed to be part of the query
+	     * according to IETF RFC 3986: https://tools.ietf.org/html/rfc3986.
+	     *
+	     * These are the characters that are not encoded: `! $ \' ( ) * + , ; A 9 - . _ ~ ? /`
+	     *
+	     * If the set of allowed query characters is not acceptable for a particular backend,
+	     * `QueryEncoder` can be subclassed and provided as the 2nd argument to URLSearchParams.
+	     *
+	     * ```
+	     * import {URLSearchParams, QueryEncoder} from '@angular/http';
+	     * class MyQueryEncoder extends QueryEncoder {
+	     *   encodeKey(k: string): string {
+	     *     return myEncodingFunction(k);
+	     *   }
+	     *
+	     *   encodeValue(v: string): string {
+	     *     return myEncodingFunction(v);
+	     *   }
+	     * }
+	     *
+	     * let params = new URLSearchParams('', new MyQueryEncoder());
+	     * ```
+	     * @experimental
+	     */
+	    var URLSearchParams = (function () {
+	        function URLSearchParams(rawParams, queryEncoder) {
+	            if (rawParams === void 0) { rawParams = ''; }
+	            if (queryEncoder === void 0) { queryEncoder = new QueryEncoder(); }
+	            this.rawParams = rawParams;
+	            this.queryEncoder = queryEncoder;
+	            this.paramsMap = paramParser(rawParams);
+	        }
+	        URLSearchParams.prototype.clone = function () {
+	            var clone = new URLSearchParams('', this.queryEncoder);
+	            clone.appendAll(this);
+	            return clone;
+	        };
+	        URLSearchParams.prototype.has = function (param) { return this.paramsMap.has(param); };
+	        URLSearchParams.prototype.get = function (param) {
+	            var storedParam = this.paramsMap.get(param);
+	            if (isListLikeIterable(storedParam)) {
+	                return ListWrapper.first(storedParam);
+	            }
+	            else {
+	                return null;
+	            }
+	        };
+	        URLSearchParams.prototype.getAll = function (param) {
+	            var mapParam = this.paramsMap.get(param);
+	            return isPresent(mapParam) ? mapParam : [];
+	        };
+	        URLSearchParams.prototype.set = function (param, val) {
+	            var mapParam = this.paramsMap.get(param);
+	            var list = isPresent(mapParam) ? mapParam : [];
+	            ListWrapper.clear(list);
+	            list.push(val);
+	            this.paramsMap.set(param, list);
+	        };
+	        // A merge operation
+	        // For each name-values pair in `searchParams`, perform `set(name, values[0])`
+	        //
+	        // E.g: "a=[1,2,3], c=[8]" + "a=[4,5,6], b=[7]" = "a=[4], c=[8], b=[7]"
+	        //
+	        // TODO(@caitp): document this better
+	        URLSearchParams.prototype.setAll = function (searchParams) {
+	            var _this = this;
+	            searchParams.paramsMap.forEach(function (value, param) {
+	                var mapParam = _this.paramsMap.get(param);
+	                var list = isPresent(mapParam) ? mapParam : [];
+	                ListWrapper.clear(list);
+	                list.push(value[0]);
+	                _this.paramsMap.set(param, list);
+	            });
+	        };
+	        URLSearchParams.prototype.append = function (param, val) {
+	            var mapParam = this.paramsMap.get(param);
+	            var list = isPresent(mapParam) ? mapParam : [];
+	            list.push(val);
+	            this.paramsMap.set(param, list);
+	        };
+	        // A merge operation
+	        // For each name-values pair in `searchParams`, perform `append(name, value)`
+	        // for each value in `values`.
+	        //
+	        // E.g: "a=[1,2], c=[8]" + "a=[3,4], b=[7]" = "a=[1,2,3,4], c=[8], b=[7]"
+	        //
+	        // TODO(@caitp): document this better
+	        URLSearchParams.prototype.appendAll = function (searchParams) {
+	            var _this = this;
+	            searchParams.paramsMap.forEach(function (value, param) {
+	                var mapParam = _this.paramsMap.get(param);
+	                var list = isPresent(mapParam) ? mapParam : [];
+	                for (var i = 0; i < value.length; ++i) {
+	                    list.push(value[i]);
+	                }
+	                _this.paramsMap.set(param, list);
+	            });
+	        };
+	        // A merge operation
+	        // For each name-values pair in `searchParams`, perform `delete(name)`,
+	        // followed by `set(name, values)`
+	        //
+	        // E.g: "a=[1,2,3], c=[8]" + "a=[4,5,6], b=[7]" = "a=[4,5,6], c=[8], b=[7]"
+	        //
+	        // TODO(@caitp): document this better
+	        URLSearchParams.prototype.replaceAll = function (searchParams) {
+	            var _this = this;
+	            searchParams.paramsMap.forEach(function (value, param) {
+	                var mapParam = _this.paramsMap.get(param);
+	                var list = isPresent(mapParam) ? mapParam : [];
+	                ListWrapper.clear(list);
+	                for (var i = 0; i < value.length; ++i) {
+	                    list.push(value[i]);
+	                }
+	                _this.paramsMap.set(param, list);
+	            });
+	        };
+	        URLSearchParams.prototype.toString = function () {
+	            var _this = this;
+	            var paramsList = [];
+	            this.paramsMap.forEach(function (values, k) {
+	                values.forEach(function (v) { return paramsList.push(_this.queryEncoder.encodeKey(k) + '=' + _this.queryEncoder.encodeValue(v)); });
+	            });
+	            return paramsList.join('&');
+	        };
+	        URLSearchParams.prototype.delete = function (param) { this.paramsMap.delete(param); };
+	        return URLSearchParams;
+	    }());
+	
+	    /**
+	     * HTTP request body used by both {@link Request} and {@link Response}
+	     * https://fetch.spec.whatwg.org/#body
+	     */
+	    var Body = (function () {
+	        function Body() {
+	        }
+	        /**
+	         * Attempts to return body as parsed `JSON` object, or raises an exception.
+	         */
+	        Body.prototype.json = function () {
+	            if (isString(this._body)) {
+	                return Json.parse(this._body);
+	            }
+	            if (this._body instanceof ArrayBuffer) {
+	                return Json.parse(this.text());
+	            }
+	            return this._body;
+	        };
+	        /**
+	         * Returns the body as a string, presuming `toString()` can be called on the response body.
+	         */
+	        Body.prototype.text = function () {
+	            if (this._body instanceof URLSearchParams) {
+	                return this._body.toString();
+	            }
+	            if (this._body instanceof ArrayBuffer) {
+	                return String.fromCharCode.apply(null, new Uint16Array(this._body));
+	            }
+	            if (this._body === null) {
+	                return '';
+	            }
+	            if (isJsObject(this._body)) {
+	                return Json.stringify(this._body);
+	            }
+	            return this._body.toString();
+	        };
+	        /**
+	         * Return the body as an ArrayBuffer
+	         */
+	        Body.prototype.arrayBuffer = function () {
+	            if (this._body instanceof ArrayBuffer) {
+	                return this._body;
+	            }
+	            return stringToArrayBuffer(this.text());
+	        };
+	        /**
+	          * Returns the request's body as a Blob, assuming that body exists.
+	          */
+	        Body.prototype.blob = function () {
+	            if (this._body instanceof Blob) {
+	                return this._body;
+	            }
+	            if (this._body instanceof ArrayBuffer) {
+	                return new Blob([this._body]);
+	            }
+	            throw new Error('The request body isn\'t either a blob or an array buffer');
+	        };
+	        return Body;
+	    }());
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var __extends$2 = (this && this.__extends) || function (d, b) {
+	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    /**
+	     * Creates `Response` instances from provided values.
+	     *
+	     * Though this object isn't
+	     * usually instantiated by end-users, it is the primary object interacted with when it comes time to
+	     * add data to a view.
+	     *
+	     * ### Example
+	     *
+	     * ```
+	     * http.request('my-friends.txt').subscribe(response => this.friends = response.text());
+	     * ```
+	     *
+	     * The Response's interface is inspired by the Response constructor defined in the [Fetch
+	     * Spec](https://fetch.spec.whatwg.org/#response-class), but is considered a static value whose body
+	     * can be accessed many times. There are other differences in the implementation, but this is the
+	     * most significant.
+	     *
+	     * @experimental
+	     */
+	    var Response = (function (_super) {
+	        __extends$2(Response, _super);
+	        function Response(responseOptions) {
+	            _super.call(this);
+	            this._body = responseOptions.body;
+	            this.status = responseOptions.status;
+	            this.ok = (this.status >= 200 && this.status <= 299);
+	            this.statusText = responseOptions.statusText;
+	            this.headers = responseOptions.headers;
+	            this.type = responseOptions.type;
+	            this.url = responseOptions.url;
+	        }
+	        Response.prototype.toString = function () {
+	            return "Response with status: " + this.status + " " + this.statusText + " for URL: " + this.url;
+	        };
+	        return Response;
+	    }(Body));
+	
+	    var _nextRequestId = 0;
+	    var JSONP_HOME = '__ng_jsonp__';
+	    var _jsonpConnections = null;
+	    function _getJsonpConnections() {
+	        if (_jsonpConnections === null) {
+	            _jsonpConnections = global$1[JSONP_HOME] = {};
+	        }
+	        return _jsonpConnections;
+	    }
+	    // Make sure not to evaluate this in a non-browser environment!
+	    var BrowserJsonp = (function () {
+	        function BrowserJsonp() {
+	        }
+	        // Construct a <script> element with the specified URL
+	        BrowserJsonp.prototype.build = function (url) {
+	            var node = document.createElement('script');
+	            node.src = url;
+	            return node;
+	        };
+	        BrowserJsonp.prototype.nextRequestID = function () { return "__req" + _nextRequestId++; };
+	        BrowserJsonp.prototype.requestCallback = function (id) { return JSONP_HOME + "." + id + ".finished"; };
+	        BrowserJsonp.prototype.exposeConnection = function (id, connection) {
+	            var connections = _getJsonpConnections();
+	            connections[id] = connection;
+	        };
+	        BrowserJsonp.prototype.removeConnection = function (id) {
+	            var connections = _getJsonpConnections();
+	            connections[id] = null;
+	        };
+	        // Attach the <script> element to the DOM
+	        BrowserJsonp.prototype.send = function (node) { document.body.appendChild((node)); };
+	        // Remove <script> element from the DOM
+	        BrowserJsonp.prototype.cleanup = function (node) {
+	            if (node.parentNode) {
+	                node.parentNode.removeChild((node));
+	            }
+	        };
+	        BrowserJsonp.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        BrowserJsonp.ctorParameters = [];
+	        return BrowserJsonp;
+	    }());
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var __extends = (this && this.__extends) || function (d, b) {
+	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    var JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
+	    var JSONP_ERR_WRONG_METHOD = 'JSONP requests must use GET request method.';
+	    /**
+	     * Abstract base class for an in-flight JSONP request.
+	     *
+	     * @experimental
+	     */
+	    var JSONPConnection = (function () {
+	        function JSONPConnection() {
+	        }
+	        return JSONPConnection;
+	    }());
+	    var JSONPConnection_ = (function (_super) {
+	        __extends(JSONPConnection_, _super);
+	        function JSONPConnection_(req, _dom, baseResponseOptions) {
+	            var _this = this;
+	            _super.call(this);
+	            this._dom = _dom;
+	            this.baseResponseOptions = baseResponseOptions;
+	            this._finished = false;
+	            if (req.method !== exports.RequestMethod.Get) {
+	                throw new TypeError(JSONP_ERR_WRONG_METHOD);
+	            }
+	            this.request = req;
+	            this.response = new rxjs_Observable.Observable(function (responseObserver) {
+	                _this.readyState = exports.ReadyState.Loading;
+	                var id = _this._id = _dom.nextRequestID();
+	                _dom.exposeConnection(id, _this);
+	                // Workaround Dart
+	                // url = url.replace(/=JSONP_CALLBACK(&|$)/, `generated method`);
+	                var callback = _dom.requestCallback(_this._id);
+	                var url = req.url;
+	                if (url.indexOf('=JSONP_CALLBACK&') > -1) {
+	                    url = StringWrapper.replace(url, '=JSONP_CALLBACK&', "=" + callback + "&");
+	                }
+	                else if (url.lastIndexOf('=JSONP_CALLBACK') === url.length - '=JSONP_CALLBACK'.length) {
+	                    url = url.substring(0, url.length - '=JSONP_CALLBACK'.length) + ("=" + callback);
+	                }
+	                var script = _this._script = _dom.build(url);
+	                var onLoad = function (event) {
+	                    if (_this.readyState === exports.ReadyState.Cancelled)
+	                        return;
+	                    _this.readyState = exports.ReadyState.Done;
+	                    _dom.cleanup(script);
+	                    if (!_this._finished) {
+	                        var responseOptions_1 = new ResponseOptions({ body: JSONP_ERR_NO_CALLBACK, type: exports.ResponseType.Error, url: url });
+	                        if (isPresent(baseResponseOptions)) {
+	                            responseOptions_1 = baseResponseOptions.merge(responseOptions_1);
+	                        }
+	                        responseObserver.error(new Response(responseOptions_1));
+	                        return;
+	                    }
+	                    var responseOptions = new ResponseOptions({ body: _this._responseData, url: url });
+	                    if (isPresent(_this.baseResponseOptions)) {
+	                        responseOptions = _this.baseResponseOptions.merge(responseOptions);
+	                    }
+	                    responseObserver.next(new Response(responseOptions));
+	                    responseObserver.complete();
+	                };
+	                var onError = function (error) {
+	                    if (_this.readyState === exports.ReadyState.Cancelled)
+	                        return;
+	                    _this.readyState = exports.ReadyState.Done;
+	                    _dom.cleanup(script);
+	                    var responseOptions = new ResponseOptions({ body: error.message, type: exports.ResponseType.Error });
+	                    if (isPresent(baseResponseOptions)) {
+	                        responseOptions = baseResponseOptions.merge(responseOptions);
+	                    }
+	                    responseObserver.error(new Response(responseOptions));
+	                };
+	                script.addEventListener('load', onLoad);
+	                script.addEventListener('error', onError);
+	                _dom.send(script);
+	                return function () {
+	                    _this.readyState = exports.ReadyState.Cancelled;
+	                    script.removeEventListener('load', onLoad);
+	                    script.removeEventListener('error', onError);
+	                    if (isPresent(script)) {
+	                        _this._dom.cleanup(script);
+	                    }
+	                };
+	            });
+	        }
+	        JSONPConnection_.prototype.finished = function (data) {
+	            // Don't leak connections
+	            this._finished = true;
+	            this._dom.removeConnection(this._id);
+	            if (this.readyState === exports.ReadyState.Cancelled)
+	                return;
+	            this._responseData = data;
+	        };
+	        return JSONPConnection_;
+	    }(JSONPConnection));
+	    /**
+	     * A {@link ConnectionBackend} that uses the JSONP strategy of making requests.
+	     *
+	     * @experimental
+	     */
+	    var JSONPBackend = (function (_super) {
+	        __extends(JSONPBackend, _super);
+	        function JSONPBackend() {
+	            _super.apply(this, arguments);
+	        }
+	        return JSONPBackend;
+	    }(ConnectionBackend));
+	    var JSONPBackend_ = (function (_super) {
+	        __extends(JSONPBackend_, _super);
+	        function JSONPBackend_(_browserJSONP, _baseResponseOptions) {
+	            _super.call(this);
+	            this._browserJSONP = _browserJSONP;
+	            this._baseResponseOptions = _baseResponseOptions;
+	        }
+	        JSONPBackend_.prototype.createConnection = function (request) {
+	            return new JSONPConnection_(request, this._browserJSONP, this._baseResponseOptions);
+	        };
+	        JSONPBackend_.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        JSONPBackend_.ctorParameters = [
+	            { type: BrowserJsonp, },
+	            { type: ResponseOptions, },
+	        ];
+	        return JSONPBackend_;
+	    }(JSONPBackend));
+	
+	    var XSSI_PREFIX = /^\)\]\}',?\n/;
+	    /**
+	     * Creates connections using `XMLHttpRequest`. Given a fully-qualified
+	     * request, an `XHRConnection` will immediately create an `XMLHttpRequest` object and send the
+	     * request.
+	     *
+	     * This class would typically not be created or interacted with directly inside applications, though
+	     * the {@link MockConnection} may be interacted with in tests.
+	     *
+	     * @experimental
+	     */
+	    var XHRConnection = (function () {
+	        function XHRConnection(req, browserXHR, baseResponseOptions) {
+	            var _this = this;
+	            this.request = req;
+	            this.response = new rxjs_Observable.Observable(function (responseObserver) {
+	                var _xhr = browserXHR.build();
+	                _xhr.open(exports.RequestMethod[req.method].toUpperCase(), req.url);
+	                if (isPresent(req.withCredentials)) {
+	                    _xhr.withCredentials = req.withCredentials;
+	                }
+	                // load event handler
+	                var onLoad = function () {
+	                    // responseText is the old-school way of retrieving response (supported by IE8 & 9)
+	                    // response/responseType properties were introduced in ResourceLoader Level2 spec (supported
+	                    // by
+	                    // IE10)
+	                    var body = isPresent(_xhr.response) ? _xhr.response : _xhr.responseText;
+	                    // Implicitly strip a potential XSSI prefix.
+	                    if (isString(body))
+	                        body = body.replace(XSSI_PREFIX, '');
+	                    var headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
+	                    var url = getResponseURL(_xhr);
+	                    // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
+	                    var status = _xhr.status === 1223 ? 204 : _xhr.status;
+	                    // fix status code when it is 0 (0 status is undocumented).
+	                    // Occurs when accessing file resources or on Android 4.1 stock browser
+	                    // while retrieving files from application cache.
+	                    if (status === 0) {
+	                        status = body ? 200 : 0;
+	                    }
+	                    var statusText = _xhr.statusText || 'OK';
+	                    var responseOptions = new ResponseOptions({ body: body, status: status, headers: headers, statusText: statusText, url: url });
+	                    if (isPresent(baseResponseOptions)) {
+	                        responseOptions = baseResponseOptions.merge(responseOptions);
+	                    }
+	                    var response = new Response(responseOptions);
+	                    response.ok = isSuccess(status);
+	                    if (response.ok) {
+	                        responseObserver.next(response);
+	                        // TODO(gdi2290): defer complete if array buffer until done
+	                        responseObserver.complete();
+	                        return;
+	                    }
+	                    responseObserver.error(response);
+	                };
+	                // error event handler
+	                var onError = function (err) {
+	                    var responseOptions = new ResponseOptions({
+	                        body: err,
+	                        type: exports.ResponseType.Error,
+	                        status: _xhr.status,
+	                        statusText: _xhr.statusText,
+	                    });
+	                    if (isPresent(baseResponseOptions)) {
+	                        responseOptions = baseResponseOptions.merge(responseOptions);
+	                    }
+	                    responseObserver.error(new Response(responseOptions));
+	                };
+	                _this.setDetectedContentType(req, _xhr);
+	                if (isPresent(req.headers)) {
+	                    req.headers.forEach(function (values, name) { return _xhr.setRequestHeader(name, values.join(',')); });
+	                }
+	                // Select the correct buffer type to store the response
+	                if (isPresent(req.responseType) && isPresent(_xhr.responseType)) {
+	                    switch (req.responseType) {
+	                        case exports.ResponseContentType.ArrayBuffer:
+	                            _xhr.responseType = 'arraybuffer';
+	                            break;
+	                        case exports.ResponseContentType.Json:
+	                            _xhr.responseType = 'json';
+	                            break;
+	                        case exports.ResponseContentType.Text:
+	                            _xhr.responseType = 'text';
+	                            break;
+	                        case exports.ResponseContentType.Blob:
+	                            _xhr.responseType = 'blob';
+	                            break;
+	                        default:
+	                            throw new Error('The selected responseType is not supported');
+	                    }
+	                }
+	                _xhr.addEventListener('load', onLoad);
+	                _xhr.addEventListener('error', onError);
+	                _xhr.send(_this.request.getBody());
+	                return function () {
+	                    _xhr.removeEventListener('load', onLoad);
+	                    _xhr.removeEventListener('error', onError);
+	                    _xhr.abort();
+	                };
+	            });
+	        }
+	        XHRConnection.prototype.setDetectedContentType = function (req /** TODO #9100 */, _xhr /** TODO #9100 */) {
+	            // Skip if a custom Content-Type header is provided
+	            if (isPresent(req.headers) && isPresent(req.headers.get('Content-Type'))) {
+	                return;
+	            }
+	            // Set the detected content type
+	            switch (req.contentType) {
+	                case ContentType.NONE:
+	                    break;
+	                case ContentType.JSON:
+	                    _xhr.setRequestHeader('content-type', 'application/json');
+	                    break;
+	                case ContentType.FORM:
+	                    _xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+	                    break;
+	                case ContentType.TEXT:
+	                    _xhr.setRequestHeader('content-type', 'text/plain');
+	                    break;
+	                case ContentType.BLOB:
+	                    var blob = req.blob();
+	                    if (blob.type) {
+	                        _xhr.setRequestHeader('content-type', blob.type);
+	                    }
+	                    break;
+	            }
+	        };
+	        return XHRConnection;
+	    }());
+	    /**
+	     * `XSRFConfiguration` sets up Cross Site Request Forgery (XSRF) protection for the application
+	     * using a cookie. See {@link https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)}
+	     * for more information on XSRF.
+	     *
+	     * Applications can configure custom cookie and header names by binding an instance of this class
+	     * with different `cookieName` and `headerName` values. See the main HTTP documentation for more
+	     * details.
+	     *
+	     * @experimental
+	     */
+	    var CookieXSRFStrategy = (function () {
+	        function CookieXSRFStrategy(_cookieName, _headerName) {
+	            if (_cookieName === void 0) { _cookieName = 'XSRF-TOKEN'; }
+	            if (_headerName === void 0) { _headerName = 'X-XSRF-TOKEN'; }
+	            this._cookieName = _cookieName;
+	            this._headerName = _headerName;
+	        }
+	        CookieXSRFStrategy.prototype.configureRequest = function (req) {
+	            var xsrfToken = _angular_platformBrowser.__platform_browser_private__.getDOM().getCookie(this._cookieName);
+	            if (xsrfToken && !req.headers.has(this._headerName)) {
+	                req.headers.set(this._headerName, xsrfToken);
+	            }
+	        };
+	        return CookieXSRFStrategy;
+	    }());
+	    /**
+	     * Creates {@link XHRConnection} instances.
+	     *
+	     * This class would typically not be used by end users, but could be
+	     * overridden if a different backend implementation should be used,
+	     * such as in a node backend.
+	     *
+	     * ### Example
+	     *
+	     * ```
+	     * import {Http, MyNodeBackend, HTTP_PROVIDERS, BaseRequestOptions} from '@angular/http';
+	     * @Component({
+	     *   viewProviders: [
+	     *     HTTP_PROVIDERS,
+	     *     {provide: Http, useFactory: (backend, options) => {
+	     *       return new Http(backend, options);
+	     *     }, deps: [MyNodeBackend, BaseRequestOptions]}]
+	     * })
+	     * class MyComponent {
+	     *   constructor(http:Http) {
+	     *     http.request('people.json').subscribe(res => this.people = res.json());
+	     *   }
+	     * }
+	     * ```
+	     * @experimental
+	     */
+	    var XHRBackend = (function () {
+	        function XHRBackend(_browserXHR, _baseResponseOptions, _xsrfStrategy) {
+	            this._browserXHR = _browserXHR;
+	            this._baseResponseOptions = _baseResponseOptions;
+	            this._xsrfStrategy = _xsrfStrategy;
+	        }
+	        XHRBackend.prototype.createConnection = function (request) {
+	            this._xsrfStrategy.configureRequest(request);
+	            return new XHRConnection(request, this._browserXHR, this._baseResponseOptions);
+	        };
+	        XHRBackend.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        XHRBackend.ctorParameters = [
+	            { type: BrowserXhr, },
+	            { type: ResponseOptions, },
+	            { type: XSRFStrategy, },
+	        ];
+	        return XHRBackend;
+	    }());
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var __extends$3 = (this && this.__extends) || function (d, b) {
+	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    /**
+	     * Creates a request options object to be optionally provided when instantiating a
+	     * {@link Request}.
+	     *
+	     * This class is based on the `RequestInit` description in the [Fetch
+	     * Spec](https://fetch.spec.whatwg.org/#requestinit).
+	     *
+	     * All values are null by default. Typical defaults can be found in the {@link BaseRequestOptions}
+	     * class, which sub-classes `RequestOptions`.
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/7Wvi3lfLq41aQPKlxB4O?p=preview))
+	     *
+	     * ```typescript
+	     * import {RequestOptions, Request, RequestMethod} from '@angular/http';
+	     *
+	     * var options = new RequestOptions({
+	     *   method: RequestMethod.Post,
+	     *   url: 'https://google.com'
+	     * });
+	     * var req = new Request(options);
+	     * console.log('req.method:', RequestMethod[req.method]); // Post
+	     * console.log('options.url:', options.url); // https://google.com
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var RequestOptions = (function () {
+	        function RequestOptions(_a) {
+	            var _b = _a === void 0 ? {} : _a, method = _b.method, headers = _b.headers, body = _b.body, url = _b.url, search = _b.search, withCredentials = _b.withCredentials, responseType = _b.responseType;
+	            this.method = isPresent(method) ? normalizeMethodName(method) : null;
+	            this.headers = isPresent(headers) ? headers : null;
+	            this.body = isPresent(body) ? body : null;
+	            this.url = isPresent(url) ? url : null;
+	            this.search = isPresent(search) ?
+	                (isString(search) ? new URLSearchParams((search)) : (search)) :
+	                null;
+	            this.withCredentials = isPresent(withCredentials) ? withCredentials : null;
+	            this.responseType = isPresent(responseType) ? responseType : null;
+	        }
+	        /**
+	         * Creates a copy of the `RequestOptions` instance, using the optional input as values to override
+	         * existing values. This method will not change the values of the instance on which it is being
+	         * called.
+	         *
+	         * Note that `headers` and `search` will override existing values completely if present in
+	         * the `options` object. If these values should be merged, it should be done prior to calling
+	         * `merge` on the `RequestOptions` instance.
+	         *
+	         * ### Example ([live demo](http://plnkr.co/edit/6w8XA8YTkDRcPYpdB9dk?p=preview))
+	         *
+	         * ```typescript
+	         * import {RequestOptions, Request, RequestMethod} from '@angular/http';
+	         *
+	         * var options = new RequestOptions({
+	         *   method: RequestMethod.Post
+	         * });
+	         * var req = new Request(options.merge({
+	         *   url: 'https://google.com'
+	         * }));
+	         * console.log('req.method:', RequestMethod[req.method]); // Post
+	         * console.log('options.url:', options.url); // null
+	         * console.log('req.url:', req.url); // https://google.com
+	         * ```
+	         */
+	        RequestOptions.prototype.merge = function (options) {
+	            return new RequestOptions({
+	                method: isPresent(options) && isPresent(options.method) ? options.method : this.method,
+	                headers: isPresent(options) && isPresent(options.headers) ? options.headers : this.headers,
+	                body: isPresent(options) && isPresent(options.body) ? options.body : this.body,
+	                url: isPresent(options) && isPresent(options.url) ? options.url : this.url,
+	                search: isPresent(options) && isPresent(options.search) ?
+	                    (isString(options.search) ? new URLSearchParams((options.search)) :
+	                        (options.search).clone()) :
+	                    this.search,
+	                withCredentials: isPresent(options) && isPresent(options.withCredentials) ?
+	                    options.withCredentials :
+	                    this.withCredentials,
+	                responseType: isPresent(options) && isPresent(options.responseType) ? options.responseType :
+	                    this.responseType
+	            });
+	        };
+	        return RequestOptions;
+	    }());
+	    /**
+	     * Subclass of {@link RequestOptions}, with default values.
+	     *
+	     * Default values:
+	     *  * method: {@link RequestMethod RequestMethod.Get}
+	     *  * headers: empty {@link Headers} object
+	     *
+	     * This class could be extended and bound to the {@link RequestOptions} class
+	     * when configuring an {@link Injector}, in order to override the default options
+	     * used by {@link Http} to create and send {@link Request Requests}.
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/LEKVSx?p=preview))
+	     *
+	     * ```typescript
+	     * import {provide} from '@angular/core';
+	     * import {bootstrap} from '@angular/platform-browser/browser';
+	     * import {HTTP_PROVIDERS, Http, BaseRequestOptions, RequestOptions} from '@angular/http';
+	     * import {App} from './myapp';
+	     *
+	     * class MyOptions extends BaseRequestOptions {
+	     *   search: string = 'coreTeam=true';
+	     * }
+	     *
+	     * bootstrap(App, [HTTP_PROVIDERS, {provide: RequestOptions, useClass: MyOptions}]);
+	     * ```
+	     *
+	     * The options could also be extended when manually creating a {@link Request}
+	     * object.
+	     *
+	     * ### Example ([live demo](http://plnkr.co/edit/oyBoEvNtDhOSfi9YxaVb?p=preview))
+	     *
+	     * ```
+	     * import {BaseRequestOptions, Request, RequestMethod} from '@angular/http';
+	     *
+	     * var options = new BaseRequestOptions();
+	     * var req = new Request(options.merge({
+	     *   method: RequestMethod.Post,
+	     *   url: 'https://google.com'
+	     * }));
+	     * console.log('req.method:', RequestMethod[req.method]); // Post
+	     * console.log('options.url:', options.url); // null
+	     * console.log('req.url:', req.url); // https://google.com
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var BaseRequestOptions = (function (_super) {
+	        __extends$3(BaseRequestOptions, _super);
+	        function BaseRequestOptions() {
+	            _super.call(this, { method: exports.RequestMethod.Get, headers: new Headers() });
+	        }
+	        BaseRequestOptions.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        BaseRequestOptions.ctorParameters = [];
+	        return BaseRequestOptions;
+	    }(RequestOptions));
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var __extends$5 = (this && this.__extends) || function (d, b) {
+	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    // TODO(jeffbcross): properly implement body accessors
+	    /**
+	     * Creates `Request` instances from provided values.
+	     *
+	     * The Request's interface is inspired by the Request constructor defined in the [Fetch
+	     * Spec](https://fetch.spec.whatwg.org/#request-class),
+	     * but is considered a static value whose body can be accessed many times. There are other
+	     * differences in the implementation, but this is the most significant.
+	     *
+	     * `Request` instances are typically created by higher-level classes, like {@link Http} and
+	     * {@link Jsonp}, but it may occasionally be useful to explicitly create `Request` instances.
+	     * One such example is when creating services that wrap higher-level services, like {@link Http},
+	     * where it may be useful to generate a `Request` with arbitrary headers and search params.
+	     *
+	     * ```typescript
+	     * import {Injectable, Injector} from '@angular/core';
+	     * import {HTTP_PROVIDERS, Http, Request, RequestMethod} from '@angular/http';
+	     *
+	     * @Injectable()
+	     * class AutoAuthenticator {
+	     *   constructor(public http:Http) {}
+	     *   request(url:string) {
+	     *     return this.http.request(new Request({
+	     *       method: RequestMethod.Get,
+	     *       url: url,
+	     *       search: 'password=123'
+	     *     }));
+	     *   }
+	     * }
+	     *
+	     * var injector = Injector.resolveAndCreate([HTTP_PROVIDERS, AutoAuthenticator]);
+	     * var authenticator = injector.get(AutoAuthenticator);
+	     * authenticator.request('people.json').subscribe(res => {
+	     *   //URL should have included '?password=123'
+	     *   console.log('people', res.json());
+	     * });
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var Request = (function (_super) {
+	        __extends$5(Request, _super);
+	        function Request(requestOptions) {
+	            _super.call(this);
+	            // TODO: assert that url is present
+	            var url = requestOptions.url;
+	            this.url = requestOptions.url;
+	            if (isPresent(requestOptions.search)) {
+	                var search = requestOptions.search.toString();
+	                if (search.length > 0) {
+	                    var prefix = '?';
+	                    if (StringWrapper.contains(this.url, '?')) {
+	                        prefix = (this.url[this.url.length - 1] == '&') ? '' : '&';
+	                    }
+	                    // TODO: just delete search-query-looking string in url?
+	                    this.url = url + prefix + search;
+	                }
+	            }
+	            this._body = requestOptions.body;
+	            this.method = normalizeMethodName(requestOptions.method);
+	            // TODO(jeffbcross): implement behavior
+	            // Defaults to 'omit', consistent with browser
+	            // TODO(jeffbcross): implement behavior
+	            this.headers = new Headers(requestOptions.headers);
+	            this.contentType = this.detectContentType();
+	            this.withCredentials = requestOptions.withCredentials;
+	            this.responseType = requestOptions.responseType;
+	        }
+	        /**
+	         * Returns the content type enum based on header options.
+	         */
+	        Request.prototype.detectContentType = function () {
+	            switch (this.headers.get('content-type')) {
+	                case 'application/json':
+	                    return ContentType.JSON;
+	                case 'application/x-www-form-urlencoded':
+	                    return ContentType.FORM;
+	                case 'multipart/form-data':
+	                    return ContentType.FORM_DATA;
+	                case 'text/plain':
+	                case 'text/html':
+	                    return ContentType.TEXT;
+	                case 'application/octet-stream':
+	                    return ContentType.BLOB;
+	                default:
+	                    return this.detectContentTypeFromBody();
+	            }
+	        };
+	        /**
+	         * Returns the content type of request's body based on its type.
+	         */
+	        Request.prototype.detectContentTypeFromBody = function () {
+	            if (this._body == null) {
+	                return ContentType.NONE;
+	            }
+	            else if (this._body instanceof URLSearchParams) {
+	                return ContentType.FORM;
+	            }
+	            else if (this._body instanceof FormData) {
+	                return ContentType.FORM_DATA;
+	            }
+	            else if (this._body instanceof Blob$1) {
+	                return ContentType.BLOB;
+	            }
+	            else if (this._body instanceof ArrayBuffer$1) {
+	                return ContentType.ARRAY_BUFFER;
+	            }
+	            else if (this._body && typeof this._body == 'object') {
+	                return ContentType.JSON;
+	            }
+	            else {
+	                return ContentType.TEXT;
+	            }
+	        };
+	        /**
+	         * Returns the request's body according to its type. If body is undefined, return
+	         * null.
+	         */
+	        Request.prototype.getBody = function () {
+	            switch (this.contentType) {
+	                case ContentType.JSON:
+	                    return this.text();
+	                case ContentType.FORM:
+	                    return this.text();
+	                case ContentType.FORM_DATA:
+	                    return this._body;
+	                case ContentType.TEXT:
+	                    return this.text();
+	                case ContentType.BLOB:
+	                    return this.blob();
+	                case ContentType.ARRAY_BUFFER:
+	                    return this.arrayBuffer();
+	                default:
+	                    return null;
+	            }
+	        };
+	        return Request;
+	    }(Body));
+	    var noop$1 = function () { };
+	    var w = typeof window == 'object' ? window : noop$1;
+	    var FormData = w['FormData'] || noop$1;
+	    var Blob$1 = w['Blob'] || noop$1;
+	    var ArrayBuffer$1 = w['ArrayBuffer'] || noop$1;
+	
+	    /**
+	     * @license
+	     * Copyright Google Inc. All Rights Reserved.
+	     *
+	     * Use of this source code is governed by an MIT-style license that can be
+	     * found in the LICENSE file at https://angular.io/license
+	     */
+	    var __extends$4 = (this && this.__extends) || function (d, b) {
+	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	    function httpRequest(backend, request) {
+	        return backend.createConnection(request).response;
+	    }
+	    function mergeOptions(defaultOpts, providedOpts, method, url) {
+	        var newOptions = defaultOpts;
+	        if (isPresent(providedOpts)) {
+	            // Hack so Dart can used named parameters
+	            return newOptions.merge(new RequestOptions({
+	                method: providedOpts.method || method,
+	                url: providedOpts.url || url,
+	                search: providedOpts.search,
+	                headers: providedOpts.headers,
+	                body: providedOpts.body,
+	                withCredentials: providedOpts.withCredentials,
+	                responseType: providedOpts.responseType
+	            }));
+	        }
+	        if (isPresent(method)) {
+	            return newOptions.merge(new RequestOptions({ method: method, url: url }));
+	        }
+	        else {
+	            return newOptions.merge(new RequestOptions({ url: url }));
+	        }
+	    }
+	    /**
+	     * Performs http requests using `XMLHttpRequest` as the default backend.
+	     *
+	     * `Http` is available as an injectable class, with methods to perform http requests. Calling
+	     * `request` returns an `Observable` which will emit a single {@link Response} when a
+	     * response is received.
+	     *
+	     * ### Example
+	     *
+	     * ```typescript
+	     * import {Http, HTTP_PROVIDERS} from '@angular/http';
+	     * import 'rxjs/add/operator/map'
+	     * @Component({
+	     *   selector: 'http-app',
+	     *   viewProviders: [HTTP_PROVIDERS],
+	     *   templateUrl: 'people.html'
+	     * })
+	     * class PeopleComponent {
+	     *   constructor(http: Http) {
+	     *     http.get('people.json')
+	     *       // Call map on the response observable to get the parsed people object
+	     *       .map(res => res.json())
+	     *       // Subscribe to the observable to get the parsed people object and attach it to the
+	     *       // component
+	     *       .subscribe(people => this.people = people);
+	     *   }
+	     * }
+	     * ```
+	     *
+	     *
+	     * ### Example
+	     *
+	     * ```
+	     * http.get('people.json').subscribe((res:Response) => this.people = res.json());
+	     * ```
+	     *
+	     * The default construct used to perform requests, `XMLHttpRequest`, is abstracted as a "Backend" (
+	     * {@link XHRBackend} in this case), which could be mocked with dependency injection by replacing
+	     * the {@link XHRBackend} provider, as in the following example:
+	     *
+	     * ### Example
+	     *
+	     * ```typescript
+	     * import {BaseRequestOptions, Http} from '@angular/http';
+	     * import {MockBackend} from '@angular/http/testing';
+	     * var injector = Injector.resolveAndCreate([
+	     *   BaseRequestOptions,
+	     *   MockBackend,
+	     *   {provide: Http, useFactory:
+	     *       function(backend, defaultOptions) {
+	     *         return new Http(backend, defaultOptions);
+	     *       },
+	     *       deps: [MockBackend, BaseRequestOptions]}
+	     * ]);
+	     * var http = injector.get(Http);
+	     * http.get('request-from-mock-backend.json').subscribe((res:Response) => doSomething(res));
+	     * ```
+	     *
+	     * @experimental
+	     */
+	    var Http = (function () {
+	        function Http(_backend, _defaultOptions) {
+	            this._backend = _backend;
+	            this._defaultOptions = _defaultOptions;
+	        }
+	        /**
+	         * Performs any type of http request. First argument is required, and can either be a url or
+	         * a {@link Request} instance. If the first argument is a url, an optional {@link RequestOptions}
+	         * object can be provided as the 2nd argument. The options object will be merged with the values
+	         * of {@link BaseRequestOptions} before performing the request.
+	         */
+	        Http.prototype.request = function (url, options) {
+	            var responseObservable;
+	            if (isString(url)) {
+	                responseObservable = httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Get, url)));
+	            }
+	            else if (url instanceof Request) {
+	                responseObservable = httpRequest(this._backend, url);
+	            }
+	            else {
+	                throw new Error('First argument must be a url string or Request instance.');
+	            }
+	            return responseObservable;
+	        };
+	        /**
+	         * Performs a request with `get` http method.
+	         */
+	        Http.prototype.get = function (url, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Get, url)));
+	        };
+	        /**
+	         * Performs a request with `post` http method.
+	         */
+	        Http.prototype.post = function (url, body, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions.merge(new RequestOptions({ body: body })), options, exports.RequestMethod.Post, url)));
+	        };
+	        /**
+	         * Performs a request with `put` http method.
+	         */
+	        Http.prototype.put = function (url, body, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions.merge(new RequestOptions({ body: body })), options, exports.RequestMethod.Put, url)));
+	        };
+	        /**
+	         * Performs a request with `delete` http method.
+	         */
+	        Http.prototype.delete = function (url, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Delete, url)));
+	        };
+	        /**
+	         * Performs a request with `patch` http method.
+	         */
+	        Http.prototype.patch = function (url, body, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions.merge(new RequestOptions({ body: body })), options, exports.RequestMethod.Patch, url)));
+	        };
+	        /**
+	         * Performs a request with `head` http method.
+	         */
+	        Http.prototype.head = function (url, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Head, url)));
+	        };
+	        /**
+	         * Performs a request with `options` http method.
+	         */
+	        Http.prototype.options = function (url, options) {
+	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Options, url)));
+	        };
+	        Http.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        Http.ctorParameters = [
+	            { type: ConnectionBackend, },
+	            { type: RequestOptions, },
+	        ];
+	        return Http;
+	    }());
+	    /**
+	     * @experimental
+	     */
+	    var Jsonp = (function (_super) {
+	        __extends$4(Jsonp, _super);
+	        function Jsonp(backend, defaultOptions) {
+	            _super.call(this, backend, defaultOptions);
+	        }
+	        /**
+	         * Performs any type of http request. First argument is required, and can either be a url or
+	         * a {@link Request} instance. If the first argument is a url, an optional {@link RequestOptions}
+	         * object can be provided as the 2nd argument. The options object will be merged with the values
+	         * of {@link BaseRequestOptions} before performing the request.
+	         *
+	         * @security Regular XHR is the safest alternative to JSONP for most applications, and is
+	         * supported by all current browsers. Because JSONP creates a `<script>` element with
+	         * contents retrieved from a remote source, attacker-controlled data introduced by an untrusted
+	         * source could expose your application to XSS risks. Data exposed by JSONP may also be
+	         * readable by malicious third-party websites. In addition, JSONP introduces potential risk for
+	         * future security issues (e.g. content sniffing).  For more detail, see the
+	         * [Security Guide](http://g.co/ng/security).
+	         */
+	        Jsonp.prototype.request = function (url, options) {
+	            var responseObservable;
+	            if (isString(url)) {
+	                url =
+	                    new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Get, url));
+	            }
+	            if (url instanceof Request) {
+	                if (url.method !== exports.RequestMethod.Get) {
+	                    throw new Error('JSONP requests must use GET request method.');
+	                }
+	                responseObservable = httpRequest(this._backend, url);
+	            }
+	            else {
+	                throw new Error('First argument must be a url string or Request instance.');
+	            }
+	            return responseObservable;
+	        };
+	        Jsonp.decorators = [
+	            { type: _angular_core.Injectable },
+	        ];
+	        /** @nocollapse */
+	        Jsonp.ctorParameters = [
+	            { type: ConnectionBackend, },
+	            { type: RequestOptions, },
+	        ];
+	        return Jsonp;
+	    }(Http));
+	
+	    function _createDefaultCookieXSRFStrategy() {
+	        return new CookieXSRFStrategy();
+	    }
+	    function httpFactory(xhrBackend, requestOptions) {
+	        return new Http(xhrBackend, requestOptions);
+	    }
+	    function jsonpFactory(jsonpBackend, requestOptions) {
+	        return new Jsonp(jsonpBackend, requestOptions);
+	    }
+	    /**
+	     * The module that includes http's providers
+	     *
+	     * @experimental
+	     */
+	    var HttpModule = (function () {
+	        function HttpModule() {
+	        }
+	        HttpModule.decorators = [
+	            { type: _angular_core.NgModule, args: [{
+	                        providers: [
+	                            // TODO(pascal): use factory type annotations once supported in DI
+	                            // issue: https://github.com/angular/angular/issues/3183
+	                            { provide: Http, useFactory: httpFactory, deps: [XHRBackend, RequestOptions] },
+	                            BrowserXhr,
+	                            { provide: RequestOptions, useClass: BaseRequestOptions },
+	                            { provide: ResponseOptions, useClass: BaseResponseOptions },
+	                            XHRBackend,
+	                            { provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy },
+	                        ],
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        HttpModule.ctorParameters = [];
+	        return HttpModule;
+	    }());
+	    /**
+	     * The module that includes jsonp's providers
+	     *
+	     * @experimental
+	     */
+	    var JsonpModule = (function () {
+	        function JsonpModule() {
+	        }
+	        JsonpModule.decorators = [
+	            { type: _angular_core.NgModule, args: [{
+	                        providers: [
+	                            // TODO(pascal): use factory type annotations once supported in DI
+	                            // issue: https://github.com/angular/angular/issues/3183
+	                            { provide: Jsonp, useFactory: jsonpFactory, deps: [JSONPBackend, RequestOptions] },
+	                            BrowserJsonp,
+	                            { provide: RequestOptions, useClass: BaseRequestOptions },
+	                            { provide: ResponseOptions, useClass: BaseResponseOptions },
+	                            { provide: JSONPBackend, useClass: JSONPBackend_ },
+	                        ],
+	                    },] },
+	        ];
+	        /** @nocollapse */
+	        JsonpModule.ctorParameters = [];
+	        return JsonpModule;
+	    }());
+	
+	    exports.BrowserXhr = BrowserXhr;
+	    exports.JSONPBackend = JSONPBackend;
+	    exports.JSONPConnection = JSONPConnection;
+	    exports.CookieXSRFStrategy = CookieXSRFStrategy;
+	    exports.XHRBackend = XHRBackend;
+	    exports.XHRConnection = XHRConnection;
+	    exports.BaseRequestOptions = BaseRequestOptions;
+	    exports.RequestOptions = RequestOptions;
+	    exports.BaseResponseOptions = BaseResponseOptions;
+	    exports.ResponseOptions = ResponseOptions;
+	    exports.Headers = Headers;
+	    exports.Http = Http;
+	    exports.Jsonp = Jsonp;
+	    exports.HttpModule = HttpModule;
+	    exports.JsonpModule = JsonpModule;
+	    exports.Connection = Connection;
+	    exports.ConnectionBackend = ConnectionBackend;
+	    exports.XSRFStrategy = XSRFStrategy;
+	    exports.Request = Request;
+	    exports.Response = Response;
+	    exports.QueryEncoder = QueryEncoder;
+	    exports.URLSearchParams = URLSearchParams;
+	
+	}));
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 31 */
+/*!************************************!*\
+  !*** ./~/rxjs/add/operator/map.js ***!
+  \************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(/*! ../../Observable */ 5);
+	var map_1 = __webpack_require__(/*! ../../operator/map */ 32);
+	Observable_1.Observable.prototype.map = map_1.map;
+	//# sourceMappingURL=map.js.map
+
+/***/ },
+/* 32 */
+/*!********************************!*\
+  !*** ./~/rxjs/operator/map.js ***!
+  \********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subscriber_1 = __webpack_require__(/*! ../Subscriber */ 8);
+	/**
+	 * Applies a given `project` function to each value emitted by the source
+	 * Observable, and emits the resulting values as an Observable.
+	 *
+	 * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
+	 * it passes each source value through a transformation function to get
+	 * corresponding output values.</span>
+	 *
+	 * <img src="./img/map.png" width="100%">
+	 *
+	 * Similar to the well known `Array.prototype.map` function, this operator
+	 * applies a projection to each value and emits that projection in the output
+	 * Observable.
+	 *
+	 * @example <caption>Map every every click to the clientX position of that click</caption>
+	 * var clicks = Rx.Observable.fromEvent(document, 'click');
+	 * var positions = clicks.map(ev => ev.clientX);
+	 * positions.subscribe(x => console.log(x));
+	 *
+	 * @see {@link mapTo}
+	 * @see {@link pluck}
+	 *
+	 * @param {function(value: T, index: number): R} project The function to apply
+	 * to each `value` emitted by the source Observable. The `index` parameter is
+	 * the number `i` for the i-th emission that has happened since the
+	 * subscription, starting from the number `0`.
+	 * @param {any} [thisArg] An optional argument to define what `this` is in the
+	 * `project` function.
+	 * @return {Observable<R>} An Observable that emits the values from the source
+	 * Observable transformed by the given `project` function.
+	 * @method map
+	 * @owner Observable
+	 */
+	function map(project, thisArg) {
+	    if (typeof project !== 'function') {
+	        throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
+	    }
+	    return this.lift(new MapOperator(project, thisArg));
+	}
+	exports.map = map;
+	var MapOperator = (function () {
+	    function MapOperator(project, thisArg) {
+	        this.project = project;
+	        this.thisArg = thisArg;
+	    }
+	    MapOperator.prototype.call = function (subscriber, source) {
+	        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
+	    };
+	    return MapOperator;
+	}());
+	exports.MapOperator = MapOperator;
+	/**
+	 * We need this JSDoc comment for affecting ESDoc.
+	 * @ignore
+	 * @extends {Ignored}
+	 */
+	var MapSubscriber = (function (_super) {
+	    __extends(MapSubscriber, _super);
+	    function MapSubscriber(destination, project, thisArg) {
+	        _super.call(this, destination);
+	        this.project = project;
+	        this.count = 0;
+	        this.thisArg = thisArg || this;
+	    }
+	    // NOTE: This looks unoptimized, but it's actually purposefully NOT
+	    // using try/catch optimizations.
+	    MapSubscriber.prototype._next = function (value) {
+	        var result;
+	        try {
+	            result = this.project.call(this.thisArg, value, this.count++);
+	        }
+	        catch (err) {
+	            this.destination.error(err);
+	            return;
+	        }
+	        this.destination.next(result);
+	    };
+	    return MapSubscriber;
+	}(Subscriber_1.Subscriber));
+	//# sourceMappingURL=map.js.map
+
+/***/ },
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */
 /*!*************************************************!*\
   !*** ./~/@angular/router/bundles/router.umd.js ***!
   \*************************************************/
@@ -40288,7 +44736,7 @@ webpackJsonp([2],[
 	 * License: MIT
 	 */
 	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(/*! @angular/common */ 22), __webpack_require__(/*! @angular/core */ 3), __webpack_require__(/*! rxjs/Subject */ 4), __webpack_require__(/*! rxjs/observable/from */ 30), __webpack_require__(/*! rxjs/observable/of */ 42), __webpack_require__(/*! rxjs/operator/every */ 43), __webpack_require__(/*! rxjs/operator/map */ 44), __webpack_require__(/*! rxjs/operator/mergeAll */ 45), __webpack_require__(/*! rxjs/operator/mergeMap */ 49), __webpack_require__(/*! rxjs/operator/reduce */ 50), __webpack_require__(/*! rxjs/Observable */ 5), __webpack_require__(/*! rxjs/operator/catch */ 51), __webpack_require__(/*! rxjs/operator/concatAll */ 52), __webpack_require__(/*! rxjs/operator/first */ 53), __webpack_require__(/*! rxjs/util/EmptyError */ 54), __webpack_require__(/*! rxjs/observable/fromPromise */ 26), __webpack_require__(/*! rxjs/operator/last */ 55), __webpack_require__(/*! rxjs/BehaviorSubject */ 56)) :
+	     true ? factory(exports, __webpack_require__(/*! @angular/common */ 22), __webpack_require__(/*! @angular/core */ 3), __webpack_require__(/*! rxjs/Subject */ 4), __webpack_require__(/*! rxjs/observable/from */ 39), __webpack_require__(/*! rxjs/observable/of */ 51), __webpack_require__(/*! rxjs/operator/every */ 52), __webpack_require__(/*! rxjs/operator/map */ 32), __webpack_require__(/*! rxjs/operator/mergeAll */ 53), __webpack_require__(/*! rxjs/operator/mergeMap */ 57), __webpack_require__(/*! rxjs/operator/reduce */ 58), __webpack_require__(/*! rxjs/Observable */ 5), __webpack_require__(/*! rxjs/operator/catch */ 59), __webpack_require__(/*! rxjs/operator/concatAll */ 60), __webpack_require__(/*! rxjs/operator/first */ 61), __webpack_require__(/*! rxjs/util/EmptyError */ 62), __webpack_require__(/*! rxjs/observable/fromPromise */ 26), __webpack_require__(/*! rxjs/operator/last */ 63), __webpack_require__(/*! rxjs/BehaviorSubject */ 64)) :
 	    typeof define === 'function' && define.amd ? define(['exports', '@angular/common', '@angular/core', 'rxjs/Subject', 'rxjs/observable/from', 'rxjs/observable/of', 'rxjs/operator/every', 'rxjs/operator/map', 'rxjs/operator/mergeAll', 'rxjs/operator/mergeMap', 'rxjs/operator/reduce', 'rxjs/Observable', 'rxjs/operator/catch', 'rxjs/operator/concatAll', 'rxjs/operator/first', 'rxjs/util/EmptyError', 'rxjs/observable/fromPromise', 'rxjs/operator/last', 'rxjs/BehaviorSubject'], factory) :
 	    (factory((global.ng = global.ng || {}, global.ng.router = global.ng.router || {}),global.ng.common,global.ng.core,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.Rx.Observable,global.Rx.Observable.prototype,global.Rx));
 	}(this, function (exports,_angular_common,_angular_core,rxjs_Subject,rxjs_observable_from,rxjs_observable_of,rxjs_operator_every,rxjs_operator_map,rxjs_operator_mergeAll,rxjs_operator_mergeMap,rxjs_operator_reduce,rxjs_Observable,rxjs_operator_catch,rxjs_operator_concatAll,rxjs_operator_first,rxjs_util_EmptyError,rxjs_observable_fromPromise,l,rxjs_BehaviorSubject) { 'use strict';
@@ -43988,19 +48436,19 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 30 */
+/* 39 */
 /*!***********************************!*\
   !*** ./~/rxjs/observable/from.js ***!
   \***********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromObservable_1 = __webpack_require__(/*! ./FromObservable */ 31);
+	var FromObservable_1 = __webpack_require__(/*! ./FromObservable */ 40);
 	exports.from = FromObservable_1.FromObservable.create;
 	//# sourceMappingURL=from.js.map
 
 /***/ },
-/* 31 */
+/* 40 */
 /*!*********************************************!*\
   !*** ./~/rxjs/observable/FromObservable.js ***!
   \*********************************************/
@@ -44013,14 +48461,14 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var isArray_1 = __webpack_require__(/*! ../util/isArray */ 11);
-	var isPromise_1 = __webpack_require__(/*! ../util/isPromise */ 32);
+	var isPromise_1 = __webpack_require__(/*! ../util/isPromise */ 41);
 	var PromiseObservable_1 = __webpack_require__(/*! ./PromiseObservable */ 27);
-	var IteratorObservable_1 = __webpack_require__(/*! ./IteratorObservable */ 33);
-	var ArrayObservable_1 = __webpack_require__(/*! ./ArrayObservable */ 35);
-	var ArrayLikeObservable_1 = __webpack_require__(/*! ./ArrayLikeObservable */ 39);
-	var iterator_1 = __webpack_require__(/*! ../symbol/iterator */ 34);
+	var IteratorObservable_1 = __webpack_require__(/*! ./IteratorObservable */ 42);
+	var ArrayObservable_1 = __webpack_require__(/*! ./ArrayObservable */ 44);
+	var ArrayLikeObservable_1 = __webpack_require__(/*! ./ArrayLikeObservable */ 48);
+	var iterator_1 = __webpack_require__(/*! ../symbol/iterator */ 43);
 	var Observable_1 = __webpack_require__(/*! ../Observable */ 5);
-	var observeOn_1 = __webpack_require__(/*! ../operator/observeOn */ 40);
+	var observeOn_1 = __webpack_require__(/*! ../operator/observeOn */ 49);
 	var observable_1 = __webpack_require__(/*! ../symbol/observable */ 18);
 	var isArrayLike = (function (x) { return x && typeof x.length === 'number'; });
 	/**
@@ -44124,7 +48572,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromObservable.js.map
 
 /***/ },
-/* 32 */
+/* 41 */
 /*!**********************************!*\
   !*** ./~/rxjs/util/isPromise.js ***!
   \**********************************/
@@ -44138,7 +48586,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isPromise.js.map
 
 /***/ },
-/* 33 */
+/* 42 */
 /*!*************************************************!*\
   !*** ./~/rxjs/observable/IteratorObservable.js ***!
   \*************************************************/
@@ -44152,7 +48600,7 @@ webpackJsonp([2],[
 	};
 	var root_1 = __webpack_require__(/*! ../util/root */ 6);
 	var Observable_1 = __webpack_require__(/*! ../Observable */ 5);
-	var iterator_1 = __webpack_require__(/*! ../symbol/iterator */ 34);
+	var iterator_1 = __webpack_require__(/*! ../symbol/iterator */ 43);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -44303,7 +48751,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=IteratorObservable.js.map
 
 /***/ },
-/* 34 */
+/* 43 */
 /*!***********************************!*\
   !*** ./~/rxjs/symbol/iterator.js ***!
   \***********************************/
@@ -44343,7 +48791,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=iterator.js.map
 
 /***/ },
-/* 35 */
+/* 44 */
 /*!**********************************************!*\
   !*** ./~/rxjs/observable/ArrayObservable.js ***!
   \**********************************************/
@@ -44356,9 +48804,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(/*! ../Observable */ 5);
-	var ScalarObservable_1 = __webpack_require__(/*! ./ScalarObservable */ 36);
-	var EmptyObservable_1 = __webpack_require__(/*! ./EmptyObservable */ 37);
-	var isScheduler_1 = __webpack_require__(/*! ../util/isScheduler */ 38);
+	var ScalarObservable_1 = __webpack_require__(/*! ./ScalarObservable */ 45);
+	var EmptyObservable_1 = __webpack_require__(/*! ./EmptyObservable */ 46);
+	var isScheduler_1 = __webpack_require__(/*! ../util/isScheduler */ 47);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -44473,7 +48921,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ArrayObservable.js.map
 
 /***/ },
-/* 36 */
+/* 45 */
 /*!***********************************************!*\
   !*** ./~/rxjs/observable/ScalarObservable.js ***!
   \***********************************************/
@@ -44539,7 +48987,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ScalarObservable.js.map
 
 /***/ },
-/* 37 */
+/* 46 */
 /*!**********************************************!*\
   !*** ./~/rxjs/observable/EmptyObservable.js ***!
   \**********************************************/
@@ -44622,7 +49070,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=EmptyObservable.js.map
 
 /***/ },
-/* 38 */
+/* 47 */
 /*!************************************!*\
   !*** ./~/rxjs/util/isScheduler.js ***!
   \************************************/
@@ -44636,7 +49084,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isScheduler.js.map
 
 /***/ },
-/* 39 */
+/* 48 */
 /*!**************************************************!*\
   !*** ./~/rxjs/observable/ArrayLikeObservable.js ***!
   \**************************************************/
@@ -44649,8 +49097,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(/*! ../Observable */ 5);
-	var ScalarObservable_1 = __webpack_require__(/*! ./ScalarObservable */ 36);
-	var EmptyObservable_1 = __webpack_require__(/*! ./EmptyObservable */ 37);
+	var ScalarObservable_1 = __webpack_require__(/*! ./ScalarObservable */ 45);
+	var EmptyObservable_1 = __webpack_require__(/*! ./EmptyObservable */ 46);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -44714,7 +49162,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ArrayLikeObservable.js.map
 
 /***/ },
-/* 40 */
+/* 49 */
 /*!**************************************!*\
   !*** ./~/rxjs/operator/observeOn.js ***!
   \**************************************/
@@ -44727,7 +49175,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(/*! ../Subscriber */ 8);
-	var Notification_1 = __webpack_require__(/*! ../Notification */ 41);
+	var Notification_1 = __webpack_require__(/*! ../Notification */ 50);
 	/**
 	 * @see {@link Notification}
 	 *
@@ -44797,7 +49245,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=observeOn.js.map
 
 /***/ },
-/* 41 */
+/* 50 */
 /*!********************************!*\
   !*** ./~/rxjs/Notification.js ***!
   \********************************/
@@ -44932,19 +49380,19 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Notification.js.map
 
 /***/ },
-/* 42 */
+/* 51 */
 /*!*********************************!*\
   !*** ./~/rxjs/observable/of.js ***!
   \*********************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ArrayObservable_1 = __webpack_require__(/*! ./ArrayObservable */ 35);
+	var ArrayObservable_1 = __webpack_require__(/*! ./ArrayObservable */ 44);
 	exports.of = ArrayObservable_1.ArrayObservable.of;
 	//# sourceMappingURL=of.js.map
 
 /***/ },
-/* 43 */
+/* 52 */
 /*!**********************************!*\
   !*** ./~/rxjs/operator/every.js ***!
   \**********************************/
@@ -45020,102 +49468,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=every.js.map
 
 /***/ },
-/* 44 */
-/*!********************************!*\
-  !*** ./~/rxjs/operator/map.js ***!
-  \********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subscriber_1 = __webpack_require__(/*! ../Subscriber */ 8);
-	/**
-	 * Applies a given `project` function to each value emitted by the source
-	 * Observable, and emits the resulting values as an Observable.
-	 *
-	 * <span class="informal">Like [Array.prototype.map()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map),
-	 * it passes each source value through a transformation function to get
-	 * corresponding output values.</span>
-	 *
-	 * <img src="./img/map.png" width="100%">
-	 *
-	 * Similar to the well known `Array.prototype.map` function, this operator
-	 * applies a projection to each value and emits that projection in the output
-	 * Observable.
-	 *
-	 * @example <caption>Map every every click to the clientX position of that click</caption>
-	 * var clicks = Rx.Observable.fromEvent(document, 'click');
-	 * var positions = clicks.map(ev => ev.clientX);
-	 * positions.subscribe(x => console.log(x));
-	 *
-	 * @see {@link mapTo}
-	 * @see {@link pluck}
-	 *
-	 * @param {function(value: T, index: number): R} project The function to apply
-	 * to each `value` emitted by the source Observable. The `index` parameter is
-	 * the number `i` for the i-th emission that has happened since the
-	 * subscription, starting from the number `0`.
-	 * @param {any} [thisArg] An optional argument to define what `this` is in the
-	 * `project` function.
-	 * @return {Observable<R>} An Observable that emits the values from the source
-	 * Observable transformed by the given `project` function.
-	 * @method map
-	 * @owner Observable
-	 */
-	function map(project, thisArg) {
-	    if (typeof project !== 'function') {
-	        throw new TypeError('argument is not a function. Are you looking for `mapTo()`?');
-	    }
-	    return this.lift(new MapOperator(project, thisArg));
-	}
-	exports.map = map;
-	var MapOperator = (function () {
-	    function MapOperator(project, thisArg) {
-	        this.project = project;
-	        this.thisArg = thisArg;
-	    }
-	    MapOperator.prototype.call = function (subscriber, source) {
-	        return source._subscribe(new MapSubscriber(subscriber, this.project, this.thisArg));
-	    };
-	    return MapOperator;
-	}());
-	exports.MapOperator = MapOperator;
-	/**
-	 * We need this JSDoc comment for affecting ESDoc.
-	 * @ignore
-	 * @extends {Ignored}
-	 */
-	var MapSubscriber = (function (_super) {
-	    __extends(MapSubscriber, _super);
-	    function MapSubscriber(destination, project, thisArg) {
-	        _super.call(this, destination);
-	        this.project = project;
-	        this.count = 0;
-	        this.thisArg = thisArg || this;
-	    }
-	    // NOTE: This looks unoptimized, but it's actually purposefully NOT
-	    // using try/catch optimizations.
-	    MapSubscriber.prototype._next = function (value) {
-	        var result;
-	        try {
-	            result = this.project.call(this.thisArg, value, this.count++);
-	        }
-	        catch (err) {
-	            this.destination.error(err);
-	            return;
-	        }
-	        this.destination.next(result);
-	    };
-	    return MapSubscriber;
-	}(Subscriber_1.Subscriber));
-	//# sourceMappingURL=map.js.map
-
-/***/ },
-/* 45 */
+/* 53 */
 /*!*************************************!*\
   !*** ./~/rxjs/operator/mergeAll.js ***!
   \*************************************/
@@ -45127,8 +49480,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(/*! ../OuterSubscriber */ 46);
-	var subscribeToResult_1 = __webpack_require__(/*! ../util/subscribeToResult */ 47);
+	var OuterSubscriber_1 = __webpack_require__(/*! ../OuterSubscriber */ 54);
+	var subscribeToResult_1 = __webpack_require__(/*! ../util/subscribeToResult */ 55);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable which
 	 * concurrently delivers all values that are emitted on the inner Observables.
@@ -45234,7 +49587,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mergeAll.js.map
 
 /***/ },
-/* 46 */
+/* 54 */
 /*!***********************************!*\
   !*** ./~/rxjs/OuterSubscriber.js ***!
   \***********************************/
@@ -45272,7 +49625,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=OuterSubscriber.js.map
 
 /***/ },
-/* 47 */
+/* 55 */
 /*!******************************************!*\
   !*** ./~/rxjs/util/subscribeToResult.js ***!
   \******************************************/
@@ -45281,10 +49634,10 @@ webpackJsonp([2],[
 	"use strict";
 	var root_1 = __webpack_require__(/*! ./root */ 6);
 	var isArray_1 = __webpack_require__(/*! ./isArray */ 11);
-	var isPromise_1 = __webpack_require__(/*! ./isPromise */ 32);
+	var isPromise_1 = __webpack_require__(/*! ./isPromise */ 41);
 	var Observable_1 = __webpack_require__(/*! ../Observable */ 5);
-	var iterator_1 = __webpack_require__(/*! ../symbol/iterator */ 34);
-	var InnerSubscriber_1 = __webpack_require__(/*! ../InnerSubscriber */ 48);
+	var iterator_1 = __webpack_require__(/*! ../symbol/iterator */ 43);
+	var InnerSubscriber_1 = __webpack_require__(/*! ../InnerSubscriber */ 56);
 	var observable_1 = __webpack_require__(/*! ../symbol/observable */ 18);
 	function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
 	    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
@@ -45354,7 +49707,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=subscribeToResult.js.map
 
 /***/ },
-/* 48 */
+/* 56 */
 /*!***********************************!*\
   !*** ./~/rxjs/InnerSubscriber.js ***!
   \***********************************/
@@ -45398,7 +49751,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=InnerSubscriber.js.map
 
 /***/ },
-/* 49 */
+/* 57 */
 /*!*************************************!*\
   !*** ./~/rxjs/operator/mergeMap.js ***!
   \*************************************/
@@ -45410,8 +49763,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var subscribeToResult_1 = __webpack_require__(/*! ../util/subscribeToResult */ 47);
-	var OuterSubscriber_1 = __webpack_require__(/*! ../OuterSubscriber */ 46);
+	var subscribeToResult_1 = __webpack_require__(/*! ../util/subscribeToResult */ 55);
+	var OuterSubscriber_1 = __webpack_require__(/*! ../OuterSubscriber */ 54);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable.
@@ -45567,7 +49920,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mergeMap.js.map
 
 /***/ },
-/* 50 */
+/* 58 */
 /*!***********************************!*\
   !*** ./~/rxjs/operator/reduce.js ***!
   \***********************************/
@@ -45687,7 +50040,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=reduce.js.map
 
 /***/ },
-/* 51 */
+/* 59 */
 /*!**********************************!*\
   !*** ./~/rxjs/operator/catch.js ***!
   \**********************************/
@@ -45699,8 +50052,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(/*! ../OuterSubscriber */ 46);
-	var subscribeToResult_1 = __webpack_require__(/*! ../util/subscribeToResult */ 47);
+	var OuterSubscriber_1 = __webpack_require__(/*! ../OuterSubscriber */ 54);
+	var subscribeToResult_1 = __webpack_require__(/*! ../util/subscribeToResult */ 55);
 	/**
 	 * Catches errors on the observable to be handled by returning a new observable or throwing an error.
 	 * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
@@ -45760,14 +50113,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 52 */
+/* 60 */
 /*!**************************************!*\
   !*** ./~/rxjs/operator/concatAll.js ***!
   \**************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(/*! ./mergeAll */ 45);
+	var mergeAll_1 = __webpack_require__(/*! ./mergeAll */ 53);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -45817,7 +50170,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 53 */
+/* 61 */
 /*!**********************************!*\
   !*** ./~/rxjs/operator/first.js ***!
   \**********************************/
@@ -45830,7 +50183,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(/*! ../Subscriber */ 8);
-	var EmptyError_1 = __webpack_require__(/*! ../util/EmptyError */ 54);
+	var EmptyError_1 = __webpack_require__(/*! ../util/EmptyError */ 62);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -45973,7 +50326,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 54 */
+/* 62 */
 /*!***********************************!*\
   !*** ./~/rxjs/util/EmptyError.js ***!
   \***********************************/
@@ -46009,7 +50362,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=EmptyError.js.map
 
 /***/ },
-/* 55 */
+/* 63 */
 /*!*********************************!*\
   !*** ./~/rxjs/operator/last.js ***!
   \*********************************/
@@ -46022,7 +50375,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(/*! ../Subscriber */ 8);
-	var EmptyError_1 = __webpack_require__(/*! ../util/EmptyError */ 54);
+	var EmptyError_1 = __webpack_require__(/*! ../util/EmptyError */ 62);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -46135,7 +50488,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 56 */
+/* 64 */
 /*!***********************************!*\
   !*** ./~/rxjs/BehaviorSubject.js ***!
   \***********************************/
@@ -46192,4359 +50545,6 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BehaviorSubject.js.map
 
 /***/ },
-/* 57 */
-/*!********************************************************************!*\
-  !*** ./~/angular2localization/bundles/angular2localization.umd.js ***!
-  \********************************************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(/*! @angular/core */ 3), __webpack_require__(/*! @angular/http */ 58), __webpack_require__(/*! rxjs/Observable */ 5), __webpack_require__(/*! rxjs/add/operator/map */ 59), __webpack_require__(/*! @angular/common */ 22), __webpack_require__(/*! @angular/forms */ 24)) :
-	        typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/map', '@angular/common', '@angular/forms'], factory) :
-	            (factory((global.ng = global.ng || {}, global.ng.angular2localization = global.ng.angular2localization || {}), global.ng.core, global.ng.http, global.Rx, global.Rx, global.ng.common, global.ng.forms));
-	}(this, (function (exports, _angular_core, _angular_http, rxjs_Observable, rxjs_add_operator_map, _angular_common, _angular_forms) {
-	    'use strict';
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * LocaleService class.
-	     * Defines language, default locale & currency.
-	     *
-	     * Instantiate this class only once in the bootstrap component in order to access the data of location from anywhere in the application:
-	     *
-	     * FIRST SCENARIO - Dates & numbers.
-	     *
-	     * import {LocaleService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService) {
-	     *
-	     *         // Required: default language (ISO 639 two-letter or three-letter code) and country (ISO 3166 two-letter, uppercase code).
-	     *         this.locale.definePreferredLocale('en', 'US');
-	     *
-	     *         // Optional: default currency (ISO 4217 three-letter code).
-	     *         this.locale.definePreferredCurrency('USD');
-	     *
-	     *      }
-	     *
-	     * }
-	     *
-	     * SECOND SCENARIO - Messages.
-	     *
-	     * import {LocaleService, LocalizationService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService, public localization: LocalizationService) {
-	     *
-	     *         // Adds a new language (ISO 639 two-letter or three-letter code).
-	     *         this.locale.addLanguage('en');
-	     *         // Add a new language here.
-	     *
-	     *         // Required: default language and expiry (No days). If the expiry is omitted, the cookie becomes a session cookie.
-	     *         this.locale.definePreferredLanguage('en', 30);
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * THIRD SCENARIO - Messages, dates & numbers.
-	     *
-	     * import {LocaleService, LocalizationService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService, public localization: LocalizationService) {
-	     *
-	     *         // Adds a new language (ISO 639 two-letter or three-letter code).
-	     *         this.locale.addLanguage('en');
-	     *         // Add a new language here.
-	     *
-	     *         // Required: default language, country (ISO 3166 two-letter, uppercase code) and expiry (No days). If the expiry is omitted, the cookie becomes a session cookie.
-	     *         this.locale.definePreferredLocale('en', 'US', 30);
-	     *
-	     *         // Optional: default currency (ISO 4217 three-letter code).
-	     *         this.locale.definePreferredCurrency('USD');
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * Changing language.
-	     *
-	     * To change language at runtime, call the following method:
-	     *
-	     * this.locale.setCurrentLanguage(language);
-	     *
-	     * where 'language' is the two-letter or three-letter code of the new language (ISO 639).
-	     *
-	     *
-	     * Changing locale.
-	     *
-	     * To change locale at runtime, call the following method:
-	     *
-	     * this.locale.setCurrentLocale(language, country);
-	     *
-	     * where 'language' is the two-letter or three-letter code of the new language (ISO 639)
-	     * and 'country' is the two-letter, uppercase code of the new country (ISO 3166).
-	     *
-	     *
-	     * Changing currency.
-	     *
-	     * To change currency at runtime, call the following method:
-	     *
-	     * this.locale.setCurrentCurrency(currency);
-	     *
-	     * where 'currency' is the three-letter code of the new currency (ISO 4217).
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var LocaleService = (function () {
-	        function LocaleService() {
-	            /**
-	             * Output for event current language code changed.
-	             */
-	            this.languageCodeChanged = new _angular_core.EventEmitter();
-	            /**
-	             * Output for event current country code changed.
-	             */
-	            this.countryCodeChanged = new _angular_core.EventEmitter();
-	            /**
-	             * Output for event current currency code changed.
-	             */
-	            this.currencyCodeChanged = new _angular_core.EventEmitter();
-	            /**
-	             * Output for event script code changed.
-	             */
-	            this.scriptCodeChanged = new _angular_core.EventEmitter();
-	            /**
-	             * Output for event numbering system changed.
-	             */
-	            this.numberingSystemChanged = new _angular_core.EventEmitter();
-	            /**
-	             * Output for event calendar changed.
-	             */
-	            this.calendarChanged = new _angular_core.EventEmitter();
-	            /**
-	             * Enable/disable cookie.
-	             */
-	            this.enableCookie = false;
-	            /**
-	             * Enable/disable Local Storage.
-	             */
-	            this.enableLocalStorage = false;
-	            /**
-	             * The available language codes.
-	             */
-	            this.languageCodes = [];
-	            this.languageCode = "";
-	            this.countryCode = "";
-	            this.currencyCode = "";
-	            this.defaultLocale = "";
-	            this.scriptCode = "";
-	            this.numberingSystem = "";
-	            this.calendar = "";
-	            // Counts the reference to the service.
-	            LocaleService.referenceCounter++;
-	            // Enables the cookies for the first instance of the service (see issue #11).
-	            if (LocaleService.referenceCounter == 1) {
-	                this.enableCookie = true;
-	            }
-	        }
-	        /**
-	         * Adds a new language.
-	         *
-	         * @param language The two-letter or three-letter code of the new language
-	         */
-	        LocaleService.prototype.addLanguage = function (language) {
-	            this.languageCodes.push(language);
-	        };
-	        /**
-	         * Sets Local Storage as default.
-	         */
-	        LocaleService.prototype.useLocalStorage = function () {
-	            this.enableLocalStorage = true;
-	        };
-	        /**
-	         * Defines the preferred language.
-	         * Selects the current language of the browser if it has been added, else the default language.
-	         *
-	         * @param defaultLanguage The two-letter or three-letter code of the default language
-	         * @param expiry Number of days on the expiry. If omitted, the cookie becomes a session cookie
-	         */
-	        LocaleService.prototype.definePreferredLanguage = function (defaultLanguage, expiry) {
-	            this.expiry = expiry;
-	            // Parses the storage "locale" to extract the codes.
-	            this.parseStorage("locale");
-	            if (this.languageCode == "") {
-	                this.languageCode = defaultLanguage;
-	                // Verifies browser language.
-	                var browserLanguage = "";
-	                if (typeof navigator.language != "undefined") {
-	                    browserLanguage = navigator.language;
-	                }
-	                // Tries to gets the current language of browser.
-	                if (browserLanguage != "") {
-	                    var index = browserLanguage.indexOf("-");
-	                    if (index != -1) {
-	                        browserLanguage = browserLanguage.substring(0, index); // Gets the language code.
-	                    }
-	                    if (this.languageCodes.length > 0 && this.languageCodes.indexOf(browserLanguage) != -1) {
-	                        this.languageCode = browserLanguage;
-	                    }
-	                }
-	            }
-	            // Sets the default locale.
-	            this.setDefaultLocale();
-	        };
-	        /**
-	         * Defines preferred languange and country, regardless of the browser language.
-	         *
-	         * @param defaultLanguage The two-letter or three-letter code of the default language
-	         * @param defaultCountry The two-letter, uppercase code of the default country
-	         * @param expiry Number of days on the expiry. If omitted, the cookie becomes a session cookie
-	         * @param script The optional four-letter script code
-	         * @param numberingSystem The optional numbering system to be used
-	         * @param calendar The optional calendar to be used
-	         */
-	        LocaleService.prototype.definePreferredLocale = function (defaultLanguage, defaultCountry, expiry, script, numberingSystem, calendar) {
-	            if (script === void 0) {
-	                script = "";
-	            }
-	            if (numberingSystem === void 0) {
-	                numberingSystem = "";
-	            }
-	            if (calendar === void 0) {
-	                calendar = "";
-	            }
-	            this.expiry = expiry;
-	            // Parses the storage "locale" to extract the codes & the extension.
-	            this.parseStorage("locale");
-	            if (this.languageCode == "" || this.countryCode == "") {
-	                this.languageCode = defaultLanguage;
-	                this.countryCode = defaultCountry;
-	                this.scriptCode = script;
-	                this.numberingSystem = numberingSystem;
-	                this.calendar = calendar;
-	            }
-	            // Sets the default locale.
-	            this.setDefaultLocale();
-	        };
-	        /**
-	         * Defines the preferred currency.
-	         *
-	         * @param defaultCurrency The three-letter code of the default currency
-	         */
-	        LocaleService.prototype.definePreferredCurrency = function (defaultCurrency) {
-	            // Parses the storage "currency" to extract the code.
-	            this.parseStorage("currency");
-	            if (this.currencyCode == "") {
-	                this.currencyCode = defaultCurrency;
-	            }
-	            // Sets the storage "currency".
-	            this.setStorage("currency", this.currencyCode);
-	        };
-	        /**
-	         * Gets the current language.
-	         *
-	         * @return The two-letter or three-letter code of the current language
-	         */
-	        LocaleService.prototype.getCurrentLanguage = function () {
-	            return this.languageCode;
-	        };
-	        /**
-	         * Gets the current country.
-	         *
-	         * @return The two-letter, uppercase code of the current country
-	         */
-	        LocaleService.prototype.getCurrentCountry = function () {
-	            return this.countryCode;
-	        };
-	        /**
-	         * Gets the current currency.
-	         *
-	         * @return The three-letter code of the current currency
-	         */
-	        LocaleService.prototype.getCurrentCurrency = function () {
-	            return this.currencyCode;
-	        };
-	        /**
-	         * Gets the script.
-	         *
-	         * @return The four-letter code of the script
-	         */
-	        LocaleService.prototype.getScript = function () {
-	            return this.scriptCode;
-	        };
-	        /**
-	         * Gets the numbering system.
-	         *
-	         * @return The numbering system
-	         */
-	        LocaleService.prototype.getNumberingSystem = function () {
-	            return this.numberingSystem;
-	        };
-	        /**
-	         * Gets the calendar.
-	         *
-	         * @return The calendar
-	         */
-	        LocaleService.prototype.getCalendar = function () {
-	            return this.calendar;
-	        };
-	        /**
-	         * Sets the current language.
-	         *
-	         * @param language The two-letter or three-letter code of the new language
-	         */
-	        LocaleService.prototype.setCurrentLanguage = function (language) {
-	            // Checks if the language has changed.
-	            if (this.languageCode != language) {
-	                // Assigns the value & sends an event.
-	                this.languageCode = language;
-	                this.languageCodeChanged.emit(language);
-	                // Sets the default locale.
-	                this.setDefaultLocale();
-	            }
-	        };
-	        /**
-	         * Sets the current locale.
-	         *
-	         * @param language The two-letter or three-letter code of the new language
-	         * @param country The two-letter, uppercase code of the new country
-	         * @param script The optional four-letter script code
-	         * @param numberingSystem The optional numbering system to be used
-	         * @param calendar The optional calendar to be used
-	         */
-	        LocaleService.prototype.setCurrentLocale = function (language, country, script, numberingSystem, calendar) {
-	            if (script === void 0) {
-	                script = "";
-	            }
-	            if (numberingSystem === void 0) {
-	                numberingSystem = "";
-	            }
-	            if (calendar === void 0) {
-	                calendar = "";
-	            }
-	            // Checks if language, country, script or extension have changed.
-	            if (this.languageCode != language || this.countryCode != country || this.scriptCode != script || this.numberingSystem != numberingSystem || this.calendar != calendar) {
-	                // Assigns the values & sends the events.
-	                if (this.languageCode != language) {
-	                    this.languageCode = language;
-	                    this.languageCodeChanged.emit(language);
-	                }
-	                if (this.countryCode != country) {
-	                    this.countryCode = country;
-	                    this.countryCodeChanged.emit(country);
-	                }
-	                if (this.scriptCode != script) {
-	                    this.scriptCode = script;
-	                    this.scriptCodeChanged.emit(script);
-	                }
-	                if (this.numberingSystem != numberingSystem) {
-	                    this.numberingSystem = numberingSystem;
-	                    this.numberingSystemChanged.emit(numberingSystem);
-	                }
-	                if (this.calendar != calendar) {
-	                    this.calendar = calendar;
-	                    this.calendarChanged.emit(calendar);
-	                }
-	                // Sets the default locale.
-	                this.setDefaultLocale();
-	            }
-	        };
-	        /**
-	         * Sets the current currency.
-	         *
-	         * @param currency The three-letter code of the new currency
-	         */
-	        LocaleService.prototype.setCurrentCurrency = function (currency) {
-	            // Checks if the currency has changed.
-	            if (this.currencyCode != currency) {
-	                // Assigns the value & sends an event.
-	                this.currencyCode = currency;
-	                this.currencyCodeChanged.emit(currency);
-	                // Sets the storage "currency".
-	                this.setStorage("currency", this.currencyCode);
-	            }
-	        };
-	        /**
-	         * Gets the default locale.
-	         *
-	         * @return The default locale
-	         */
-	        LocaleService.prototype.getDefaultLocale = function () {
-	            return this.defaultLocale;
-	        };
-	        /**
-	         * Builds the default locale.
-	         */
-	        LocaleService.prototype.setDefaultLocale = function () {
-	            this.defaultLocale = this.languageCode;
-	            this.defaultLocale += this.scriptCode != "" ? "-" + this.scriptCode : "";
-	            this.defaultLocale += this.countryCode != "" ? "-" + this.countryCode : "";
-	            // Adds the 'u' (Unicode) extension.
-	            this.defaultLocale += this.numberingSystem != "" || this.calendar != "" ? "-u" : "";
-	            // Adds numbering system.
-	            this.defaultLocale += this.numberingSystem != "" ? "-nu-" + this.numberingSystem : "";
-	            // Adds calendar.
-	            this.defaultLocale += this.calendar != "" ? "-ca-" + this.calendar : "";
-	            // Sets the storage "locale".
-	            this.setStorage("locale", this.defaultLocale);
-	        };
-	        /**
-	         * Parses the storage to extract the codes & the extension.
-	         *
-	         * @param name The name of the storage
-	         */
-	        LocaleService.prototype.parseStorage = function (name) {
-	            var storage = "";
-	            if (this.enableLocalStorage && this.verifyLocalStorage) {
-	                storage = this.getLocalStorage(name);
-	            }
-	            else if (this.enableCookie && this.languageCodes.length > 0 && this.verifyCookie) {
-	                storage = this.getCookie(name);
-	            }
-	            if (storage != "") {
-	                // Looks for the 'u' (Unicode) extension.
-	                var index = storage.search("-u");
-	                if (index != -1) {
-	                    var extensions = storage.substring(index + 1).split("-");
-	                    switch (extensions.length) {
-	                        case 3:
-	                            if (extensions[1] == "nu") {
-	                                this.numberingSystem = extensions[2];
-	                            }
-	                            else if (extensions[1] == "ca") {
-	                                this.calendar = extensions[2];
-	                            }
-	                            break;
-	                        case 5:
-	                            this.numberingSystem = extensions[2];
-	                            this.calendar = extensions[4];
-	                            break;
-	                    }
-	                    // Extracts the codes.
-	                    storage = storage.substring(0, index);
-	                }
-	                // Splits the string to each hyphen.
-	                var codes = storage.split("-");
-	                switch (codes.length) {
-	                    case 1:
-	                        if (name == "locale") {
-	                            this.languageCode = codes[0];
-	                        }
-	                        else if (name == "currency") {
-	                            this.currencyCode = codes[0];
-	                        }
-	                        break;
-	                    case 2:
-	                        this.languageCode = codes[0];
-	                        this.countryCode = codes[1];
-	                        break;
-	                    case 3:
-	                        this.languageCode = codes[0];
-	                        this.scriptCode = codes[1];
-	                        this.countryCode = codes[2];
-	                        break;
-	                }
-	            }
-	        };
-	        /**
-	         * Checks browser support for Local Storage.
-	         *
-	         * @return True if Web Storage is supported.
-	         */
-	        LocaleService.prototype.verifyLocalStorage = function () {
-	            return typeof Storage != "undefined";
-	        };
-	        /**
-	         * Checks browser support for cookies.
-	         *
-	         * @return True if cookies are supported.
-	         */
-	        LocaleService.prototype.verifyCookie = function () {
-	            return typeof navigator.cookieEnabled != "undefined" && navigator.cookieEnabled;
-	        };
-	        /**
-	         * Sets the storage.
-	         *
-	         * @param name The name of the storage
-	         * @param value The value of the storage
-	         */
-	        LocaleService.prototype.setStorage = function (name, value) {
-	            if (this.enableLocalStorage && this.verifyLocalStorage) {
-	                this.setLocalStorage(name, value);
-	            }
-	            else if (this.enableCookie == true && this.languageCodes.length > 0 && this.verifyCookie) {
-	                this.setCookie(name, value, this.expiry);
-	            }
-	        };
-	        /**
-	         * Saves Local Storage value.
-	         *
-	         * @param name The name of the storage
-	         * @param value The value of the storage
-	         */
-	        LocaleService.prototype.setLocalStorage = function (name, value) {
-	            localStorage.setItem(name, value);
-	        };
-	        /**
-	         * Saves Local Storage value.
-	         *
-	         * @param name The name of the storage
-	         * @return The value of the storage
-	         */
-	        LocaleService.prototype.getLocalStorage = function (name) {
-	            // If the storage is not found, returns an empty string.
-	            return localStorage.getItem(name) != null ? localStorage.getItem(name) : "";
-	        };
-	        /**
-	         * Sets the cookie.
-	         *
-	         * @param name The name of the cookie
-	         * @param value The value of the cookie
-	         * @param days Number of days on the expiry
-	         */
-	        LocaleService.prototype.setCookie = function (name, value, days) {
-	            if (days != null) {
-	                // Adds the expiry date (in UTC time).
-	                var expirationDate = new Date();
-	                expirationDate.setTime(expirationDate.getTime() + (days * 24 * 60 * 60 * 1000));
-	                var expires = "; expires=" + expirationDate.toUTCString();
-	            }
-	            else {
-	                // By default, the cookie is deleted when the browser is closed.
-	                var expires = "";
-	            }
-	            // Creates the cookie.
-	            document.cookie = name + "=" + value + expires + "; path=/";
-	        };
-	        /**
-	         * Gets the cookie.
-	         *
-	         * @param name The name of the cookie
-	         * @return The value of the cookie
-	         */
-	        LocaleService.prototype.getCookie = function (name) {
-	            // The text to search for.
-	            name += "=";
-	            // Splits document.cookie on semicolons into an array.
-	            var ca = document.cookie.split(";");
-	            // Loops through the ca array, and reads out each value.
-	            for (var i = 0; i < ca.length; i++) {
-	                var c = ca[i];
-	                while (c.charAt(0) == " ") {
-	                    c = c.substring(1);
-	                }
-	                // If the cookie is found, returns the value of the cookie.
-	                if (c.indexOf(name) == 0) {
-	                    return c.substring(name.length, c.length);
-	                }
-	            }
-	            // If the cookie is not found, returns an empty string.
-	            return "";
-	        };
-	        /**
-	         * Reference counter for the service.
-	         */
-	        LocaleService.referenceCounter = 0;
-	        LocaleService.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        LocaleService.ctorParameters = [];
-	        LocaleService.propDecorators = {
-	            'languageCodeChanged': [{ type: _angular_core.Output },],
-	            'countryCodeChanged': [{ type: _angular_core.Output },],
-	            'currencyCodeChanged': [{ type: _angular_core.Output },],
-	            'scriptCodeChanged': [{ type: _angular_core.Output },],
-	            'numberingSystemChanged': [{ type: _angular_core.Output },],
-	            'calendarChanged': [{ type: _angular_core.Output },],
-	        };
-	        return LocaleService;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * IntlSupport class.
-	     * Provides the methods to check if Intl is supported.
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var IntlSupport = (function () {
-	        function IntlSupport() {
-	        }
-	        /**
-	         * Support for dates.
-	         *
-	         * @param defaultLocale The default locale
-	         * @return True if the browser supports locales for dates, otherwise false.
-	         */
-	        IntlSupport.DateTimeFormat = function (defaultLocale) {
-	            // Checking for support.
-	            try {
-	                new Intl.DateTimeFormat(defaultLocale).format(new Date());
-	            }
-	            catch (e) {
-	                return false;
-	            }
-	            return true;
-	        };
-	        /**
-	         * Support for numbers.
-	         *
-	         * @param defaultLocale The default locale
-	         * @return True if the browser supports locales for numbers, otherwise false.
-	         */
-	        IntlSupport.NumberFormat = function (defaultLocale) {
-	            // Checking for support.
-	            try {
-	                var n = 0;
-	                new Intl.NumberFormat(defaultLocale).format(n);
-	            }
-	            catch (e) {
-	                return false;
-	            }
-	            return true;
-	        };
-	        /**
-	         * Support for Collator.
-	         *
-	         * @param lang The current language code
-	         * @return True if the browser supports Collator, otherwise false.
-	         */
-	        IntlSupport.Collator = function (lang) {
-	            // Checking for support.
-	            try {
-	                var value1 = "a";
-	                var value2 = "b";
-	                new Intl.Collator(lang).compare(value1, value2);
-	            }
-	            catch (e) {
-	                return false;
-	            }
-	            return true;
-	        };
-	        return IntlSupport;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * LocalizationService class.
-	     * Gets the translation data and performs operations.
-	     *
-	     * Direct loading.
-	     *
-	     * To initialize LocalizationService for the direct loading, add the following code in the body of constructor of the bootstrap component:
-	     *
-	     * var translationEN = {
-	     *      TITLE: 'Angular 2 Localization',
-	     *      CHANGE_LANGUAGE: 'Change language',
-	     *      ...
-	     * }
-	     * // Add a new translation here.
-	     *
-	     * // Required: adds a new translation with the given language code.
-	     * this.localization.addTranslation('en', translationEN);
-	     * // Add a new translation with the given language code here.
-	     * this.localization.updateTranslation(); // Need to update the translation.
-	     *
-	     * Asynchronous loading.
-	     *
-	     * To initialize LocalizationService for the asynchronous loading, add the following code in the body of constructor of the bootstrap component:
-	     *
-	     * // Required: initializes the translation provider with the given path prefix.
-	     * this.localization.translationProvider('./resources/locale-');
-	     * this.localization.updateTranslation(); // Need to update the translation.
-	     *
-	     * and create the json files of the translations such as 'locale-en.json':
-	     *
-	     * {
-	     *     "TITLE": "Angular 2 Localization",
-	     *     "CHANGE_LANGUAGE": "Change language",
-	     *     ...
-	     * }
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var LocalizationService = (function () {
-	        function LocalizationService(http, locale) {
-	            var _this = this;
-	            this.http = http;
-	            this.locale = locale;
-	            /**
-	             * Output for event translation changed.
-	             */
-	            this.translationChanged = new _angular_core.EventEmitter();
-	            /**
-	             * The translation data: {languageCode: {key: value}}.
-	             */
-	            this.translationData = {};
-	            this.prefix = "";
-	            this.loadingMode = exports.LoadingMode.Unknown;
-	            this.languageCode = "";
-	            // Initializes the loading mode.
-	            this.loadingMode = exports.LoadingMode.Direct;
-	            // Initializes the service state.
-	            this.serviceState = exports.ServiceState.isWaiting;
-	            // When the language changes, subscribes to the event & call updateTranslation method.
-	            this.locale.languageCodeChanged.subscribe(
-	            // Generator or next.
-	            function (language) { return _this.updateTranslation(language); });
-	        }
-	        /**
-	         * Direct loading: adds new translation data.
-	         *
-	         * @param language The two-letter code of the language for the translation data
-	         * @param translation The new translation data
-	         */
-	        LocalizationService.prototype.addTranslation = function (language, translation) {
-	            // Adds the new translation data.
-	            this.translationData[language] = translation;
-	        };
-	        /**
-	         * Asynchronous loading: defines the translation provider.
-	         *
-	         * @param prefix The path prefix of the json files
-	         * @param dataFormat Data format: default value is 'json'.
-	         * @param webAPI True if the asynchronous loading uses a Web API to get the data.
-	         */
-	        LocalizationService.prototype.translationProvider = function (prefix, dataFormat, webAPI) {
-	            if (dataFormat === void 0) {
-	                dataFormat = "json";
-	            }
-	            if (webAPI === void 0) {
-	                webAPI = false;
-	            }
-	            this.prefix = prefix;
-	            this.dataFormat = dataFormat;
-	            this.webAPI = webAPI;
-	            // Updates the loading mode.
-	            this.loadingMode = exports.LoadingMode.Async;
-	        };
-	        /**
-	         * Translates a key.
-	         *
-	         * @param key The key to be translated
-	         * @params args Parameters
-	         * @return The value of translation
-	         */
-	        LocalizationService.prototype.translate = function (key, args) {
-	            var value;
-	            if (this.translationData[this.languageCode] != null) {
-	                // Gets the translation by language code. 
-	                var translation = this.translationData[this.languageCode];
-	                // Checks for composed key (see issue #21).
-	                var keys = key.split(".");
-	                do {
-	                    key = keys.shift();
-	                    if (translation[key] != null && (typeof translation[key] == "object")) {
-	                        translation = translation[key];
-	                    }
-	                } while (keys.length > 0);
-	                // Gets the value of translation by key.   
-	                value = translation[key];
-	            }
-	            // If the value of translation is not present, the same key is returned (see issue #1).
-	            if (value == null || value == "") {
-	                return key;
-	            }
-	            else if (args != null) {
-	                var TEMPLATE_REGEXP = /{{\s?([^{}\s]*)\s?}}/g;
-	                return value.replace(TEMPLATE_REGEXP, function (substring, parsedKey) {
-	                    var response = args[parsedKey];
-	                    return (typeof response !== 'undefined') ? response : substring;
-	                });
-	            }
-	            return value;
-	        };
-	        /**
-	         * Translates a key.
-	         *
-	         * @param key The key to be translated
-	         * @params args Parameters
-	         * @return An observable of the value of translation
-	         */
-	        LocalizationService.prototype.translateAsync = function (key, args) {
-	            var _this = this;
-	            return new rxjs_Observable.Observable(function (observer) {
-	                // Gets the value of translation for the key.
-	                var value = _this.translate(key, args);
-	                observer.next(value);
-	                observer.complete();
-	            });
-	        };
-	        /**
-	         * Updates the language code and loads the translation data for the asynchronous loading.
-	         *
-	         * @param language The two-letter or three-letter code of the language
-	         */
-	        LocalizationService.prototype.updateTranslation = function (language) {
-	            if (language === void 0) {
-	                language = this.locale.getCurrentLanguage();
-	            }
-	            if (language != "" && language != this.languageCode) {
-	                // Asynchronous loading.
-	                if (this.loadingMode == exports.LoadingMode.Async) {
-	                    // Updates the translation data.  
-	                    this.getTranslation(language);
-	                }
-	                else {
-	                    // Updates the language code of the service.
-	                    this.languageCode = language;
-	                    // Updates the service state.
-	                    this.serviceState = exports.ServiceState.isReady;
-	                }
-	            }
-	        };
-	        /* Intl.Collator */
-	        /**
-	         * Compares two keys by the value of translation & the current language code.
-	         *
-	         * @param key1, key2 The keys of the values to compare
-	         * @param extension
-	         * @param options
-	         * @return A negative value if the value of translation of key1 comes before the value of translation of key2; a positive value if key1 comes after key2; 0 if they are considered equal or Intl.Collator is not supported
-	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
-	         */
-	        LocalizationService.prototype.compare = function (key1, key2, extension, options) {
-	            // Checks for support for Intl.
-	            if (IntlSupport.Collator(this.languageCode) == false) {
-	                return 0;
-	            }
-	            // Gets the value of translation for the keys.
-	            var value1 = this.translate(key1);
-	            var value2 = this.translate(key2);
-	            var locale = this.addExtension(this.languageCode, extension);
-	            return new Intl.Collator(locale).compare(value1, value2);
-	        };
-	        /**
-	         * Sorts an array of objects or an array of arrays by the current language code.
-	         *
-	         * @param list The array to be sorted
-	         * @param keyName The column that contains the keys of the values to be ordered
-	         * @param order 'asc' or 'desc'. The default value is 'asc'.
-	         * @param extension
-	         * @param options
-	         * @return The same sorted list or the same list if Intl.Collator is not supported
-	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
-	         */
-	        LocalizationService.prototype.sort = function (list, keyName, order, extension, options) {
-	            if (list == null || keyName == null || IntlSupport.Collator(this.languageCode) == false) {
-	                return list;
-	            }
-	            // Gets the value of translation for the keys.
-	            for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-	                var item = list_1[_i];
-	                // Gets the value of translation for the key.
-	                var value = this.translate(item[keyName]);
-	                // Adds a new column for translated values.
-	                var translated = keyName.concat("Translated");
-	                // Updates the value in the list.
-	                item[translated] = value;
-	            }
-	            var locale = this.addExtension(this.languageCode, extension);
-	            // Intl.Collator.
-	            var collator = new Intl.Collator(locale, options); // It can be passed directly to Array.prototype.sort.
-	            list.sort(function (a, b) {
-	                return collator.compare(a[translated], b[translated]);
-	            });
-	            // Removes the column of translated values.
-	            var index = list.indexOf(translated, 0);
-	            if (index > -1) {
-	                list.splice(index, 1);
-	            }
-	            // Descending order.
-	            if (order != null && order == "desc") {
-	                list.reverse();
-	            }
-	            return list;
-	        };
-	        /**
-	         * Sorts an array of objects or an array of arrays by the current language code.
-	         *
-	         * @param list The array to be sorted
-	         * @param keyName The column that contains the keys of the values to be ordered
-	         * @param order 'asc' or 'desc'. The default value is 'asc'.
-	         * @param extension
-	         * @param options
-	         * @return An observable of the sorted list or of the same list if Intl.Collator is not supported
-	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
-	         */
-	        LocalizationService.prototype.sortAsync = function (list, keyName, order, extension, options) {
-	            var _this = this;
-	            return new rxjs_Observable.Observable(function (observer) {
-	                // Gets the sorted list.
-	                observer.next(_this.sort(list, keyName, order, extension, options));
-	                observer.complete();
-	            });
-	        };
-	        /**
-	         * Matches a string into an array of objects or an array of arrays.
-	         *
-	         * @param s The string to search
-	         * @param list The array to look for
-	         * @param keyNames An array that contains the columns to look for
-	         * @param options
-	         * @return A filtered list or the same list if Intl.Collator is not supported
-	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
-	         */
-	        LocalizationService.prototype.search = function (s, list, keyNames, options) {
-	            var _this = this;
-	            if (options === void 0) {
-	                options = { usage: 'search' };
-	            }
-	            if (list == null || keyNames == null || s == "" || IntlSupport.Collator(this.languageCode) == false) {
-	                return list;
-	            }
-	            // Gets the value of translation for the each column.
-	            var translated = new Array();
-	            var i = 0;
-	            for (var i = 0; i < keyNames.length; i++) {
-	                // Adds a new column for translated values.
-	                translated.push(keyNames[i].concat("Translated"));
-	                for (var _i = 0, list_2 = list; _i < list_2.length; _i++) {
-	                    var item = list_2[_i];
-	                    // Gets the values of translation for the column.
-	                    var value = this.translate(item[keyNames[i]]);
-	                    // Updates the value in the list.
-	                    item[translated[i]] = value;
-	                }
-	            }
-	            var locale = this.languageCode;
-	            // Intl.Collator.
-	            var collator = new Intl.Collator(locale, options);
-	            var matches = list.filter(function (v) {
-	                var found = false;
-	                for (var i = 0; i < translated.length; i++) {
-	                    // Calls matching algorithm.
-	                    if (_this.match(v[translated[i]], s, collator)) {
-	                        found = true;
-	                        break;
-	                    }
-	                }
-	                return found;
-	            });
-	            // Removes the columns of translated values.
-	            for (var i = 0; i < translated.length; i++) {
-	                var index = matches.indexOf(translated[i], 0);
-	                if (index > -1) {
-	                    matches.splice(index, 1);
-	                }
-	            }
-	            return matches;
-	        };
-	        /**
-	         * Matches a string into an array of objects or an array of arrays.
-	         *
-	         * @param s The string to search
-	         * @param list The array to look for
-	         * @param keyNames An array that contains the columns to look for
-	         * @param options
-	         * @return An observable for each element of the filtered list or the same list if Intl.Collator is not supported
-	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
-	         */
-	        LocalizationService.prototype.searchAsync = function (s, list, keyNames, options) {
-	            var _this = this;
-	            if (options === void 0) {
-	                options = { usage: 'search' };
-	            }
-	            if (list == null) {
-	                return null;
-	            }
-	            if (keyNames == null || s == "" || IntlSupport.Collator(this.languageCode) == false) {
-	                return new rxjs_Observable.Observable(function (observer) {
-	                    for (var _i = 0, list_3 = list; _i < list_3.length; _i++) {
-	                        var item = list_3[_i];
-	                        observer.next(item);
-	                    }
-	                    observer.complete();
-	                });
-	            }
-	            return new rxjs_Observable.Observable(function (observer) {
-	                // Gets the value of translation for the each column.
-	                var translated = new Array();
-	                var i = 0;
-	                for (var i = 0; i < keyNames.length; i++) {
-	                    // Adds a new column for translated values.
-	                    translated.push(keyNames[i].concat("Translated"));
-	                    for (var _i = 0, list_4 = list; _i < list_4.length; _i++) {
-	                        var item = list_4[_i];
-	                        // Gets the values of translation for the column.
-	                        var value = _this.translate(item[keyNames[i]]);
-	                        // Updates the value in the list.
-	                        item[translated[i]] = value;
-	                    }
-	                }
-	                var locale = _this.languageCode;
-	                // Intl.Collator.
-	                var collator = new Intl.Collator(locale, options);
-	                for (var _a = 0, list_5 = list; _a < list_5.length; _a++) {
-	                    var v = list_5[_a];
-	                    for (var i = 0; i < translated.length; i++) {
-	                        // Calls matching algorithm.
-	                        if (_this.match(v[translated[i]], s, collator)) {
-	                            observer.next(v);
-	                            break;
-	                        }
-	                    }
-	                }
-	                // Removes the columns of translated values.
-	                for (var i = 0; i < translated.length; i++) {
-	                    var index = list.indexOf(translated[i], 0);
-	                    if (index > -1) {
-	                        list.splice(index, 1);
-	                    }
-	                }
-	                observer.complete();
-	            });
-	        };
-	        LocalizationService.prototype.addExtension = function (locale, extension) {
-	            // Adds extension.
-	            if (extension != null && extension != "") {
-	                locale = locale + "-" + extension;
-	            }
-	            return locale;
-	        };
-	        /**
-	         * Matching algorithm.
-	         *
-	         * @param v The value
-	         * @param s The string to search
-	         * return True if match, otherwise false
-	         */
-	        LocalizationService.prototype.match = function (v, s, collator) {
-	            var vLength = v.length;
-	            var sLength = s.length;
-	            if (sLength > vLength) {
-	                return false;
-	            } // The search string is longer than value.
-	            if (sLength == vLength) {
-	                return collator.compare(v, s) === 0;
-	            }
-	            // Tries to search the substring.
-	            var found = false;
-	            for (var i = 0; i < vLength - (sLength - 1); i++) {
-	                var str = v.substr(i, sLength);
-	                if (collator.compare(str, s) === 0) {
-	                    found = true;
-	                    break;
-	                }
-	            }
-	            return found;
-	        };
-	        /**
-	         * Asynchronous loading: gets translation data.
-	         *
-	         * @param language The two-letter or three-letter code of the language
-	         */
-	        LocalizationService.prototype.getTranslation = function (language) {
-	            var _this = this;
-	            // Initializes the translation data & the service state.
-	            this.translationData = {};
-	            this.serviceState = exports.ServiceState.isLoading;
-	            // Builds the URL.
-	            var url = this.prefix;
-	            if (this.webAPI == true) {
-	                // Absolute URL for Web API.
-	                url += language;
-	            }
-	            else {
-	                // Relative server path for 'json' files.
-	                url += language + "." + this.dataFormat;
-	            }
-	            // Angular 2 Http module.
-	            this.http.get(url)
-	                .map(function (res) { return res.json(); })
-	                .subscribe(
-	            // Observer or next.
-	            function (res) {
-	                // Assigns the observer to the translation data.
-	                _this.translationData[language] = res;
-	            }, 
-	            // Error.
-	            function (error) {
-	                console.error("Localization service:", error);
-	            }, 
-	            // Complete.
-	            function () {
-	                // Updates the service state.
-	                _this.serviceState = exports.ServiceState.isReady;
-	                // Updates the language code of the service.
-	                _this.languageCode = language;
-	                // Sends an event.
-	                _this.translationChanged.emit(null);
-	            });
-	        };
-	        LocalizationService.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        LocalizationService.ctorParameters = [
-	            { type: _angular_http.Http, },
-	            { type: LocaleService, },
-	        ];
-	        LocalizationService.propDecorators = {
-	            'translationChanged': [{ type: _angular_core.Output },],
-	        };
-	        return LocalizationService;
-	    }());
-	    /**
-	     * Defines the service state.
-	     */
-	    (function (ServiceState) {
-	        /**
-	         * The translation data has been loaded.
-	         */
-	        ServiceState[ServiceState["isReady"] = 0] = "isReady";
-	        /**
-	         * The service is loading the data.
-	         */
-	        ServiceState[ServiceState["isLoading"] = 1] = "isLoading";
-	        /**
-	         * The service is waiting for the data.
-	         */
-	        ServiceState[ServiceState["isWaiting"] = 2] = "isWaiting";
-	    })(exports.ServiceState || (exports.ServiceState = {}));
-	    /**
-	     * Defines the loading mode.
-	     */
-	    (function (LoadingMode) {
-	        /**
-	         * Initial state.
-	         */
-	        LoadingMode[LoadingMode["Unknown"] = 0] = "Unknown";
-	        /**
-	         * Direct loading.
-	         */
-	        LoadingMode[LoadingMode["Direct"] = 1] = "Direct";
-	        /**
-	         * Asynchronous loading.
-	         */
-	        LoadingMode[LoadingMode["Async"] = 2] = "Async";
-	    })(exports.LoadingMode || (exports.LoadingMode = {}));
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * Locale superclass.
-	     * Provides the methods for localization.
-	     *
-	     * Extend this class in components to provide the necessary methods for localization:
-	     *
-	     * export class AppComponent extends Locale {
-	     *
-	     *     constructor(public locale: LocaleService, public localization: LocalizationService) {
-	     *         super(locale, localization);
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var Locale = (function () {
-	        function Locale(locale, localization) {
-	            this.locale = locale;
-	            this.localization = localization;
-	        }
-	        Object.defineProperty(Locale.prototype, "lang", {
-	            // Gets the language code for the LocalizationService.
-	            get: function () {
-	                return this.localization.languageCode;
-	            },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        Object.defineProperty(Locale.prototype, "defaultLocale", {
-	            // Gets the default locale.
-	            get: function () {
-	                return this.locale.getDefaultLocale();
-	            },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        Object.defineProperty(Locale.prototype, "currency", {
-	            // Gets the current currency.
-	            get: function () {
-	                return this.locale.getCurrentCurrency();
-	            },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        return Locale;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    var __extends = (undefined && undefined.__extends) || function (d, b) {
-	        for (var p in b)
-	            if (b.hasOwnProperty(p))
-	                d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    function isPresent(obj) {
-	        return obj !== undefined && obj !== null;
-	    }
-	    /**
-	     * LocaleParser class.
-	     * Parses a string and returns a number by default locale.
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var LocaleParser = (function () {
-	        function LocaleParser() {
-	        }
-	        /**
-	         * Builds the regular expression for a number by default locale.
-	         *
-	         * @param defaultLocale The default locale
-	         * @param digits The digit info: {minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}
-	         * @return A RegExp object
-	         */
-	        LocaleParser.NumberRegExpFactory = function (defaultLocale, digits) {
-	            // Gets digits.
-	            var minInt = 1;
-	            var minFraction = 0;
-	            var maxFraction = 3;
-	            var NUMBER_FORMAT_REGEXP = /^(\d+)?\.((\d+)(\-(\d+))?)?$/;
-	            if (isPresent(digits)) {
-	                var parts = digits.match(NUMBER_FORMAT_REGEXP);
-	                if (parts === null) {
-	                    throw new Error(digits + " is not a valid digit info for number");
-	                }
-	                if (isPresent(parts[1])) {
-	                    minInt = NumberWrapper.parseIntAutoRadix(parts[1]);
-	                }
-	                if (isPresent(parts[3])) {
-	                    minFraction = NumberWrapper.parseIntAutoRadix(parts[3]);
-	                }
-	                if (isPresent(parts[5])) {
-	                    maxFraction = NumberWrapper.parseIntAutoRadix(parts[5]);
-	                }
-	            }
-	            // Converts numbers & signs to Unicode by default locale.
-	            var codes = new DecimalCode(defaultLocale);
-	            var minusSign = codes.minusSign;
-	            var zero = codes.numbers[0];
-	            var decimalSeparator = codes.decimalSeparator;
-	            var nine = codes.numbers[9];
-	            // Pattern for 1.2-2 digits: /^-?[0-9]{1,}\.[0-9]{2,2}$/
-	            // Unicode pattern = "^\u002d?[\u0030-\u0039]{1,}\\u002e[\u0030-\u0039]{2,2}$";
-	            var pattern;
-	            if (minFraction > 0 && maxFraction > 0) {
-	                pattern = "^"
-	                    + minusSign
-	                    + "?[" + zero + "-" + nine
-	                    + "]{" + minInt + ",}\\"
-	                    + decimalSeparator
-	                    + "[" + zero + "-" + nine
-	                    + "]{" + minFraction + "," + maxFraction
-	                    + "}$";
-	            }
-	            else if (minFraction == 0 && maxFraction > 0) {
-	                // Decimal separator is optional.
-	                pattern = "^"
-	                    + minusSign
-	                    + "?[" + zero + "-" + nine
-	                    + "]{" + minInt + ",}\\"
-	                    + decimalSeparator
-	                    + "?[" + zero + "-" + nine
-	                    + "]{" + minFraction + "," + maxFraction
-	                    + "}$";
-	            }
-	            else {
-	                // Integer number.
-	                pattern = "^"
-	                    + minusSign
-	                    + "?[" + zero + "-" + nine
-	                    + "]{" + minInt + ",}$";
-	            }
-	            pattern = codes.UnicodeToChar(pattern);
-	            var regExp = new RegExp(pattern);
-	            return regExp;
-	            // Wonderful, it works!
-	        };
-	        /**
-	         * Parses a string and returns a number by default locale.
-	         *
-	         * @param s The string to be parsed
-	         * @param defaultLocale The default locale
-	         * @return A number. If the string cannot be converted to a number, returns NaN
-	         */
-	        LocaleParser.Number = function (s, defaultLocale) {
-	            if (s == "" || defaultLocale == "" || defaultLocale == null) {
-	                return null;
-	            }
-	            var codes = new DecimalCode(defaultLocale);
-	            return codes.parse(s);
-	        };
-	        return LocaleParser;
-	    }());
-	    /**
-	     * NumberCode abstract superclass.
-	     *
-	     * Converts numbers to Unicode by locales.
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var NumberCode = (function () {
-	        function NumberCode(defaultLocale) {
-	            this.defaultLocale = defaultLocale;
-	            /**
-	             * Unicode for numbers from 0 to 9.
-	             */
-	            this.numbers = [];
-	            for (var i = 0; i <= 9; i++) {
-	                this.numbers.push(this.Unicode(i.toString()));
-	            }
-	            // Checks for support for Intl.
-	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
-	                // Updates Unicode for numbers by default locale.
-	                for (var i = 0; i <= 9; i++) {
-	                    var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
-	                    this.numbers[i] = this.Unicode(localeDecimal.transform(i, '1.0-0'));
-	                }
-	            }
-	        }
-	        NumberCode.prototype.Unicode = function (c) {
-	            return "\\u" + this.HexEncode(c.charCodeAt(0));
-	        };
-	        NumberCode.prototype.HexEncode = function (value) {
-	            var hex = value.toString(16).toUpperCase();
-	            // With padding.
-	            hex = "0000".substr(0, 4 - hex.length) + hex;
-	            return hex;
-	        };
-	        return NumberCode;
-	    }());
-	    /**
-	     * DecimalCode class.
-	     *
-	     * Converts numbers & signs to Unicode by locales.
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var DecimalCode = (function (_super) {
-	        __extends(DecimalCode, _super);
-	        function DecimalCode(defaultLocale) {
-	            _super.call(this, defaultLocale);
-	            this.defaultLocale = defaultLocale;
-	            this.minusSign = this.Unicode("-");
-	            this.decimalSeparator = this.Unicode(".");
-	            // Checks for support for Intl.
-	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
-	                // Updates Unicode for signs by default locale.
-	                var value = -0.9; // Reference value.
-	                var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
-	                var localeValue = localeDecimal.transform(value, '1.1-1');
-	                // Checks Unicode character 'RIGHT-TO-LEFT MARK' (U+200F).
-	                var index;
-	                if (this.Unicode(localeValue.charAt(0)) != "\\u200F") {
-	                    // Left to right.
-	                    index = 0;
-	                }
-	                else {
-	                    // Right to left.
-	                    index = 1;
-	                }
-	                this.minusSign = this.Unicode(localeValue.charAt(index));
-	                this.decimalSeparator = this.Unicode(localeValue.charAt(index + 2));
-	            }
-	        }
-	        DecimalCode.prototype.parse = function (s) {
-	            // Splits the String object into an array of characters.
-	            var characters = s.split("");
-	            // Builds the value.
-	            var value = "";
-	            for (var _i = 0, characters_1 = characters; _i < characters_1.length; _i++) {
-	                var char = characters_1[_i];
-	                var charCode = this.Unicode(char);
-	                // Tries to look for the char code in numbers and signs.
-	                var index = this.numbers.indexOf(charCode);
-	                if (index != -1) {
-	                    value += index;
-	                }
-	                else if (charCode == this.minusSign) {
-	                    value += "-";
-	                }
-	                else if (charCode == this.decimalSeparator) {
-	                    value += ".";
-	                }
-	                else {
-	                    return NaN;
-	                }
-	            }
-	            return parseFloat(value);
-	        };
-	        DecimalCode.prototype.UnicodeToChar = function (pattern) {
-	            return pattern.replace(/\\u[\dA-F]{4}/gi, function (match) {
-	                return String.fromCharCode(parseInt(match.replace(/\\u/g, ""), 16));
-	            });
-	        };
-	        return DecimalCode;
-	    }(NumberCode));
-	    var NumberWrapper = (function () {
-	        function NumberWrapper() {
-	        }
-	        NumberWrapper.parseIntAutoRadix = function (text) {
-	            var result = parseInt(text, null);
-	            if (isNaN(result)) {
-	                throw new Error('Invalid integer literal when parsing ' + text);
-	            }
-	            return result;
-	        };
-	        NumberWrapper.parseInt = function (text, radix) {
-	            if (radix == 10) {
-	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else if (radix == 16) {
-	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else {
-	                var result = parseInt(text, radix);
-	                if (!isNaN(result)) {
-	                    return result;
-	                }
-	            }
-	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	        };
-	        return NumberWrapper;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * 'translate' pipe function.
-	     */
-	    /**
-	     * TranslatePipe class.
-	     * Translates messages.
-	     *
-	     * Getting the message translation:
-	     *
-	     * expression | translate:lang
-	     *
-	     * where 'expression' is a string key that indicates the message to translate and 'lang' is the language code for the LocalizationService.
-	     *
-	     * For example, to get the translation, add in the template:
-	     *
-	     * {{ 'TITLE' | translate:lang }}
-	     *
-	     * and include in the component:
-	     *
-	     * import {LocalizationService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public localization: LocalizationService) {
-	     *         ...
-	     *     }
-	     *
-	     *     // Gets the language code for the LocalizationService.
-	     *     get lang(): string {
-	     *
-	     *         return this.localization.languageCode;
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * With Angular 2 I18nSelectPipe that displays the string that matches the current value:
-	     *
-	     * {{ expression | i18nSelect:mapping | translate:lang }}
-	     *
-	     * With Angular 2 I18nPluralPipe that pluralizes the value properly:
-	     *
-	     * {{ expression | i18nPlural:mapping | translate:lang }}
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var TranslatePipe = (function () {
-	        function TranslatePipe(localization, locale) {
-	            this.localization = localization;
-	            this.locale = locale;
-	        }
-	        /**
-	         * TranslatePipe transform method.
-	         *
-	         * @param key The key to be translated
-	         * @param lang The current language code for the LocalizationService
-	         * @param args Optional parameters
-	         * @return The value of translation
-	         */
-	        TranslatePipe.prototype.transform = function (key, lang) {
-	            var args = [];
-	            for (var _i = 2; _i < arguments.length; _i++) {
-	                args[_i - 2] = arguments[_i];
-	            }
-	            // Checks the service state.
-	            if (this.localization.serviceState == exports.ServiceState.isReady) {
-	                var REGEXP = /^\d+\b/;
-	                var keyStr = key;
-	                // i18n plural.
-	                if (REGEXP.exec(key) != null) {
-	                    // Tries to extract the number.
-	                    var keyNum = parseFloat(key);
-	                    // Tries to extract the string. 
-	                    keyStr = key.replace(REGEXP, "");
-	                    keyStr = keyStr.trim();
-	                    // Checks the number & support for Intl.
-	                    if (!isNaN(keyNum) && IntlSupport.NumberFormat(this.locale.getDefaultLocale()) == true) {
-	                        var localeDecimal = new _angular_common.DecimalPipe(this.locale.getDefaultLocale());
-	                        // Localizes the number.
-	                        key = key.replace(/^\d+/, localeDecimal.transform(keyNum, '1.0-3'));
-	                    }
-	                }
-	                // Gets the value of translation for the key string.
-	                var value = this.localization.translate(keyStr, args[0]);
-	                return key.replace(keyStr, value);
-	            }
-	            return key;
-	        };
-	        TranslatePipe.decorators = [
-	            { type: _angular_core.Pipe, args: [{
-	                        name: 'translate',
-	                        pure: true
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        TranslatePipe.ctorParameters = [
-	            { type: LocalizationService, },
-	            { type: LocaleService, },
-	        ];
-	        return TranslatePipe;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * 'localedate' pipe function.
-	     */
-	    /**
-	     * LocaleDatePipe class.
-	     * Localizes dates.
-	     *
-	     * Getting the local date:
-	     *
-	     * expression | localedate[:defaultLocale[:format]]
-	     *
-	     * where 'expression' is a date object or a number (milliseconds since UTC epoch) and 'format' indicates which date/time components to include.
-	     *
-	     * For example, to get the local date, add in the template:
-	     *
-	     * {{ today | localedate:defaultLocale:'fullDate' }}
-	     *
-	     * and include in the component:
-	     *
-	     * import {LocaleService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService) {
-	     *         ...
-	     *     }
-	     *
-	     *     // Gets the default locale.
-	     *     get defaultLocale(): string {
-	     *
-	     *         return this.locale.getDefaultLocale();
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * @author Roberto Simonetti
-	     * @see Angular 2 DatePipe for further information
-	     */
-	    var LocaleDatePipe = (function () {
-	        function LocaleDatePipe() {
-	        }
-	        /**
-	         * LocaleDatePipe transform method.
-	         *
-	         * @param value The date to be localized
-	         * @param defaultLocale The default locale
-	         * @param pattern The format of the date
-	         * @return The locale date
-	         */
-	        LocaleDatePipe.prototype.transform = function (value, defaultLocale, pattern) {
-	            if (pattern === void 0) {
-	                pattern = 'mediumDate';
-	            }
-	            // Checks for support for Intl.
-	            if (IntlSupport.DateTimeFormat(defaultLocale) == true) {
-	                var localeDate = new _angular_common.DatePipe(defaultLocale);
-	                return localeDate.transform(value, pattern);
-	            }
-	            // Returns the date without localization.
-	            return value;
-	        };
-	        LocaleDatePipe.decorators = [
-	            { type: _angular_core.Pipe, args: [{
-	                        name: 'localeDate',
-	                        pure: true
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocaleDatePipe.ctorParameters = [];
-	        return LocaleDatePipe;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * 'localeDecimal' pipe function.
-	     */
-	    /**
-	     * LocaleDecimalPipe class.
-	     * Localizes decimal numbers.
-	     *
-	     * Getting the local decimal:
-	     *
-	     * expression | localeDecimal[:defaultLocale:[digitInfo]]
-	     *
-	     * where 'expression' is a number and 'digitInfo' has the following format:
-	     *
-	     * {minIntegerDigits}.{minFractionDigits}-{maxFractionDigits}
-	     *
-	     * For example, to get the local decimal, add in the template:
-	     *
-	     * {{ pi | localeDecimal:defaultLocale:'1.5-5' }}
-	     *
-	     * and include in the component:
-	     *
-	     * import {LocaleService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService) {
-	     *         ...
-	     *     }
-	     *
-	     *     // Gets the default locale.
-	     *     get defaultLocale(): string {
-	     *
-	     *         return this.locale.getDefaultLocale();
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * @author Roberto Simonetti
-	     * @see Angular 2 DecimalPipe for further information
-	     */
-	    var LocaleDecimalPipe = (function () {
-	        function LocaleDecimalPipe() {
-	        }
-	        /**
-	         * LocaleDecimalPipe transform method.
-	         *
-	         * @param value The number to be localized
-	         * @param defaultLocale The default locale
-	         * @param digits The format of the number
-	         * @return The locale decimal
-	         */
-	        LocaleDecimalPipe.prototype.transform = function (value, defaultLocale, digits) {
-	            if (digits === void 0) {
-	                digits = null;
-	            }
-	            // Checks for support for Intl.
-	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
-	                var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
-	                return localeDecimal.transform(value, digits);
-	            }
-	            // Returns the number without localization.
-	            return value;
-	        };
-	        LocaleDecimalPipe.decorators = [
-	            { type: _angular_core.Pipe, args: [{
-	                        name: 'localeDecimal',
-	                        pure: true
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocaleDecimalPipe.ctorParameters = [];
-	        return LocaleDecimalPipe;
-	    }());
-	    /**
-	     * 'localePercent' pipe function.
-	     */
-	    /**
-	     * LocalePercentPipe class.
-	     * Localizes percent numbers.
-	     *
-	     * Getting the local percentage:
-	     *
-	     * expression | localePercent[:defaultLocale:[digitInfo]]
-	     *
-	     * For example, to get the local percentage, add in the template:
-	     *
-	     * {{ a | localePercent:defaultLocale:'1.1-1' }}
-	     *
-	     * and include in the component:
-	     *
-	     * import {LocaleService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService) {
-	     *         ...
-	     *     }
-	     *
-	     *     // Gets the default locale.
-	     *     get defaultLocale(): string {
-	     *
-	     *         return this.locale.getDefaultLocale();
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * @author Roberto Simonetti
-	     * @see Angular 2 PercentPipe for further information
-	     */
-	    var LocalePercentPipe = (function () {
-	        function LocalePercentPipe() {
-	        }
-	        /**
-	         * LocalePercentPipe transform method.
-	         *
-	         * @param value The number to be localized
-	         * @param defaultLocale The default locale
-	         * @param digits The format of the number
-	         * @return The locale percent
-	         */
-	        LocalePercentPipe.prototype.transform = function (value, defaultLocale, digits) {
-	            if (digits === void 0) {
-	                digits = null;
-	            }
-	            // Checks for support for Intl.
-	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
-	                var localePercent = new _angular_common.PercentPipe(defaultLocale);
-	                return localePercent.transform(value, digits);
-	            }
-	            // Returns the number without localization.
-	            return value;
-	        };
-	        LocalePercentPipe.decorators = [
-	            { type: _angular_core.Pipe, args: [{
-	                        name: 'localePercent',
-	                        pure: true
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocalePercentPipe.ctorParameters = [];
-	        return LocalePercentPipe;
-	    }());
-	    /**
-	     * 'localeCurrency' pipe function.
-	     */
-	    /**
-	     * LocaleCurrencyPipe class.
-	     * Localizes currencies.
-	     *
-	     * Getting the local currency:
-	     *
-	     * expression | localeCurrency[:defaultLocale[:currency[:symbolDisplay[:digitInfo]]]]
-	     *
-	     * where 'symbolDisplay' is a boolean indicating whether to use the currency symbol (e.g. $) or the currency code (e.g. USD) in the output.
-	     *
-	     * For example, to get the local currency, add in the template:
-	     *
-	     * {{ b | localeCurrency:defaultLocale:currency:true:'1.2-2' }}
-	     *
-	     * and include in the component:
-	     *
-	     * import {LocaleService} from 'angular2localization';
-	     * ...
-	     * export class AppComponent {
-	     *
-	     *     constructor(public locale: LocaleService) {
-	     *         ...
-	     *     }
-	     *
-	     *     // Gets the default locale.
-	     *     get defaultLocale(): string {
-	     *
-	     *         return this.locale.getDefaultLocale();
-	     *
-	     *     }
-	     *
-	     *     // Gets the current currency.
-	     *     get currency(): string {
-	     *
-	     *         return this.locale.getCurrentCurrency();
-	     *
-	     *     }
-	     *
-	     * }
-	     *
-	     * @author Roberto Simonetti
-	     * @see Angular 2 CurrencyPipe for further information
-	     */
-	    var LocaleCurrencyPipe = (function () {
-	        function LocaleCurrencyPipe() {
-	        }
-	        /**
-	         * LocaleCurrencyPipe transform method.
-	         *
-	         * @param value The number to be localized
-	         * @param defaultLocale The default locale
-	         * @param currency The current currency
-	         * @param symbolDisplay Indicates whether to use the currency symbol
-	         * @param digits The format of the number
-	         * @return The locale currency
-	         */
-	        LocaleCurrencyPipe.prototype.transform = function (value, defaultLocale, currency, symbolDisplay, digits) {
-	            if (symbolDisplay === void 0) {
-	                symbolDisplay = false;
-	            }
-	            if (digits === void 0) {
-	                digits = null;
-	            }
-	            // Checks for support for Intl.
-	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
-	                var localeCurrency = new _angular_common.CurrencyPipe(defaultLocale);
-	                return localeCurrency.transform(value, currency, symbolDisplay, digits);
-	            }
-	            // Returns the number without localization & currency.
-	            return value + " " + currency;
-	        };
-	        LocaleCurrencyPipe.decorators = [
-	            { type: _angular_core.Pipe, args: [{
-	                        name: 'localeCurrency',
-	                        pure: true
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocaleCurrencyPipe.ctorParameters = [];
-	        return LocaleCurrencyPipe;
-	    }());
-	    /**
-	     * ANGULAR 2 LOCALIZATION
-	     * An Angular 2 library to translate messages, dates and numbers.
-	     * Written by Roberto Simonetti.
-	     * MIT license.
-	     * https://github.com/robisim74/angular2localization
-	     */
-	    /**
-	     * Function that takes a Control and returns either null when it’s valid, or and error object if it’s not.
-	     *
-	     * @param locale The reference to LocaleService
-	     * @param digits The format of the number
-	     * @param MIN_VALUE The minimum value for the number
-	     * @param MAX_VALUE The maximum value for the number
-	     * @return An error object: 'format', 'minValue' or 'maxValue'; null in case the value is valid
-	     */
-	    function validateLocaleNumber(locale, digits, MIN_VALUE, MAX_VALUE) {
-	        if (MIN_VALUE === void 0) {
-	            MIN_VALUE = Number.MIN_VALUE;
-	        }
-	        if (MAX_VALUE === void 0) {
-	            MAX_VALUE = Number.MAX_VALUE;
-	        }
-	        var defaultLocale;
-	        var NUMBER_REGEXP;
-	        return function (c) {
-	            // Checks if the default locale has changed. 
-	            if (defaultLocale != locale.getDefaultLocale()) {
-	                NUMBER_REGEXP = LocaleParser.NumberRegExpFactory(locale.getDefaultLocale(), digits);
-	                defaultLocale = locale.getDefaultLocale();
-	            }
-	            // Checks the format.
-	            if (NUMBER_REGEXP.test(c.value)) {
-	                var parsedValue;
-	                parsedValue = LocaleParser.Number(c.value, locale.getDefaultLocale());
-	                if (parsedValue < MIN_VALUE) {
-	                    return { minValue: false };
-	                }
-	                else if (parsedValue > MAX_VALUE) {
-	                    return { maxValue: false };
-	                }
-	                return null; // The number is valid.
-	            }
-	            else {
-	                return { format: false };
-	            }
-	        };
-	    }
-	    /**
-	     * LocaleNumberValidator class.
-	     * Validates a number by default locale.
-	     *
-	     * @author Roberto Simonetti
-	     */
-	    var LocaleNumberValidator = (function () {
-	        function LocaleNumberValidator(locale) {
-	            this.locale = locale;
-	            this.MIN_VALUE = Number.MIN_VALUE;
-	            this.MAX_VALUE = Number.MAX_VALUE;
-	        }
-	        Object.defineProperty(LocaleNumberValidator.prototype, "minValue", {
-	            set: function (value) {
-	                this.MIN_VALUE = value || this.MIN_VALUE;
-	            },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        Object.defineProperty(LocaleNumberValidator.prototype, "maxValue", {
-	            set: function (value) {
-	                this.MAX_VALUE = value || this.MAX_VALUE;
-	            },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        LocaleNumberValidator.prototype.ngOnInit = function () {
-	            this.validator = validateLocaleNumber(this.locale, this.digits, this.MIN_VALUE, this.MAX_VALUE);
-	        };
-	        LocaleNumberValidator.prototype.validate = function (c) {
-	            return this.validator(c);
-	        };
-	        LocaleNumberValidator.decorators = [
-	            { type: _angular_core.Directive, args: [{
-	                        selector: '[validateLocaleNumber][ngModel],[validateLocaleNumber][formControl]',
-	                        providers: [
-	                            { provide: _angular_forms.NG_VALIDATORS, useExisting: _angular_core.forwardRef(function () { return LocaleNumberValidator; }), multi: true }
-	                        ]
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocaleNumberValidator.ctorParameters = [
-	            { type: LocaleService, },
-	        ];
-	        LocaleNumberValidator.propDecorators = {
-	            'digits': [{ type: _angular_core.Input, args: ['validateLocaleNumber',] },],
-	            'minValue': [{ type: _angular_core.Input },],
-	            'maxValue': [{ type: _angular_core.Input },],
-	        };
-	        return LocaleNumberValidator;
-	    }());
-	    // Exports services, pipes & directives.
-	    var LocaleModule = (function () {
-	        function LocaleModule() {
-	        }
-	        LocaleModule.forRoot = function () {
-	            return {
-	                ngModule: LocaleModule,
-	                providers: [LocaleService]
-	            };
-	        };
-	        LocaleModule.forChild = function () {
-	            return {
-	                ngModule: LocaleModule,
-	                providers: [LocaleService]
-	            };
-	        };
-	        LocaleModule.decorators = [
-	            { type: _angular_core.NgModule, args: [{
-	                        declarations: [
-	                            LocaleDatePipe,
-	                            LocaleDecimalPipe,
-	                            LocalePercentPipe,
-	                            LocaleCurrencyPipe,
-	                            LocaleNumberValidator
-	                        ],
-	                        exports: [
-	                            LocaleDatePipe,
-	                            LocaleDecimalPipe,
-	                            LocalePercentPipe,
-	                            LocaleCurrencyPipe,
-	                            LocaleNumberValidator
-	                        ]
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocaleModule.ctorParameters = [];
-	        return LocaleModule;
-	    }());
-	    var LocalizationModule = (function () {
-	        function LocalizationModule() {
-	        }
-	        LocalizationModule.forRoot = function () {
-	            return {
-	                ngModule: LocalizationModule,
-	                providers: [LocalizationService]
-	            };
-	        };
-	        LocalizationModule.forChild = function () {
-	            return {
-	                ngModule: LocalizationModule,
-	                providers: [LocalizationService]
-	            };
-	        };
-	        LocalizationModule.decorators = [
-	            { type: _angular_core.NgModule, args: [{
-	                        declarations: [
-	                            TranslatePipe
-	                        ],
-	                        exports: [
-	                            TranslatePipe
-	                        ]
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        LocalizationModule.ctorParameters = [];
-	        return LocalizationModule;
-	    }());
-	    exports.LocaleModule = LocaleModule;
-	    exports.LocalizationModule = LocalizationModule;
-	    exports.LocalizationService = LocalizationService;
-	    exports.LocaleService = LocaleService;
-	    exports.Locale = Locale;
-	    exports.IntlSupport = IntlSupport;
-	    exports.LocaleParser = LocaleParser;
-	    exports.NumberCode = NumberCode;
-	    exports.TranslatePipe = TranslatePipe;
-	    exports.LocaleDatePipe = LocaleDatePipe;
-	    exports.LocaleDecimalPipe = LocaleDecimalPipe;
-	    exports.LocalePercentPipe = LocalePercentPipe;
-	    exports.LocaleCurrencyPipe = LocaleCurrencyPipe;
-	    exports.LocaleNumberValidator = LocaleNumberValidator;
-	    exports.validateLocaleNumber = validateLocaleNumber;
-	    Object.defineProperty(exports, '__esModule', { value: true });
-	})));
-
-
-/***/ },
-/* 58 */
-/*!*********************************************!*\
-  !*** ./~/@angular/http/bundles/http.umd.js ***!
-  \*********************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * @license Angular v2.0.0
-	 * (c) 2010-2016 Google, Inc. https://angular.io/
-	 * License: MIT
-	 */
-	(function (global, factory) {
-	     true ? factory(exports, __webpack_require__(/*! @angular/core */ 3), __webpack_require__(/*! rxjs/Observable */ 5), __webpack_require__(/*! @angular/platform-browser */ 21)) :
-	    typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/Observable', '@angular/platform-browser'], factory) :
-	    (factory((global.ng = global.ng || {}, global.ng.http = global.ng.http || {}),global.ng.core,global.Rx,global.ng.platformBrowser));
-	}(this, function (exports,_angular_core,rxjs_Observable,_angular_platformBrowser) { 'use strict';
-	
-	    /**
-	     * A backend for http that uses the `XMLHttpRequest` browser API.
-	     *
-	     * Take care not to evaluate this in non-browser contexts.
-	     *
-	     * @experimental
-	     */
-	    var BrowserXhr = (function () {
-	        function BrowserXhr() {
-	        }
-	        BrowserXhr.prototype.build = function () { return (new XMLHttpRequest()); };
-	        BrowserXhr.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        BrowserXhr.ctorParameters = [];
-	        return BrowserXhr;
-	    }());
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var globalScope;
-	    if (typeof window === 'undefined') {
-	        if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope) {
-	            // TODO: Replace any with WorkerGlobalScope from lib.webworker.d.ts #3492
-	            globalScope = self;
-	        }
-	        else {
-	            globalScope = global;
-	        }
-	    }
-	    else {
-	        globalScope = window;
-	    }
-	    // Need to declare a new variable for global here since TypeScript
-	    // exports the original value of the symbol.
-	    var global$1 = globalScope;
-	    // TODO: remove calls to assert in production environment
-	    // Note: Can't just export this and import in in other files
-	    // as `assert` is a reserved keyword in Dart
-	    global$1.assert = function assert(condition) {
-	        // TODO: to be fixed properly via #2830, noop for now
-	    };
-	    function isPresent(obj) {
-	        return obj !== undefined && obj !== null;
-	    }
-	    function isBlank(obj) {
-	        return obj === undefined || obj === null;
-	    }
-	    function isString(obj) {
-	        return typeof obj === 'string';
-	    }
-	    function isArray(obj) {
-	        return Array.isArray(obj);
-	    }
-	    var StringWrapper = (function () {
-	        function StringWrapper() {
-	        }
-	        StringWrapper.fromCharCode = function (code) { return String.fromCharCode(code); };
-	        StringWrapper.charCodeAt = function (s, index) { return s.charCodeAt(index); };
-	        StringWrapper.split = function (s, regExp) { return s.split(regExp); };
-	        StringWrapper.equals = function (s, s2) { return s === s2; };
-	        StringWrapper.stripLeft = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = 0;
-	                for (var i = 0; i < s.length; i++) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos++;
-	                }
-	                s = s.substring(pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.stripRight = function (s, charVal) {
-	            if (s && s.length) {
-	                var pos = s.length;
-	                for (var i = s.length - 1; i >= 0; i--) {
-	                    if (s[i] != charVal)
-	                        break;
-	                    pos--;
-	                }
-	                s = s.substring(0, pos);
-	            }
-	            return s;
-	        };
-	        StringWrapper.replace = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.replaceAll = function (s, from, replace) {
-	            return s.replace(from, replace);
-	        };
-	        StringWrapper.slice = function (s, from, to) {
-	            if (from === void 0) { from = 0; }
-	            if (to === void 0) { to = null; }
-	            return s.slice(from, to === null ? undefined : to);
-	        };
-	        StringWrapper.replaceAllMapped = function (s, from, cb) {
-	            return s.replace(from, function () {
-	                var matches = [];
-	                for (var _i = 0; _i < arguments.length; _i++) {
-	                    matches[_i - 0] = arguments[_i];
-	                }
-	                // Remove offset & string from the result array
-	                matches.splice(-2, 2);
-	                // The callback receives match, p1, ..., pn
-	                return cb(matches);
-	            });
-	        };
-	        StringWrapper.contains = function (s, substr) { return s.indexOf(substr) != -1; };
-	        StringWrapper.compare = function (a, b) {
-	            if (a < b) {
-	                return -1;
-	            }
-	            else if (a > b) {
-	                return 1;
-	            }
-	            else {
-	                return 0;
-	            }
-	        };
-	        return StringWrapper;
-	    }());
-	    var NumberWrapper = (function () {
-	        function NumberWrapper() {
-	        }
-	        NumberWrapper.toFixed = function (n, fractionDigits) { return n.toFixed(fractionDigits); };
-	        NumberWrapper.equal = function (a, b) { return a === b; };
-	        NumberWrapper.parseIntAutoRadix = function (text) {
-	            var result = parseInt(text);
-	            if (isNaN(result)) {
-	                throw new Error('Invalid integer literal when parsing ' + text);
-	            }
-	            return result;
-	        };
-	        NumberWrapper.parseInt = function (text, radix) {
-	            if (radix == 10) {
-	                if (/^(\-|\+)?[0-9]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else if (radix == 16) {
-	                if (/^(\-|\+)?[0-9ABCDEFabcdef]+$/.test(text)) {
-	                    return parseInt(text, radix);
-	                }
-	            }
-	            else {
-	                var result = parseInt(text, radix);
-	                if (!isNaN(result)) {
-	                    return result;
-	                }
-	            }
-	            throw new Error('Invalid integer literal when parsing ' + text + ' in base ' + radix);
-	        };
-	        Object.defineProperty(NumberWrapper, "NaN", {
-	            get: function () { return NaN; },
-	            enumerable: true,
-	            configurable: true
-	        });
-	        NumberWrapper.isNumeric = function (value) { return !isNaN(value - parseFloat(value)); };
-	        NumberWrapper.isNaN = function (value) { return isNaN(value); };
-	        NumberWrapper.isInteger = function (value) { return Number.isInteger(value); };
-	        return NumberWrapper;
-	    }());
-	    function isJsObject(o) {
-	        return o !== null && (typeof o === 'function' || typeof o === 'object');
-	    }
-	    // Can't be all uppercase as our transpiler would think it is a special directive...
-	    var Json = (function () {
-	        function Json() {
-	        }
-	        Json.parse = function (s) { return global$1.JSON.parse(s); };
-	        Json.stringify = function (data) {
-	            // Dart doesn't take 3 arguments
-	            return global$1.JSON.stringify(data, null, 2);
-	        };
-	        return Json;
-	    }());
-	    var _symbolIterator = null;
-	    function getSymbolIterator() {
-	        if (isBlank(_symbolIterator)) {
-	            if (isPresent(globalScope.Symbol) && isPresent(Symbol.iterator)) {
-	                _symbolIterator = Symbol.iterator;
-	            }
-	            else {
-	                // es6-shim specific logic
-	                var keys = Object.getOwnPropertyNames(Map.prototype);
-	                for (var i = 0; i < keys.length; ++i) {
-	                    var key = keys[i];
-	                    if (key !== 'entries' && key !== 'size' &&
-	                        Map.prototype[key] === Map.prototype['entries']) {
-	                        _symbolIterator = key;
-	                    }
-	                }
-	            }
-	        }
-	        return _symbolIterator;
-	    }
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    /**
-	     * Supported http methods.
-	     * @experimental
-	     */
-	    exports.RequestMethod;
-	    (function (RequestMethod) {
-	        RequestMethod[RequestMethod["Get"] = 0] = "Get";
-	        RequestMethod[RequestMethod["Post"] = 1] = "Post";
-	        RequestMethod[RequestMethod["Put"] = 2] = "Put";
-	        RequestMethod[RequestMethod["Delete"] = 3] = "Delete";
-	        RequestMethod[RequestMethod["Options"] = 4] = "Options";
-	        RequestMethod[RequestMethod["Head"] = 5] = "Head";
-	        RequestMethod[RequestMethod["Patch"] = 6] = "Patch";
-	    })(exports.RequestMethod || (exports.RequestMethod = {}));
-	    /**
-	     * All possible states in which a connection can be, based on
-	     * [States](http://www.w3.org/TR/XMLHttpRequest/#states) from the `XMLHttpRequest` spec, but with an
-	     * additional "CANCELLED" state.
-	     * @experimental
-	     */
-	    exports.ReadyState;
-	    (function (ReadyState) {
-	        ReadyState[ReadyState["Unsent"] = 0] = "Unsent";
-	        ReadyState[ReadyState["Open"] = 1] = "Open";
-	        ReadyState[ReadyState["HeadersReceived"] = 2] = "HeadersReceived";
-	        ReadyState[ReadyState["Loading"] = 3] = "Loading";
-	        ReadyState[ReadyState["Done"] = 4] = "Done";
-	        ReadyState[ReadyState["Cancelled"] = 5] = "Cancelled";
-	    })(exports.ReadyState || (exports.ReadyState = {}));
-	    /**
-	     * Acceptable response types to be associated with a {@link Response}, based on
-	     * [ResponseType](https://fetch.spec.whatwg.org/#responsetype) from the Fetch spec.
-	     * @experimental
-	     */
-	    exports.ResponseType;
-	    (function (ResponseType) {
-	        ResponseType[ResponseType["Basic"] = 0] = "Basic";
-	        ResponseType[ResponseType["Cors"] = 1] = "Cors";
-	        ResponseType[ResponseType["Default"] = 2] = "Default";
-	        ResponseType[ResponseType["Error"] = 3] = "Error";
-	        ResponseType[ResponseType["Opaque"] = 4] = "Opaque";
-	    })(exports.ResponseType || (exports.ResponseType = {}));
-	    /**
-	     * Supported content type to be automatically associated with a {@link Request}.
-	     * @experimental
-	     */
-	    var ContentType;
-	    (function (ContentType) {
-	        ContentType[ContentType["NONE"] = 0] = "NONE";
-	        ContentType[ContentType["JSON"] = 1] = "JSON";
-	        ContentType[ContentType["FORM"] = 2] = "FORM";
-	        ContentType[ContentType["FORM_DATA"] = 3] = "FORM_DATA";
-	        ContentType[ContentType["TEXT"] = 4] = "TEXT";
-	        ContentType[ContentType["BLOB"] = 5] = "BLOB";
-	        ContentType[ContentType["ARRAY_BUFFER"] = 6] = "ARRAY_BUFFER";
-	    })(ContentType || (ContentType = {}));
-	    /**
-	     * Define which buffer to use to store the response
-	     * @experimental
-	     */
-	    exports.ResponseContentType;
-	    (function (ResponseContentType) {
-	        ResponseContentType[ResponseContentType["Text"] = 0] = "Text";
-	        ResponseContentType[ResponseContentType["Json"] = 1] = "Json";
-	        ResponseContentType[ResponseContentType["ArrayBuffer"] = 2] = "ArrayBuffer";
-	        ResponseContentType[ResponseContentType["Blob"] = 3] = "Blob";
-	    })(exports.ResponseContentType || (exports.ResponseContentType = {}));
-	
-	    var Map$1 = global$1.Map;
-	    var Set = global$1.Set;
-	    // Safari and Internet Explorer do not support the iterable parameter to the
-	    // Map constructor.  We work around that by manually adding the items.
-	    var createMapFromPairs = (function () {
-	        try {
-	            if (new Map$1([[1, 2]]).size === 1) {
-	                return function createMapFromPairs(pairs) { return new Map$1(pairs); };
-	            }
-	        }
-	        catch (e) {
-	        }
-	        return function createMapAndPopulateFromPairs(pairs) {
-	            var map = new Map$1();
-	            for (var i = 0; i < pairs.length; i++) {
-	                var pair = pairs[i];
-	                map.set(pair[0], pair[1]);
-	            }
-	            return map;
-	        };
-	    })();
-	    var createMapFromMap = (function () {
-	        try {
-	            if (new Map$1(new Map$1())) {
-	                return function createMapFromMap(m) { return new Map$1(m); };
-	            }
-	        }
-	        catch (e) {
-	        }
-	        return function createMapAndPopulateFromMap(m) {
-	            var map = new Map$1();
-	            m.forEach(function (v, k) { map.set(k, v); });
-	            return map;
-	        };
-	    })();
-	    var _clearValues = (function () {
-	        if ((new Map$1()).keys().next) {
-	            return function _clearValues(m) {
-	                var keyIterator = m.keys();
-	                var k;
-	                while (!((k = keyIterator.next()).done)) {
-	                    m.set(k.value, null);
-	                }
-	            };
-	        }
-	        else {
-	            return function _clearValuesWithForeEach(m) {
-	                m.forEach(function (v, k) { m.set(k, null); });
-	            };
-	        }
-	    })();
-	    // Safari doesn't implement MapIterator.next(), which is used is Traceur's polyfill of Array.from
-	    // TODO(mlaval): remove the work around once we have a working polyfill of Array.from
-	    var _arrayFromMap = (function () {
-	        try {
-	            if ((new Map$1()).values().next) {
-	                return function createArrayFromMap(m, getValues) {
-	                    return getValues ? Array.from(m.values()) : Array.from(m.keys());
-	                };
-	            }
-	        }
-	        catch (e) {
-	        }
-	        return function createArrayFromMapWithForeach(m, getValues) {
-	            var res = ListWrapper.createFixedSize(m.size), i = 0;
-	            m.forEach(function (v, k) {
-	                res[i] = getValues ? v : k;
-	                i++;
-	            });
-	            return res;
-	        };
-	    })();
-	    var MapWrapper = (function () {
-	        function MapWrapper() {
-	        }
-	        MapWrapper.clone = function (m) { return createMapFromMap(m); };
-	        MapWrapper.createFromStringMap = function (stringMap) {
-	            var result = new Map$1();
-	            for (var prop in stringMap) {
-	                result.set(prop, stringMap[prop]);
-	            }
-	            return result;
-	        };
-	        MapWrapper.toStringMap = function (m) {
-	            var r = {};
-	            m.forEach(function (v, k) { return r[k] = v; });
-	            return r;
-	        };
-	        MapWrapper.createFromPairs = function (pairs) { return createMapFromPairs(pairs); };
-	        MapWrapper.clearValues = function (m) { _clearValues(m); };
-	        MapWrapper.iterable = function (m) { return m; };
-	        MapWrapper.keys = function (m) { return _arrayFromMap(m, false); };
-	        MapWrapper.values = function (m) { return _arrayFromMap(m, true); };
-	        return MapWrapper;
-	    }());
-	    /**
-	     * Wraps Javascript Objects
-	     */
-	    var StringMapWrapper = (function () {
-	        function StringMapWrapper() {
-	        }
-	        StringMapWrapper.create = function () {
-	            // Note: We are not using Object.create(null) here due to
-	            // performance!
-	            // http://jsperf.com/ng2-object-create-null
-	            return {};
-	        };
-	        StringMapWrapper.contains = function (map, key) {
-	            return map.hasOwnProperty(key);
-	        };
-	        StringMapWrapper.get = function (map, key) {
-	            return map.hasOwnProperty(key) ? map[key] : undefined;
-	        };
-	        StringMapWrapper.set = function (map, key, value) { map[key] = value; };
-	        StringMapWrapper.keys = function (map) { return Object.keys(map); };
-	        StringMapWrapper.values = function (map) {
-	            return Object.keys(map).map(function (k) { return map[k]; });
-	        };
-	        StringMapWrapper.isEmpty = function (map) {
-	            for (var prop in map) {
-	                return false;
-	            }
-	            return true;
-	        };
-	        StringMapWrapper.delete = function (map, key) { delete map[key]; };
-	        StringMapWrapper.forEach = function (map, callback) {
-	            for (var _i = 0, _a = Object.keys(map); _i < _a.length; _i++) {
-	                var k = _a[_i];
-	                callback(map[k], k);
-	            }
-	        };
-	        StringMapWrapper.merge = function (m1, m2) {
-	            var m = {};
-	            for (var _i = 0, _a = Object.keys(m1); _i < _a.length; _i++) {
-	                var k = _a[_i];
-	                m[k] = m1[k];
-	            }
-	            for (var _b = 0, _c = Object.keys(m2); _b < _c.length; _b++) {
-	                var k = _c[_b];
-	                m[k] = m2[k];
-	            }
-	            return m;
-	        };
-	        StringMapWrapper.equals = function (m1, m2) {
-	            var k1 = Object.keys(m1);
-	            var k2 = Object.keys(m2);
-	            if (k1.length != k2.length) {
-	                return false;
-	            }
-	            for (var i = 0; i < k1.length; i++) {
-	                var key = k1[i];
-	                if (m1[key] !== m2[key]) {
-	                    return false;
-	                }
-	            }
-	            return true;
-	        };
-	        return StringMapWrapper;
-	    }());
-	    var ListWrapper = (function () {
-	        function ListWrapper() {
-	        }
-	        // JS has no way to express a statically fixed size list, but dart does so we
-	        // keep both methods.
-	        ListWrapper.createFixedSize = function (size) { return new Array(size); };
-	        ListWrapper.createGrowableSize = function (size) { return new Array(size); };
-	        ListWrapper.clone = function (array) { return array.slice(0); };
-	        ListWrapper.forEachWithIndex = function (array, fn) {
-	            for (var i = 0; i < array.length; i++) {
-	                fn(array[i], i);
-	            }
-	        };
-	        ListWrapper.first = function (array) {
-	            if (!array)
-	                return null;
-	            return array[0];
-	        };
-	        ListWrapper.last = function (array) {
-	            if (!array || array.length == 0)
-	                return null;
-	            return array[array.length - 1];
-	        };
-	        ListWrapper.indexOf = function (array, value, startIndex) {
-	            if (startIndex === void 0) { startIndex = 0; }
-	            return array.indexOf(value, startIndex);
-	        };
-	        ListWrapper.contains = function (list, el) { return list.indexOf(el) !== -1; };
-	        ListWrapper.reversed = function (array) {
-	            var a = ListWrapper.clone(array);
-	            return a.reverse();
-	        };
-	        ListWrapper.concat = function (a, b) { return a.concat(b); };
-	        ListWrapper.insert = function (list, index, value) { list.splice(index, 0, value); };
-	        ListWrapper.removeAt = function (list, index) {
-	            var res = list[index];
-	            list.splice(index, 1);
-	            return res;
-	        };
-	        ListWrapper.removeAll = function (list, items) {
-	            for (var i = 0; i < items.length; ++i) {
-	                var index = list.indexOf(items[i]);
-	                list.splice(index, 1);
-	            }
-	        };
-	        ListWrapper.remove = function (list, el) {
-	            var index = list.indexOf(el);
-	            if (index > -1) {
-	                list.splice(index, 1);
-	                return true;
-	            }
-	            return false;
-	        };
-	        ListWrapper.clear = function (list) { list.length = 0; };
-	        ListWrapper.isEmpty = function (list) { return list.length == 0; };
-	        ListWrapper.fill = function (list, value, start, end) {
-	            if (start === void 0) { start = 0; }
-	            if (end === void 0) { end = null; }
-	            list.fill(value, start, end === null ? list.length : end);
-	        };
-	        ListWrapper.equals = function (a, b) {
-	            if (a.length != b.length)
-	                return false;
-	            for (var i = 0; i < a.length; ++i) {
-	                if (a[i] !== b[i])
-	                    return false;
-	            }
-	            return true;
-	        };
-	        ListWrapper.slice = function (l, from, to) {
-	            if (from === void 0) { from = 0; }
-	            if (to === void 0) { to = null; }
-	            return l.slice(from, to === null ? undefined : to);
-	        };
-	        ListWrapper.splice = function (l, from, length) { return l.splice(from, length); };
-	        ListWrapper.sort = function (l, compareFn) {
-	            if (isPresent(compareFn)) {
-	                l.sort(compareFn);
-	            }
-	            else {
-	                l.sort();
-	            }
-	        };
-	        ListWrapper.toString = function (l) { return l.toString(); };
-	        ListWrapper.toJSON = function (l) { return JSON.stringify(l); };
-	        ListWrapper.maximum = function (list, predicate) {
-	            if (list.length == 0) {
-	                return null;
-	            }
-	            var solution = null;
-	            var maxValue = -Infinity;
-	            for (var index = 0; index < list.length; index++) {
-	                var candidate = list[index];
-	                if (isBlank(candidate)) {
-	                    continue;
-	                }
-	                var candidateValue = predicate(candidate);
-	                if (candidateValue > maxValue) {
-	                    solution = candidate;
-	                    maxValue = candidateValue;
-	                }
-	            }
-	            return solution;
-	        };
-	        ListWrapper.flatten = function (list) {
-	            var target = [];
-	            _flattenArray(list, target);
-	            return target;
-	        };
-	        ListWrapper.addAll = function (list, source) {
-	            for (var i = 0; i < source.length; i++) {
-	                list.push(source[i]);
-	            }
-	        };
-	        return ListWrapper;
-	    }());
-	    function _flattenArray(source, target) {
-	        if (isPresent(source)) {
-	            for (var i = 0; i < source.length; i++) {
-	                var item = source[i];
-	                if (isArray(item)) {
-	                    _flattenArray(item, target);
-	                }
-	                else {
-	                    target.push(item);
-	                }
-	            }
-	        }
-	        return target;
-	    }
-	    function isListLikeIterable(obj) {
-	        if (!isJsObject(obj))
-	            return false;
-	        return isArray(obj) ||
-	            (!(obj instanceof Map$1) &&
-	                getSymbolIterator() in obj); // JS Iterable have a Symbol.iterator prop
-	    }
-	    function iterateListLike(obj, fn) {
-	        if (isArray(obj)) {
-	            for (var i = 0; i < obj.length; i++) {
-	                fn(obj[i]);
-	            }
-	        }
-	        else {
-	            var iterator = obj[getSymbolIterator()]();
-	            var item;
-	            while (!((item = iterator.next()).done)) {
-	                fn(item.value);
-	            }
-	        }
-	    }
-	    // Safari and Internet Explorer do not support the iterable parameter to the
-	    // Set constructor.  We work around that by manually adding the items.
-	    var createSetFromList = (function () {
-	        var test = new Set([1, 2, 3]);
-	        if (test.size === 3) {
-	            return function createSetFromList(lst) { return new Set(lst); };
-	        }
-	        else {
-	            return function createSetAndPopulateFromList(lst) {
-	                var res = new Set(lst);
-	                if (res.size !== lst.length) {
-	                    for (var i = 0; i < lst.length; i++) {
-	                        res.add(lst[i]);
-	                    }
-	                }
-	                return res;
-	            };
-	        }
-	    })();
-	
-	    /**
-	     * Polyfill for [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers/Headers), as
-	     * specified in the [Fetch Spec](https://fetch.spec.whatwg.org/#headers-class).
-	     *
-	     * The only known difference between this `Headers` implementation and the spec is the
-	     * lack of an `entries` method.
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/MTdwT6?p=preview))
-	     *
-	     * ```
-	     * import {Headers} from '@angular/http';
-	     *
-	     * var firstHeaders = new Headers();
-	     * firstHeaders.append('Content-Type', 'image/jpeg');
-	     * console.log(firstHeaders.get('Content-Type')) //'image/jpeg'
-	     *
-	     * // Create headers from Plain Old JavaScript Object
-	     * var secondHeaders = new Headers({
-	     *   'X-My-Custom-Header': 'Angular'
-	     * });
-	     * console.log(secondHeaders.get('X-My-Custom-Header')); //'Angular'
-	     *
-	     * var thirdHeaders = new Headers(secondHeaders);
-	     * console.log(thirdHeaders.get('X-My-Custom-Header')); //'Angular'
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var Headers = (function () {
-	        function Headers(headers) {
-	            var _this = this;
-	            if (headers instanceof Headers) {
-	                this._headersMap = new Map$1(headers._headersMap);
-	                return;
-	            }
-	            this._headersMap = new Map$1();
-	            if (isBlank(headers)) {
-	                return;
-	            }
-	            // headers instanceof StringMap
-	            StringMapWrapper.forEach(headers, function (v, k) {
-	                _this._headersMap.set(normalize(k), isListLikeIterable(v) ? v : [v]);
-	            });
-	        }
-	        /**
-	         * Returns a new Headers instance from the given DOMString of Response Headers
-	         */
-	        Headers.fromResponseHeaderString = function (headersString) {
-	            var headers = new Headers();
-	            headersString.split('\n').forEach(function (line) {
-	                var index = line.indexOf(':');
-	                if (index > 0) {
-	                    var key = line.substring(0, index);
-	                    var value = line.substring(index + 1).trim();
-	                    headers.set(key, value);
-	                }
-	            });
-	            return headers;
-	        };
-	        /**
-	         * Appends a header to existing list of header values for a given header name.
-	         */
-	        Headers.prototype.append = function (name, value) {
-	            name = normalize(name);
-	            var mapName = this._headersMap.get(name);
-	            var list = isListLikeIterable(mapName) ? mapName : [];
-	            list.push(value);
-	            this._headersMap.set(name, list);
-	        };
-	        /**
-	         * Deletes all header values for the given name.
-	         */
-	        Headers.prototype.delete = function (name) { this._headersMap.delete(normalize(name)); };
-	        Headers.prototype.forEach = function (fn) {
-	            this._headersMap.forEach(fn);
-	        };
-	        /**
-	         * Returns first header that matches given name.
-	         */
-	        Headers.prototype.get = function (header) { return ListWrapper.first(this._headersMap.get(normalize(header))); };
-	        /**
-	         * Check for existence of header by given name.
-	         */
-	        Headers.prototype.has = function (header) { return this._headersMap.has(normalize(header)); };
-	        /**
-	         * Provides names of set headers
-	         */
-	        Headers.prototype.keys = function () { return MapWrapper.keys(this._headersMap); };
-	        /**
-	         * Sets or overrides header value for given name.
-	         */
-	        Headers.prototype.set = function (header, value) {
-	            var list = [];
-	            if (isListLikeIterable(value)) {
-	                var pushValue = value.join(',');
-	                list.push(pushValue);
-	            }
-	            else {
-	                list.push(value);
-	            }
-	            this._headersMap.set(normalize(header), list);
-	        };
-	        /**
-	         * Returns values of all headers.
-	         */
-	        Headers.prototype.values = function () { return MapWrapper.values(this._headersMap); };
-	        /**
-	         * Returns string of all headers.
-	         */
-	        Headers.prototype.toJSON = function () {
-	            var serializableHeaders = {};
-	            this._headersMap.forEach(function (values, name) {
-	                var list = [];
-	                iterateListLike(values, function (val /** TODO #9100 */) { return list = ListWrapper.concat(list, val.split(',')); });
-	                serializableHeaders[normalize(name)] = list;
-	            });
-	            return serializableHeaders;
-	        };
-	        /**
-	         * Returns list of header values for a given name.
-	         */
-	        Headers.prototype.getAll = function (header) {
-	            var headers = this._headersMap.get(normalize(header));
-	            return isListLikeIterable(headers) ? headers : [];
-	        };
-	        /**
-	         * This method is not implemented.
-	         */
-	        Headers.prototype.entries = function () { throw new Error('"entries" method is not implemented on Headers class'); };
-	        return Headers;
-	    }());
-	    // "HTTP character sets are identified by case-insensitive tokens"
-	    // Spec at https://tools.ietf.org/html/rfc2616
-	    // This implementation is same as NodeJS.
-	    // see https://nodejs.org/dist/latest-v6.x/docs/api/http.html#http_message_headers
-	    function normalize(name) {
-	        return name.toLowerCase();
-	    }
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var __extends$1 = (this && this.__extends) || function (d, b) {
-	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    /**
-	     * Creates a response options object to be optionally provided when instantiating a
-	     * {@link Response}.
-	     *
-	     * This class is based on the `ResponseInit` description in the [Fetch
-	     * Spec](https://fetch.spec.whatwg.org/#responseinit).
-	     *
-	     * All values are null by default. Typical defaults can be found in the
-	     * {@link BaseResponseOptions} class, which sub-classes `ResponseOptions`.
-	     *
-	     * This class may be used in tests to build {@link Response Responses} for
-	     * mock responses (see {@link MockBackend}).
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/P9Jkk8e8cz6NVzbcxEsD?p=preview))
-	     *
-	     * ```typescript
-	     * import {ResponseOptions, Response} from '@angular/http';
-	     *
-	     * var options = new ResponseOptions({
-	     *   body: '{"name":"Jeff"}'
-	     * });
-	     * var res = new Response(options);
-	     *
-	     * console.log('res.json():', res.json()); // Object {name: "Jeff"}
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var ResponseOptions = (function () {
-	        function ResponseOptions(_a) {
-	            var _b = _a === void 0 ? {} : _a, body = _b.body, status = _b.status, headers = _b.headers, statusText = _b.statusText, type = _b.type, url = _b.url;
-	            this.body = isPresent(body) ? body : null;
-	            this.status = isPresent(status) ? status : null;
-	            this.headers = isPresent(headers) ? headers : null;
-	            this.statusText = isPresent(statusText) ? statusText : null;
-	            this.type = isPresent(type) ? type : null;
-	            this.url = isPresent(url) ? url : null;
-	        }
-	        /**
-	         * Creates a copy of the `ResponseOptions` instance, using the optional input as values to
-	         * override
-	         * existing values. This method will not change the values of the instance on which it is being
-	         * called.
-	         *
-	         * This may be useful when sharing a base `ResponseOptions` object inside tests,
-	         * where certain properties may change from test to test.
-	         *
-	         * ### Example ([live demo](http://plnkr.co/edit/1lXquqFfgduTFBWjNoRE?p=preview))
-	         *
-	         * ```typescript
-	         * import {ResponseOptions, Response} from '@angular/http';
-	         *
-	         * var options = new ResponseOptions({
-	         *   body: {name: 'Jeff'}
-	         * });
-	         * var res = new Response(options.merge({
-	         *   url: 'https://google.com'
-	         * }));
-	         * console.log('options.url:', options.url); // null
-	         * console.log('res.json():', res.json()); // Object {name: "Jeff"}
-	         * console.log('res.url:', res.url); // https://google.com
-	         * ```
-	         */
-	        ResponseOptions.prototype.merge = function (options) {
-	            return new ResponseOptions({
-	                body: isPresent(options) && isPresent(options.body) ? options.body : this.body,
-	                status: isPresent(options) && isPresent(options.status) ? options.status : this.status,
-	                headers: isPresent(options) && isPresent(options.headers) ? options.headers : this.headers,
-	                statusText: isPresent(options) && isPresent(options.statusText) ? options.statusText :
-	                    this.statusText,
-	                type: isPresent(options) && isPresent(options.type) ? options.type : this.type,
-	                url: isPresent(options) && isPresent(options.url) ? options.url : this.url,
-	            });
-	        };
-	        return ResponseOptions;
-	    }());
-	    /**
-	     * Subclass of {@link ResponseOptions}, with default values.
-	     *
-	     * Default values:
-	     *  * status: 200
-	     *  * headers: empty {@link Headers} object
-	     *
-	     * This class could be extended and bound to the {@link ResponseOptions} class
-	     * when configuring an {@link Injector}, in order to override the default options
-	     * used by {@link Http} to create {@link Response Responses}.
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/qv8DLT?p=preview))
-	     *
-	     * ```typescript
-	     * import {provide} from '@angular/core';
-	     * import {bootstrap} from '@angular/platform-browser/browser';
-	     * import {HTTP_PROVIDERS, Headers, Http, BaseResponseOptions, ResponseOptions} from
-	     * '@angular/http';
-	     * import {App} from './myapp';
-	     *
-	     * class MyOptions extends BaseResponseOptions {
-	     *   headers:Headers = new Headers({network: 'github'});
-	     * }
-	     *
-	     * bootstrap(App, [HTTP_PROVIDERS, {provide: ResponseOptions, useClass: MyOptions}]);
-	     * ```
-	     *
-	     * The options could also be extended when manually creating a {@link Response}
-	     * object.
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/VngosOWiaExEtbstDoix?p=preview))
-	     *
-	     * ```
-	     * import {BaseResponseOptions, Response} from '@angular/http';
-	     *
-	     * var options = new BaseResponseOptions();
-	     * var res = new Response(options.merge({
-	     *   body: 'Angular',
-	     *   headers: new Headers({framework: 'angular'})
-	     * }));
-	     * console.log('res.headers.get("framework"):', res.headers.get('framework')); // angular
-	     * console.log('res.text():', res.text()); // Angular;
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var BaseResponseOptions = (function (_super) {
-	        __extends$1(BaseResponseOptions, _super);
-	        function BaseResponseOptions() {
-	            _super.call(this, { status: 200, statusText: 'Ok', type: exports.ResponseType.Default, headers: new Headers() });
-	        }
-	        BaseResponseOptions.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        BaseResponseOptions.ctorParameters = [];
-	        return BaseResponseOptions;
-	    }(ResponseOptions));
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    /**
-	     * Abstract class from which real backends are derived.
-	     *
-	     * The primary purpose of a `ConnectionBackend` is to create new connections to fulfill a given
-	     * {@link Request}.
-	     *
-	     * @experimental
-	     */
-	    var ConnectionBackend = (function () {
-	        function ConnectionBackend() {
-	        }
-	        return ConnectionBackend;
-	    }());
-	    /**
-	     * Abstract class from which real connections are derived.
-	     *
-	     * @experimental
-	     */
-	    var Connection = (function () {
-	        function Connection() {
-	        }
-	        return Connection;
-	    }());
-	    /**
-	     * An XSRFStrategy configures XSRF protection (e.g. via headers) on an HTTP request.
-	     *
-	     * @experimental
-	     */
-	    var XSRFStrategy = (function () {
-	        function XSRFStrategy() {
-	        }
-	        return XSRFStrategy;
-	    }());
-	
-	    function normalizeMethodName(method) {
-	        if (isString(method)) {
-	            var originalMethod = method;
-	            method = method
-	                .replace(/(\w)(\w*)/g, function (g0, g1, g2) { return g1.toUpperCase() + g2.toLowerCase(); });
-	            method = exports.RequestMethod[method];
-	            if (typeof method !== 'number')
-	                throw new Error("Invalid request method. The method \"" + originalMethod + "\" is not supported.");
-	        }
-	        return method;
-	    }
-	    var isSuccess = function (status) { return (status >= 200 && status < 300); };
-	    function getResponseURL(xhr) {
-	        if ('responseURL' in xhr) {
-	            return xhr.responseURL;
-	        }
-	        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-	            return xhr.getResponseHeader('X-Request-URL');
-	        }
-	        return;
-	    }
-	    function stringToArrayBuffer(input) {
-	        var view = new Uint16Array(input.length);
-	        for (var i = 0, strLen = input.length; i < strLen; i++) {
-	            view[i] = input.charCodeAt(i);
-	        }
-	        return view.buffer;
-	    }
-	
-	    function paramParser(rawParams) {
-	        if (rawParams === void 0) { rawParams = ''; }
-	        var map = new Map$1();
-	        if (rawParams.length > 0) {
-	            var params = rawParams.split('&');
-	            params.forEach(function (param) {
-	                var eqIdx = param.indexOf('=');
-	                var _a = eqIdx == -1 ? [param, ''] : [param.slice(0, eqIdx), param.slice(eqIdx + 1)], key = _a[0], val = _a[1];
-	                var list = map.get(key) || [];
-	                list.push(val);
-	                map.set(key, list);
-	            });
-	        }
-	        return map;
-	    }
-	    /**
-	     * @experimental
-	     **/
-	    var QueryEncoder = (function () {
-	        function QueryEncoder() {
-	        }
-	        QueryEncoder.prototype.encodeKey = function (k) { return standardEncoding(k); };
-	        QueryEncoder.prototype.encodeValue = function (v) { return standardEncoding(v); };
-	        return QueryEncoder;
-	    }());
-	    function standardEncoding(v) {
-	        return encodeURIComponent(v)
-	            .replace(/%40/gi, '@')
-	            .replace(/%3A/gi, ':')
-	            .replace(/%24/gi, '$')
-	            .replace(/%2C/gi, ',')
-	            .replace(/%3B/gi, ';')
-	            .replace(/%2B/gi, '+')
-	            .replace(/%3D/gi, '=')
-	            .replace(/%3F/gi, '?')
-	            .replace(/%2F/gi, '/');
-	    }
-	    /**
-	     * Map-like representation of url search parameters, based on
-	     * [URLSearchParams](https://url.spec.whatwg.org/#urlsearchparams) in the url living standard,
-	     * with several extensions for merging URLSearchParams objects:
-	     *   - setAll()
-	     *   - appendAll()
-	     *   - replaceAll()
-	     *
-	     * This class accepts an optional second parameter of ${@link QueryEncoder},
-	     * which is used to serialize parameters before making a request. By default,
-	     * `QueryEncoder` encodes keys and values of parameters using `encodeURIComponent`,
-	     * and then un-encodes certain characters that are allowed to be part of the query
-	     * according to IETF RFC 3986: https://tools.ietf.org/html/rfc3986.
-	     *
-	     * These are the characters that are not encoded: `! $ \' ( ) * + , ; A 9 - . _ ~ ? /`
-	     *
-	     * If the set of allowed query characters is not acceptable for a particular backend,
-	     * `QueryEncoder` can be subclassed and provided as the 2nd argument to URLSearchParams.
-	     *
-	     * ```
-	     * import {URLSearchParams, QueryEncoder} from '@angular/http';
-	     * class MyQueryEncoder extends QueryEncoder {
-	     *   encodeKey(k: string): string {
-	     *     return myEncodingFunction(k);
-	     *   }
-	     *
-	     *   encodeValue(v: string): string {
-	     *     return myEncodingFunction(v);
-	     *   }
-	     * }
-	     *
-	     * let params = new URLSearchParams('', new MyQueryEncoder());
-	     * ```
-	     * @experimental
-	     */
-	    var URLSearchParams = (function () {
-	        function URLSearchParams(rawParams, queryEncoder) {
-	            if (rawParams === void 0) { rawParams = ''; }
-	            if (queryEncoder === void 0) { queryEncoder = new QueryEncoder(); }
-	            this.rawParams = rawParams;
-	            this.queryEncoder = queryEncoder;
-	            this.paramsMap = paramParser(rawParams);
-	        }
-	        URLSearchParams.prototype.clone = function () {
-	            var clone = new URLSearchParams('', this.queryEncoder);
-	            clone.appendAll(this);
-	            return clone;
-	        };
-	        URLSearchParams.prototype.has = function (param) { return this.paramsMap.has(param); };
-	        URLSearchParams.prototype.get = function (param) {
-	            var storedParam = this.paramsMap.get(param);
-	            if (isListLikeIterable(storedParam)) {
-	                return ListWrapper.first(storedParam);
-	            }
-	            else {
-	                return null;
-	            }
-	        };
-	        URLSearchParams.prototype.getAll = function (param) {
-	            var mapParam = this.paramsMap.get(param);
-	            return isPresent(mapParam) ? mapParam : [];
-	        };
-	        URLSearchParams.prototype.set = function (param, val) {
-	            var mapParam = this.paramsMap.get(param);
-	            var list = isPresent(mapParam) ? mapParam : [];
-	            ListWrapper.clear(list);
-	            list.push(val);
-	            this.paramsMap.set(param, list);
-	        };
-	        // A merge operation
-	        // For each name-values pair in `searchParams`, perform `set(name, values[0])`
-	        //
-	        // E.g: "a=[1,2,3], c=[8]" + "a=[4,5,6], b=[7]" = "a=[4], c=[8], b=[7]"
-	        //
-	        // TODO(@caitp): document this better
-	        URLSearchParams.prototype.setAll = function (searchParams) {
-	            var _this = this;
-	            searchParams.paramsMap.forEach(function (value, param) {
-	                var mapParam = _this.paramsMap.get(param);
-	                var list = isPresent(mapParam) ? mapParam : [];
-	                ListWrapper.clear(list);
-	                list.push(value[0]);
-	                _this.paramsMap.set(param, list);
-	            });
-	        };
-	        URLSearchParams.prototype.append = function (param, val) {
-	            var mapParam = this.paramsMap.get(param);
-	            var list = isPresent(mapParam) ? mapParam : [];
-	            list.push(val);
-	            this.paramsMap.set(param, list);
-	        };
-	        // A merge operation
-	        // For each name-values pair in `searchParams`, perform `append(name, value)`
-	        // for each value in `values`.
-	        //
-	        // E.g: "a=[1,2], c=[8]" + "a=[3,4], b=[7]" = "a=[1,2,3,4], c=[8], b=[7]"
-	        //
-	        // TODO(@caitp): document this better
-	        URLSearchParams.prototype.appendAll = function (searchParams) {
-	            var _this = this;
-	            searchParams.paramsMap.forEach(function (value, param) {
-	                var mapParam = _this.paramsMap.get(param);
-	                var list = isPresent(mapParam) ? mapParam : [];
-	                for (var i = 0; i < value.length; ++i) {
-	                    list.push(value[i]);
-	                }
-	                _this.paramsMap.set(param, list);
-	            });
-	        };
-	        // A merge operation
-	        // For each name-values pair in `searchParams`, perform `delete(name)`,
-	        // followed by `set(name, values)`
-	        //
-	        // E.g: "a=[1,2,3], c=[8]" + "a=[4,5,6], b=[7]" = "a=[4,5,6], c=[8], b=[7]"
-	        //
-	        // TODO(@caitp): document this better
-	        URLSearchParams.prototype.replaceAll = function (searchParams) {
-	            var _this = this;
-	            searchParams.paramsMap.forEach(function (value, param) {
-	                var mapParam = _this.paramsMap.get(param);
-	                var list = isPresent(mapParam) ? mapParam : [];
-	                ListWrapper.clear(list);
-	                for (var i = 0; i < value.length; ++i) {
-	                    list.push(value[i]);
-	                }
-	                _this.paramsMap.set(param, list);
-	            });
-	        };
-	        URLSearchParams.prototype.toString = function () {
-	            var _this = this;
-	            var paramsList = [];
-	            this.paramsMap.forEach(function (values, k) {
-	                values.forEach(function (v) { return paramsList.push(_this.queryEncoder.encodeKey(k) + '=' + _this.queryEncoder.encodeValue(v)); });
-	            });
-	            return paramsList.join('&');
-	        };
-	        URLSearchParams.prototype.delete = function (param) { this.paramsMap.delete(param); };
-	        return URLSearchParams;
-	    }());
-	
-	    /**
-	     * HTTP request body used by both {@link Request} and {@link Response}
-	     * https://fetch.spec.whatwg.org/#body
-	     */
-	    var Body = (function () {
-	        function Body() {
-	        }
-	        /**
-	         * Attempts to return body as parsed `JSON` object, or raises an exception.
-	         */
-	        Body.prototype.json = function () {
-	            if (isString(this._body)) {
-	                return Json.parse(this._body);
-	            }
-	            if (this._body instanceof ArrayBuffer) {
-	                return Json.parse(this.text());
-	            }
-	            return this._body;
-	        };
-	        /**
-	         * Returns the body as a string, presuming `toString()` can be called on the response body.
-	         */
-	        Body.prototype.text = function () {
-	            if (this._body instanceof URLSearchParams) {
-	                return this._body.toString();
-	            }
-	            if (this._body instanceof ArrayBuffer) {
-	                return String.fromCharCode.apply(null, new Uint16Array(this._body));
-	            }
-	            if (this._body === null) {
-	                return '';
-	            }
-	            if (isJsObject(this._body)) {
-	                return Json.stringify(this._body);
-	            }
-	            return this._body.toString();
-	        };
-	        /**
-	         * Return the body as an ArrayBuffer
-	         */
-	        Body.prototype.arrayBuffer = function () {
-	            if (this._body instanceof ArrayBuffer) {
-	                return this._body;
-	            }
-	            return stringToArrayBuffer(this.text());
-	        };
-	        /**
-	          * Returns the request's body as a Blob, assuming that body exists.
-	          */
-	        Body.prototype.blob = function () {
-	            if (this._body instanceof Blob) {
-	                return this._body;
-	            }
-	            if (this._body instanceof ArrayBuffer) {
-	                return new Blob([this._body]);
-	            }
-	            throw new Error('The request body isn\'t either a blob or an array buffer');
-	        };
-	        return Body;
-	    }());
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var __extends$2 = (this && this.__extends) || function (d, b) {
-	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    /**
-	     * Creates `Response` instances from provided values.
-	     *
-	     * Though this object isn't
-	     * usually instantiated by end-users, it is the primary object interacted with when it comes time to
-	     * add data to a view.
-	     *
-	     * ### Example
-	     *
-	     * ```
-	     * http.request('my-friends.txt').subscribe(response => this.friends = response.text());
-	     * ```
-	     *
-	     * The Response's interface is inspired by the Response constructor defined in the [Fetch
-	     * Spec](https://fetch.spec.whatwg.org/#response-class), but is considered a static value whose body
-	     * can be accessed many times. There are other differences in the implementation, but this is the
-	     * most significant.
-	     *
-	     * @experimental
-	     */
-	    var Response = (function (_super) {
-	        __extends$2(Response, _super);
-	        function Response(responseOptions) {
-	            _super.call(this);
-	            this._body = responseOptions.body;
-	            this.status = responseOptions.status;
-	            this.ok = (this.status >= 200 && this.status <= 299);
-	            this.statusText = responseOptions.statusText;
-	            this.headers = responseOptions.headers;
-	            this.type = responseOptions.type;
-	            this.url = responseOptions.url;
-	        }
-	        Response.prototype.toString = function () {
-	            return "Response with status: " + this.status + " " + this.statusText + " for URL: " + this.url;
-	        };
-	        return Response;
-	    }(Body));
-	
-	    var _nextRequestId = 0;
-	    var JSONP_HOME = '__ng_jsonp__';
-	    var _jsonpConnections = null;
-	    function _getJsonpConnections() {
-	        if (_jsonpConnections === null) {
-	            _jsonpConnections = global$1[JSONP_HOME] = {};
-	        }
-	        return _jsonpConnections;
-	    }
-	    // Make sure not to evaluate this in a non-browser environment!
-	    var BrowserJsonp = (function () {
-	        function BrowserJsonp() {
-	        }
-	        // Construct a <script> element with the specified URL
-	        BrowserJsonp.prototype.build = function (url) {
-	            var node = document.createElement('script');
-	            node.src = url;
-	            return node;
-	        };
-	        BrowserJsonp.prototype.nextRequestID = function () { return "__req" + _nextRequestId++; };
-	        BrowserJsonp.prototype.requestCallback = function (id) { return JSONP_HOME + "." + id + ".finished"; };
-	        BrowserJsonp.prototype.exposeConnection = function (id, connection) {
-	            var connections = _getJsonpConnections();
-	            connections[id] = connection;
-	        };
-	        BrowserJsonp.prototype.removeConnection = function (id) {
-	            var connections = _getJsonpConnections();
-	            connections[id] = null;
-	        };
-	        // Attach the <script> element to the DOM
-	        BrowserJsonp.prototype.send = function (node) { document.body.appendChild((node)); };
-	        // Remove <script> element from the DOM
-	        BrowserJsonp.prototype.cleanup = function (node) {
-	            if (node.parentNode) {
-	                node.parentNode.removeChild((node));
-	            }
-	        };
-	        BrowserJsonp.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        BrowserJsonp.ctorParameters = [];
-	        return BrowserJsonp;
-	    }());
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var __extends = (this && this.__extends) || function (d, b) {
-	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    var JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
-	    var JSONP_ERR_WRONG_METHOD = 'JSONP requests must use GET request method.';
-	    /**
-	     * Abstract base class for an in-flight JSONP request.
-	     *
-	     * @experimental
-	     */
-	    var JSONPConnection = (function () {
-	        function JSONPConnection() {
-	        }
-	        return JSONPConnection;
-	    }());
-	    var JSONPConnection_ = (function (_super) {
-	        __extends(JSONPConnection_, _super);
-	        function JSONPConnection_(req, _dom, baseResponseOptions) {
-	            var _this = this;
-	            _super.call(this);
-	            this._dom = _dom;
-	            this.baseResponseOptions = baseResponseOptions;
-	            this._finished = false;
-	            if (req.method !== exports.RequestMethod.Get) {
-	                throw new TypeError(JSONP_ERR_WRONG_METHOD);
-	            }
-	            this.request = req;
-	            this.response = new rxjs_Observable.Observable(function (responseObserver) {
-	                _this.readyState = exports.ReadyState.Loading;
-	                var id = _this._id = _dom.nextRequestID();
-	                _dom.exposeConnection(id, _this);
-	                // Workaround Dart
-	                // url = url.replace(/=JSONP_CALLBACK(&|$)/, `generated method`);
-	                var callback = _dom.requestCallback(_this._id);
-	                var url = req.url;
-	                if (url.indexOf('=JSONP_CALLBACK&') > -1) {
-	                    url = StringWrapper.replace(url, '=JSONP_CALLBACK&', "=" + callback + "&");
-	                }
-	                else if (url.lastIndexOf('=JSONP_CALLBACK') === url.length - '=JSONP_CALLBACK'.length) {
-	                    url = url.substring(0, url.length - '=JSONP_CALLBACK'.length) + ("=" + callback);
-	                }
-	                var script = _this._script = _dom.build(url);
-	                var onLoad = function (event) {
-	                    if (_this.readyState === exports.ReadyState.Cancelled)
-	                        return;
-	                    _this.readyState = exports.ReadyState.Done;
-	                    _dom.cleanup(script);
-	                    if (!_this._finished) {
-	                        var responseOptions_1 = new ResponseOptions({ body: JSONP_ERR_NO_CALLBACK, type: exports.ResponseType.Error, url: url });
-	                        if (isPresent(baseResponseOptions)) {
-	                            responseOptions_1 = baseResponseOptions.merge(responseOptions_1);
-	                        }
-	                        responseObserver.error(new Response(responseOptions_1));
-	                        return;
-	                    }
-	                    var responseOptions = new ResponseOptions({ body: _this._responseData, url: url });
-	                    if (isPresent(_this.baseResponseOptions)) {
-	                        responseOptions = _this.baseResponseOptions.merge(responseOptions);
-	                    }
-	                    responseObserver.next(new Response(responseOptions));
-	                    responseObserver.complete();
-	                };
-	                var onError = function (error) {
-	                    if (_this.readyState === exports.ReadyState.Cancelled)
-	                        return;
-	                    _this.readyState = exports.ReadyState.Done;
-	                    _dom.cleanup(script);
-	                    var responseOptions = new ResponseOptions({ body: error.message, type: exports.ResponseType.Error });
-	                    if (isPresent(baseResponseOptions)) {
-	                        responseOptions = baseResponseOptions.merge(responseOptions);
-	                    }
-	                    responseObserver.error(new Response(responseOptions));
-	                };
-	                script.addEventListener('load', onLoad);
-	                script.addEventListener('error', onError);
-	                _dom.send(script);
-	                return function () {
-	                    _this.readyState = exports.ReadyState.Cancelled;
-	                    script.removeEventListener('load', onLoad);
-	                    script.removeEventListener('error', onError);
-	                    if (isPresent(script)) {
-	                        _this._dom.cleanup(script);
-	                    }
-	                };
-	            });
-	        }
-	        JSONPConnection_.prototype.finished = function (data) {
-	            // Don't leak connections
-	            this._finished = true;
-	            this._dom.removeConnection(this._id);
-	            if (this.readyState === exports.ReadyState.Cancelled)
-	                return;
-	            this._responseData = data;
-	        };
-	        return JSONPConnection_;
-	    }(JSONPConnection));
-	    /**
-	     * A {@link ConnectionBackend} that uses the JSONP strategy of making requests.
-	     *
-	     * @experimental
-	     */
-	    var JSONPBackend = (function (_super) {
-	        __extends(JSONPBackend, _super);
-	        function JSONPBackend() {
-	            _super.apply(this, arguments);
-	        }
-	        return JSONPBackend;
-	    }(ConnectionBackend));
-	    var JSONPBackend_ = (function (_super) {
-	        __extends(JSONPBackend_, _super);
-	        function JSONPBackend_(_browserJSONP, _baseResponseOptions) {
-	            _super.call(this);
-	            this._browserJSONP = _browserJSONP;
-	            this._baseResponseOptions = _baseResponseOptions;
-	        }
-	        JSONPBackend_.prototype.createConnection = function (request) {
-	            return new JSONPConnection_(request, this._browserJSONP, this._baseResponseOptions);
-	        };
-	        JSONPBackend_.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        JSONPBackend_.ctorParameters = [
-	            { type: BrowserJsonp, },
-	            { type: ResponseOptions, },
-	        ];
-	        return JSONPBackend_;
-	    }(JSONPBackend));
-	
-	    var XSSI_PREFIX = /^\)\]\}',?\n/;
-	    /**
-	     * Creates connections using `XMLHttpRequest`. Given a fully-qualified
-	     * request, an `XHRConnection` will immediately create an `XMLHttpRequest` object and send the
-	     * request.
-	     *
-	     * This class would typically not be created or interacted with directly inside applications, though
-	     * the {@link MockConnection} may be interacted with in tests.
-	     *
-	     * @experimental
-	     */
-	    var XHRConnection = (function () {
-	        function XHRConnection(req, browserXHR, baseResponseOptions) {
-	            var _this = this;
-	            this.request = req;
-	            this.response = new rxjs_Observable.Observable(function (responseObserver) {
-	                var _xhr = browserXHR.build();
-	                _xhr.open(exports.RequestMethod[req.method].toUpperCase(), req.url);
-	                if (isPresent(req.withCredentials)) {
-	                    _xhr.withCredentials = req.withCredentials;
-	                }
-	                // load event handler
-	                var onLoad = function () {
-	                    // responseText is the old-school way of retrieving response (supported by IE8 & 9)
-	                    // response/responseType properties were introduced in ResourceLoader Level2 spec (supported
-	                    // by
-	                    // IE10)
-	                    var body = isPresent(_xhr.response) ? _xhr.response : _xhr.responseText;
-	                    // Implicitly strip a potential XSSI prefix.
-	                    if (isString(body))
-	                        body = body.replace(XSSI_PREFIX, '');
-	                    var headers = Headers.fromResponseHeaderString(_xhr.getAllResponseHeaders());
-	                    var url = getResponseURL(_xhr);
-	                    // normalize IE9 bug (http://bugs.jquery.com/ticket/1450)
-	                    var status = _xhr.status === 1223 ? 204 : _xhr.status;
-	                    // fix status code when it is 0 (0 status is undocumented).
-	                    // Occurs when accessing file resources or on Android 4.1 stock browser
-	                    // while retrieving files from application cache.
-	                    if (status === 0) {
-	                        status = body ? 200 : 0;
-	                    }
-	                    var statusText = _xhr.statusText || 'OK';
-	                    var responseOptions = new ResponseOptions({ body: body, status: status, headers: headers, statusText: statusText, url: url });
-	                    if (isPresent(baseResponseOptions)) {
-	                        responseOptions = baseResponseOptions.merge(responseOptions);
-	                    }
-	                    var response = new Response(responseOptions);
-	                    response.ok = isSuccess(status);
-	                    if (response.ok) {
-	                        responseObserver.next(response);
-	                        // TODO(gdi2290): defer complete if array buffer until done
-	                        responseObserver.complete();
-	                        return;
-	                    }
-	                    responseObserver.error(response);
-	                };
-	                // error event handler
-	                var onError = function (err) {
-	                    var responseOptions = new ResponseOptions({
-	                        body: err,
-	                        type: exports.ResponseType.Error,
-	                        status: _xhr.status,
-	                        statusText: _xhr.statusText,
-	                    });
-	                    if (isPresent(baseResponseOptions)) {
-	                        responseOptions = baseResponseOptions.merge(responseOptions);
-	                    }
-	                    responseObserver.error(new Response(responseOptions));
-	                };
-	                _this.setDetectedContentType(req, _xhr);
-	                if (isPresent(req.headers)) {
-	                    req.headers.forEach(function (values, name) { return _xhr.setRequestHeader(name, values.join(',')); });
-	                }
-	                // Select the correct buffer type to store the response
-	                if (isPresent(req.responseType) && isPresent(_xhr.responseType)) {
-	                    switch (req.responseType) {
-	                        case exports.ResponseContentType.ArrayBuffer:
-	                            _xhr.responseType = 'arraybuffer';
-	                            break;
-	                        case exports.ResponseContentType.Json:
-	                            _xhr.responseType = 'json';
-	                            break;
-	                        case exports.ResponseContentType.Text:
-	                            _xhr.responseType = 'text';
-	                            break;
-	                        case exports.ResponseContentType.Blob:
-	                            _xhr.responseType = 'blob';
-	                            break;
-	                        default:
-	                            throw new Error('The selected responseType is not supported');
-	                    }
-	                }
-	                _xhr.addEventListener('load', onLoad);
-	                _xhr.addEventListener('error', onError);
-	                _xhr.send(_this.request.getBody());
-	                return function () {
-	                    _xhr.removeEventListener('load', onLoad);
-	                    _xhr.removeEventListener('error', onError);
-	                    _xhr.abort();
-	                };
-	            });
-	        }
-	        XHRConnection.prototype.setDetectedContentType = function (req /** TODO #9100 */, _xhr /** TODO #9100 */) {
-	            // Skip if a custom Content-Type header is provided
-	            if (isPresent(req.headers) && isPresent(req.headers.get('Content-Type'))) {
-	                return;
-	            }
-	            // Set the detected content type
-	            switch (req.contentType) {
-	                case ContentType.NONE:
-	                    break;
-	                case ContentType.JSON:
-	                    _xhr.setRequestHeader('content-type', 'application/json');
-	                    break;
-	                case ContentType.FORM:
-	                    _xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-	                    break;
-	                case ContentType.TEXT:
-	                    _xhr.setRequestHeader('content-type', 'text/plain');
-	                    break;
-	                case ContentType.BLOB:
-	                    var blob = req.blob();
-	                    if (blob.type) {
-	                        _xhr.setRequestHeader('content-type', blob.type);
-	                    }
-	                    break;
-	            }
-	        };
-	        return XHRConnection;
-	    }());
-	    /**
-	     * `XSRFConfiguration` sets up Cross Site Request Forgery (XSRF) protection for the application
-	     * using a cookie. See {@link https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)}
-	     * for more information on XSRF.
-	     *
-	     * Applications can configure custom cookie and header names by binding an instance of this class
-	     * with different `cookieName` and `headerName` values. See the main HTTP documentation for more
-	     * details.
-	     *
-	     * @experimental
-	     */
-	    var CookieXSRFStrategy = (function () {
-	        function CookieXSRFStrategy(_cookieName, _headerName) {
-	            if (_cookieName === void 0) { _cookieName = 'XSRF-TOKEN'; }
-	            if (_headerName === void 0) { _headerName = 'X-XSRF-TOKEN'; }
-	            this._cookieName = _cookieName;
-	            this._headerName = _headerName;
-	        }
-	        CookieXSRFStrategy.prototype.configureRequest = function (req) {
-	            var xsrfToken = _angular_platformBrowser.__platform_browser_private__.getDOM().getCookie(this._cookieName);
-	            if (xsrfToken && !req.headers.has(this._headerName)) {
-	                req.headers.set(this._headerName, xsrfToken);
-	            }
-	        };
-	        return CookieXSRFStrategy;
-	    }());
-	    /**
-	     * Creates {@link XHRConnection} instances.
-	     *
-	     * This class would typically not be used by end users, but could be
-	     * overridden if a different backend implementation should be used,
-	     * such as in a node backend.
-	     *
-	     * ### Example
-	     *
-	     * ```
-	     * import {Http, MyNodeBackend, HTTP_PROVIDERS, BaseRequestOptions} from '@angular/http';
-	     * @Component({
-	     *   viewProviders: [
-	     *     HTTP_PROVIDERS,
-	     *     {provide: Http, useFactory: (backend, options) => {
-	     *       return new Http(backend, options);
-	     *     }, deps: [MyNodeBackend, BaseRequestOptions]}]
-	     * })
-	     * class MyComponent {
-	     *   constructor(http:Http) {
-	     *     http.request('people.json').subscribe(res => this.people = res.json());
-	     *   }
-	     * }
-	     * ```
-	     * @experimental
-	     */
-	    var XHRBackend = (function () {
-	        function XHRBackend(_browserXHR, _baseResponseOptions, _xsrfStrategy) {
-	            this._browserXHR = _browserXHR;
-	            this._baseResponseOptions = _baseResponseOptions;
-	            this._xsrfStrategy = _xsrfStrategy;
-	        }
-	        XHRBackend.prototype.createConnection = function (request) {
-	            this._xsrfStrategy.configureRequest(request);
-	            return new XHRConnection(request, this._browserXHR, this._baseResponseOptions);
-	        };
-	        XHRBackend.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        XHRBackend.ctorParameters = [
-	            { type: BrowserXhr, },
-	            { type: ResponseOptions, },
-	            { type: XSRFStrategy, },
-	        ];
-	        return XHRBackend;
-	    }());
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var __extends$3 = (this && this.__extends) || function (d, b) {
-	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    /**
-	     * Creates a request options object to be optionally provided when instantiating a
-	     * {@link Request}.
-	     *
-	     * This class is based on the `RequestInit` description in the [Fetch
-	     * Spec](https://fetch.spec.whatwg.org/#requestinit).
-	     *
-	     * All values are null by default. Typical defaults can be found in the {@link BaseRequestOptions}
-	     * class, which sub-classes `RequestOptions`.
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/7Wvi3lfLq41aQPKlxB4O?p=preview))
-	     *
-	     * ```typescript
-	     * import {RequestOptions, Request, RequestMethod} from '@angular/http';
-	     *
-	     * var options = new RequestOptions({
-	     *   method: RequestMethod.Post,
-	     *   url: 'https://google.com'
-	     * });
-	     * var req = new Request(options);
-	     * console.log('req.method:', RequestMethod[req.method]); // Post
-	     * console.log('options.url:', options.url); // https://google.com
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var RequestOptions = (function () {
-	        function RequestOptions(_a) {
-	            var _b = _a === void 0 ? {} : _a, method = _b.method, headers = _b.headers, body = _b.body, url = _b.url, search = _b.search, withCredentials = _b.withCredentials, responseType = _b.responseType;
-	            this.method = isPresent(method) ? normalizeMethodName(method) : null;
-	            this.headers = isPresent(headers) ? headers : null;
-	            this.body = isPresent(body) ? body : null;
-	            this.url = isPresent(url) ? url : null;
-	            this.search = isPresent(search) ?
-	                (isString(search) ? new URLSearchParams((search)) : (search)) :
-	                null;
-	            this.withCredentials = isPresent(withCredentials) ? withCredentials : null;
-	            this.responseType = isPresent(responseType) ? responseType : null;
-	        }
-	        /**
-	         * Creates a copy of the `RequestOptions` instance, using the optional input as values to override
-	         * existing values. This method will not change the values of the instance on which it is being
-	         * called.
-	         *
-	         * Note that `headers` and `search` will override existing values completely if present in
-	         * the `options` object. If these values should be merged, it should be done prior to calling
-	         * `merge` on the `RequestOptions` instance.
-	         *
-	         * ### Example ([live demo](http://plnkr.co/edit/6w8XA8YTkDRcPYpdB9dk?p=preview))
-	         *
-	         * ```typescript
-	         * import {RequestOptions, Request, RequestMethod} from '@angular/http';
-	         *
-	         * var options = new RequestOptions({
-	         *   method: RequestMethod.Post
-	         * });
-	         * var req = new Request(options.merge({
-	         *   url: 'https://google.com'
-	         * }));
-	         * console.log('req.method:', RequestMethod[req.method]); // Post
-	         * console.log('options.url:', options.url); // null
-	         * console.log('req.url:', req.url); // https://google.com
-	         * ```
-	         */
-	        RequestOptions.prototype.merge = function (options) {
-	            return new RequestOptions({
-	                method: isPresent(options) && isPresent(options.method) ? options.method : this.method,
-	                headers: isPresent(options) && isPresent(options.headers) ? options.headers : this.headers,
-	                body: isPresent(options) && isPresent(options.body) ? options.body : this.body,
-	                url: isPresent(options) && isPresent(options.url) ? options.url : this.url,
-	                search: isPresent(options) && isPresent(options.search) ?
-	                    (isString(options.search) ? new URLSearchParams((options.search)) :
-	                        (options.search).clone()) :
-	                    this.search,
-	                withCredentials: isPresent(options) && isPresent(options.withCredentials) ?
-	                    options.withCredentials :
-	                    this.withCredentials,
-	                responseType: isPresent(options) && isPresent(options.responseType) ? options.responseType :
-	                    this.responseType
-	            });
-	        };
-	        return RequestOptions;
-	    }());
-	    /**
-	     * Subclass of {@link RequestOptions}, with default values.
-	     *
-	     * Default values:
-	     *  * method: {@link RequestMethod RequestMethod.Get}
-	     *  * headers: empty {@link Headers} object
-	     *
-	     * This class could be extended and bound to the {@link RequestOptions} class
-	     * when configuring an {@link Injector}, in order to override the default options
-	     * used by {@link Http} to create and send {@link Request Requests}.
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/LEKVSx?p=preview))
-	     *
-	     * ```typescript
-	     * import {provide} from '@angular/core';
-	     * import {bootstrap} from '@angular/platform-browser/browser';
-	     * import {HTTP_PROVIDERS, Http, BaseRequestOptions, RequestOptions} from '@angular/http';
-	     * import {App} from './myapp';
-	     *
-	     * class MyOptions extends BaseRequestOptions {
-	     *   search: string = 'coreTeam=true';
-	     * }
-	     *
-	     * bootstrap(App, [HTTP_PROVIDERS, {provide: RequestOptions, useClass: MyOptions}]);
-	     * ```
-	     *
-	     * The options could also be extended when manually creating a {@link Request}
-	     * object.
-	     *
-	     * ### Example ([live demo](http://plnkr.co/edit/oyBoEvNtDhOSfi9YxaVb?p=preview))
-	     *
-	     * ```
-	     * import {BaseRequestOptions, Request, RequestMethod} from '@angular/http';
-	     *
-	     * var options = new BaseRequestOptions();
-	     * var req = new Request(options.merge({
-	     *   method: RequestMethod.Post,
-	     *   url: 'https://google.com'
-	     * }));
-	     * console.log('req.method:', RequestMethod[req.method]); // Post
-	     * console.log('options.url:', options.url); // null
-	     * console.log('req.url:', req.url); // https://google.com
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var BaseRequestOptions = (function (_super) {
-	        __extends$3(BaseRequestOptions, _super);
-	        function BaseRequestOptions() {
-	            _super.call(this, { method: exports.RequestMethod.Get, headers: new Headers() });
-	        }
-	        BaseRequestOptions.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        BaseRequestOptions.ctorParameters = [];
-	        return BaseRequestOptions;
-	    }(RequestOptions));
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var __extends$5 = (this && this.__extends) || function (d, b) {
-	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    // TODO(jeffbcross): properly implement body accessors
-	    /**
-	     * Creates `Request` instances from provided values.
-	     *
-	     * The Request's interface is inspired by the Request constructor defined in the [Fetch
-	     * Spec](https://fetch.spec.whatwg.org/#request-class),
-	     * but is considered a static value whose body can be accessed many times. There are other
-	     * differences in the implementation, but this is the most significant.
-	     *
-	     * `Request` instances are typically created by higher-level classes, like {@link Http} and
-	     * {@link Jsonp}, but it may occasionally be useful to explicitly create `Request` instances.
-	     * One such example is when creating services that wrap higher-level services, like {@link Http},
-	     * where it may be useful to generate a `Request` with arbitrary headers and search params.
-	     *
-	     * ```typescript
-	     * import {Injectable, Injector} from '@angular/core';
-	     * import {HTTP_PROVIDERS, Http, Request, RequestMethod} from '@angular/http';
-	     *
-	     * @Injectable()
-	     * class AutoAuthenticator {
-	     *   constructor(public http:Http) {}
-	     *   request(url:string) {
-	     *     return this.http.request(new Request({
-	     *       method: RequestMethod.Get,
-	     *       url: url,
-	     *       search: 'password=123'
-	     *     }));
-	     *   }
-	     * }
-	     *
-	     * var injector = Injector.resolveAndCreate([HTTP_PROVIDERS, AutoAuthenticator]);
-	     * var authenticator = injector.get(AutoAuthenticator);
-	     * authenticator.request('people.json').subscribe(res => {
-	     *   //URL should have included '?password=123'
-	     *   console.log('people', res.json());
-	     * });
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var Request = (function (_super) {
-	        __extends$5(Request, _super);
-	        function Request(requestOptions) {
-	            _super.call(this);
-	            // TODO: assert that url is present
-	            var url = requestOptions.url;
-	            this.url = requestOptions.url;
-	            if (isPresent(requestOptions.search)) {
-	                var search = requestOptions.search.toString();
-	                if (search.length > 0) {
-	                    var prefix = '?';
-	                    if (StringWrapper.contains(this.url, '?')) {
-	                        prefix = (this.url[this.url.length - 1] == '&') ? '' : '&';
-	                    }
-	                    // TODO: just delete search-query-looking string in url?
-	                    this.url = url + prefix + search;
-	                }
-	            }
-	            this._body = requestOptions.body;
-	            this.method = normalizeMethodName(requestOptions.method);
-	            // TODO(jeffbcross): implement behavior
-	            // Defaults to 'omit', consistent with browser
-	            // TODO(jeffbcross): implement behavior
-	            this.headers = new Headers(requestOptions.headers);
-	            this.contentType = this.detectContentType();
-	            this.withCredentials = requestOptions.withCredentials;
-	            this.responseType = requestOptions.responseType;
-	        }
-	        /**
-	         * Returns the content type enum based on header options.
-	         */
-	        Request.prototype.detectContentType = function () {
-	            switch (this.headers.get('content-type')) {
-	                case 'application/json':
-	                    return ContentType.JSON;
-	                case 'application/x-www-form-urlencoded':
-	                    return ContentType.FORM;
-	                case 'multipart/form-data':
-	                    return ContentType.FORM_DATA;
-	                case 'text/plain':
-	                case 'text/html':
-	                    return ContentType.TEXT;
-	                case 'application/octet-stream':
-	                    return ContentType.BLOB;
-	                default:
-	                    return this.detectContentTypeFromBody();
-	            }
-	        };
-	        /**
-	         * Returns the content type of request's body based on its type.
-	         */
-	        Request.prototype.detectContentTypeFromBody = function () {
-	            if (this._body == null) {
-	                return ContentType.NONE;
-	            }
-	            else if (this._body instanceof URLSearchParams) {
-	                return ContentType.FORM;
-	            }
-	            else if (this._body instanceof FormData) {
-	                return ContentType.FORM_DATA;
-	            }
-	            else if (this._body instanceof Blob$1) {
-	                return ContentType.BLOB;
-	            }
-	            else if (this._body instanceof ArrayBuffer$1) {
-	                return ContentType.ARRAY_BUFFER;
-	            }
-	            else if (this._body && typeof this._body == 'object') {
-	                return ContentType.JSON;
-	            }
-	            else {
-	                return ContentType.TEXT;
-	            }
-	        };
-	        /**
-	         * Returns the request's body according to its type. If body is undefined, return
-	         * null.
-	         */
-	        Request.prototype.getBody = function () {
-	            switch (this.contentType) {
-	                case ContentType.JSON:
-	                    return this.text();
-	                case ContentType.FORM:
-	                    return this.text();
-	                case ContentType.FORM_DATA:
-	                    return this._body;
-	                case ContentType.TEXT:
-	                    return this.text();
-	                case ContentType.BLOB:
-	                    return this.blob();
-	                case ContentType.ARRAY_BUFFER:
-	                    return this.arrayBuffer();
-	                default:
-	                    return null;
-	            }
-	        };
-	        return Request;
-	    }(Body));
-	    var noop$1 = function () { };
-	    var w = typeof window == 'object' ? window : noop$1;
-	    var FormData = w['FormData'] || noop$1;
-	    var Blob$1 = w['Blob'] || noop$1;
-	    var ArrayBuffer$1 = w['ArrayBuffer'] || noop$1;
-	
-	    /**
-	     * @license
-	     * Copyright Google Inc. All Rights Reserved.
-	     *
-	     * Use of this source code is governed by an MIT-style license that can be
-	     * found in the LICENSE file at https://angular.io/license
-	     */
-	    var __extends$4 = (this && this.__extends) || function (d, b) {
-	        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	    function httpRequest(backend, request) {
-	        return backend.createConnection(request).response;
-	    }
-	    function mergeOptions(defaultOpts, providedOpts, method, url) {
-	        var newOptions = defaultOpts;
-	        if (isPresent(providedOpts)) {
-	            // Hack so Dart can used named parameters
-	            return newOptions.merge(new RequestOptions({
-	                method: providedOpts.method || method,
-	                url: providedOpts.url || url,
-	                search: providedOpts.search,
-	                headers: providedOpts.headers,
-	                body: providedOpts.body,
-	                withCredentials: providedOpts.withCredentials,
-	                responseType: providedOpts.responseType
-	            }));
-	        }
-	        if (isPresent(method)) {
-	            return newOptions.merge(new RequestOptions({ method: method, url: url }));
-	        }
-	        else {
-	            return newOptions.merge(new RequestOptions({ url: url }));
-	        }
-	    }
-	    /**
-	     * Performs http requests using `XMLHttpRequest` as the default backend.
-	     *
-	     * `Http` is available as an injectable class, with methods to perform http requests. Calling
-	     * `request` returns an `Observable` which will emit a single {@link Response} when a
-	     * response is received.
-	     *
-	     * ### Example
-	     *
-	     * ```typescript
-	     * import {Http, HTTP_PROVIDERS} from '@angular/http';
-	     * import 'rxjs/add/operator/map'
-	     * @Component({
-	     *   selector: 'http-app',
-	     *   viewProviders: [HTTP_PROVIDERS],
-	     *   templateUrl: 'people.html'
-	     * })
-	     * class PeopleComponent {
-	     *   constructor(http: Http) {
-	     *     http.get('people.json')
-	     *       // Call map on the response observable to get the parsed people object
-	     *       .map(res => res.json())
-	     *       // Subscribe to the observable to get the parsed people object and attach it to the
-	     *       // component
-	     *       .subscribe(people => this.people = people);
-	     *   }
-	     * }
-	     * ```
-	     *
-	     *
-	     * ### Example
-	     *
-	     * ```
-	     * http.get('people.json').subscribe((res:Response) => this.people = res.json());
-	     * ```
-	     *
-	     * The default construct used to perform requests, `XMLHttpRequest`, is abstracted as a "Backend" (
-	     * {@link XHRBackend} in this case), which could be mocked with dependency injection by replacing
-	     * the {@link XHRBackend} provider, as in the following example:
-	     *
-	     * ### Example
-	     *
-	     * ```typescript
-	     * import {BaseRequestOptions, Http} from '@angular/http';
-	     * import {MockBackend} from '@angular/http/testing';
-	     * var injector = Injector.resolveAndCreate([
-	     *   BaseRequestOptions,
-	     *   MockBackend,
-	     *   {provide: Http, useFactory:
-	     *       function(backend, defaultOptions) {
-	     *         return new Http(backend, defaultOptions);
-	     *       },
-	     *       deps: [MockBackend, BaseRequestOptions]}
-	     * ]);
-	     * var http = injector.get(Http);
-	     * http.get('request-from-mock-backend.json').subscribe((res:Response) => doSomething(res));
-	     * ```
-	     *
-	     * @experimental
-	     */
-	    var Http = (function () {
-	        function Http(_backend, _defaultOptions) {
-	            this._backend = _backend;
-	            this._defaultOptions = _defaultOptions;
-	        }
-	        /**
-	         * Performs any type of http request. First argument is required, and can either be a url or
-	         * a {@link Request} instance. If the first argument is a url, an optional {@link RequestOptions}
-	         * object can be provided as the 2nd argument. The options object will be merged with the values
-	         * of {@link BaseRequestOptions} before performing the request.
-	         */
-	        Http.prototype.request = function (url, options) {
-	            var responseObservable;
-	            if (isString(url)) {
-	                responseObservable = httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Get, url)));
-	            }
-	            else if (url instanceof Request) {
-	                responseObservable = httpRequest(this._backend, url);
-	            }
-	            else {
-	                throw new Error('First argument must be a url string or Request instance.');
-	            }
-	            return responseObservable;
-	        };
-	        /**
-	         * Performs a request with `get` http method.
-	         */
-	        Http.prototype.get = function (url, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Get, url)));
-	        };
-	        /**
-	         * Performs a request with `post` http method.
-	         */
-	        Http.prototype.post = function (url, body, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions.merge(new RequestOptions({ body: body })), options, exports.RequestMethod.Post, url)));
-	        };
-	        /**
-	         * Performs a request with `put` http method.
-	         */
-	        Http.prototype.put = function (url, body, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions.merge(new RequestOptions({ body: body })), options, exports.RequestMethod.Put, url)));
-	        };
-	        /**
-	         * Performs a request with `delete` http method.
-	         */
-	        Http.prototype.delete = function (url, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Delete, url)));
-	        };
-	        /**
-	         * Performs a request with `patch` http method.
-	         */
-	        Http.prototype.patch = function (url, body, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions.merge(new RequestOptions({ body: body })), options, exports.RequestMethod.Patch, url)));
-	        };
-	        /**
-	         * Performs a request with `head` http method.
-	         */
-	        Http.prototype.head = function (url, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Head, url)));
-	        };
-	        /**
-	         * Performs a request with `options` http method.
-	         */
-	        Http.prototype.options = function (url, options) {
-	            return httpRequest(this._backend, new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Options, url)));
-	        };
-	        Http.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        Http.ctorParameters = [
-	            { type: ConnectionBackend, },
-	            { type: RequestOptions, },
-	        ];
-	        return Http;
-	    }());
-	    /**
-	     * @experimental
-	     */
-	    var Jsonp = (function (_super) {
-	        __extends$4(Jsonp, _super);
-	        function Jsonp(backend, defaultOptions) {
-	            _super.call(this, backend, defaultOptions);
-	        }
-	        /**
-	         * Performs any type of http request. First argument is required, and can either be a url or
-	         * a {@link Request} instance. If the first argument is a url, an optional {@link RequestOptions}
-	         * object can be provided as the 2nd argument. The options object will be merged with the values
-	         * of {@link BaseRequestOptions} before performing the request.
-	         *
-	         * @security Regular XHR is the safest alternative to JSONP for most applications, and is
-	         * supported by all current browsers. Because JSONP creates a `<script>` element with
-	         * contents retrieved from a remote source, attacker-controlled data introduced by an untrusted
-	         * source could expose your application to XSS risks. Data exposed by JSONP may also be
-	         * readable by malicious third-party websites. In addition, JSONP introduces potential risk for
-	         * future security issues (e.g. content sniffing).  For more detail, see the
-	         * [Security Guide](http://g.co/ng/security).
-	         */
-	        Jsonp.prototype.request = function (url, options) {
-	            var responseObservable;
-	            if (isString(url)) {
-	                url =
-	                    new Request(mergeOptions(this._defaultOptions, options, exports.RequestMethod.Get, url));
-	            }
-	            if (url instanceof Request) {
-	                if (url.method !== exports.RequestMethod.Get) {
-	                    throw new Error('JSONP requests must use GET request method.');
-	                }
-	                responseObservable = httpRequest(this._backend, url);
-	            }
-	            else {
-	                throw new Error('First argument must be a url string or Request instance.');
-	            }
-	            return responseObservable;
-	        };
-	        Jsonp.decorators = [
-	            { type: _angular_core.Injectable },
-	        ];
-	        /** @nocollapse */
-	        Jsonp.ctorParameters = [
-	            { type: ConnectionBackend, },
-	            { type: RequestOptions, },
-	        ];
-	        return Jsonp;
-	    }(Http));
-	
-	    function _createDefaultCookieXSRFStrategy() {
-	        return new CookieXSRFStrategy();
-	    }
-	    function httpFactory(xhrBackend, requestOptions) {
-	        return new Http(xhrBackend, requestOptions);
-	    }
-	    function jsonpFactory(jsonpBackend, requestOptions) {
-	        return new Jsonp(jsonpBackend, requestOptions);
-	    }
-	    /**
-	     * The module that includes http's providers
-	     *
-	     * @experimental
-	     */
-	    var HttpModule = (function () {
-	        function HttpModule() {
-	        }
-	        HttpModule.decorators = [
-	            { type: _angular_core.NgModule, args: [{
-	                        providers: [
-	                            // TODO(pascal): use factory type annotations once supported in DI
-	                            // issue: https://github.com/angular/angular/issues/3183
-	                            { provide: Http, useFactory: httpFactory, deps: [XHRBackend, RequestOptions] },
-	                            BrowserXhr,
-	                            { provide: RequestOptions, useClass: BaseRequestOptions },
-	                            { provide: ResponseOptions, useClass: BaseResponseOptions },
-	                            XHRBackend,
-	                            { provide: XSRFStrategy, useFactory: _createDefaultCookieXSRFStrategy },
-	                        ],
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        HttpModule.ctorParameters = [];
-	        return HttpModule;
-	    }());
-	    /**
-	     * The module that includes jsonp's providers
-	     *
-	     * @experimental
-	     */
-	    var JsonpModule = (function () {
-	        function JsonpModule() {
-	        }
-	        JsonpModule.decorators = [
-	            { type: _angular_core.NgModule, args: [{
-	                        providers: [
-	                            // TODO(pascal): use factory type annotations once supported in DI
-	                            // issue: https://github.com/angular/angular/issues/3183
-	                            { provide: Jsonp, useFactory: jsonpFactory, deps: [JSONPBackend, RequestOptions] },
-	                            BrowserJsonp,
-	                            { provide: RequestOptions, useClass: BaseRequestOptions },
-	                            { provide: ResponseOptions, useClass: BaseResponseOptions },
-	                            { provide: JSONPBackend, useClass: JSONPBackend_ },
-	                        ],
-	                    },] },
-	        ];
-	        /** @nocollapse */
-	        JsonpModule.ctorParameters = [];
-	        return JsonpModule;
-	    }());
-	
-	    exports.BrowserXhr = BrowserXhr;
-	    exports.JSONPBackend = JSONPBackend;
-	    exports.JSONPConnection = JSONPConnection;
-	    exports.CookieXSRFStrategy = CookieXSRFStrategy;
-	    exports.XHRBackend = XHRBackend;
-	    exports.XHRConnection = XHRConnection;
-	    exports.BaseRequestOptions = BaseRequestOptions;
-	    exports.RequestOptions = RequestOptions;
-	    exports.BaseResponseOptions = BaseResponseOptions;
-	    exports.ResponseOptions = ResponseOptions;
-	    exports.Headers = Headers;
-	    exports.Http = Http;
-	    exports.Jsonp = Jsonp;
-	    exports.HttpModule = HttpModule;
-	    exports.JsonpModule = JsonpModule;
-	    exports.Connection = Connection;
-	    exports.ConnectionBackend = ConnectionBackend;
-	    exports.XSRFStrategy = XSRFStrategy;
-	    exports.Request = Request;
-	    exports.Response = Response;
-	    exports.QueryEncoder = QueryEncoder;
-	    exports.URLSearchParams = URLSearchParams;
-	
-	}));
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 59 */
-/*!************************************!*\
-  !*** ./~/rxjs/add/operator/map.js ***!
-  \************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(/*! ../../Observable */ 5);
-	var map_1 = __webpack_require__(/*! ../../operator/map */ 44);
-	Observable_1.Observable.prototype.map = map_1.map;
-	//# sourceMappingURL=map.js.map
-
-/***/ },
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
 /* 65 */,
 /* 66 */,
 /* 67 */,
