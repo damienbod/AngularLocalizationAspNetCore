@@ -1,9 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
-import { ShopAdminComponent } from './shop-admin/shop-admin.component'; 
-
-import { ProductService } from './services/ProductService';
+import { ShopAdminComponent } from './shop-admin/shop-admin.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent },

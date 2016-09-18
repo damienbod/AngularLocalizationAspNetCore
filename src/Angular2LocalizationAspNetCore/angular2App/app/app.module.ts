@@ -8,7 +8,6 @@ import { Configuration } from './app.constants';
 import { routing } from './app.routes';
 import { HttpModule, JsonpModule } from '@angular/http';
 
-import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
 import { ShopAdminComponent } from './shop-admin/shop-admin.component';
@@ -26,8 +25,8 @@ import { LocaleModule, LocalizationModule } from 'angular2localization';
         routing,
         HttpModule,
         JsonpModule,
-        LocaleModule, // LocaleService is singleton.
-        LocalizationModule.forChild() // New instance of LocalizationService.
+        LocaleModule.forRoot(), // New instance of LocaleService.
+        LocalizationModule.forRoot() // New instance of LocalizationService.
     ],
     declarations: [
         AppComponent,
