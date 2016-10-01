@@ -40013,27 +40013,31 @@ webpackJsonp([2],[
 	            /**
 	             * Output for event current language code changed.
 	             */
-	            this.languageCodeChanged = new _angular_core.EventEmitter();
+	            this.languageCodeChanged = new _angular_core.EventEmitter(true);
 	            /**
 	             * Output for event current country code changed.
 	             */
-	            this.countryCodeChanged = new _angular_core.EventEmitter();
+	            this.countryCodeChanged = new _angular_core.EventEmitter(true);
 	            /**
 	             * Output for event current currency code changed.
 	             */
-	            this.currencyCodeChanged = new _angular_core.EventEmitter();
+	            this.currencyCodeChanged = new _angular_core.EventEmitter(true);
 	            /**
 	             * Output for event script code changed.
 	             */
-	            this.scriptCodeChanged = new _angular_core.EventEmitter();
+	            this.scriptCodeChanged = new _angular_core.EventEmitter(true);
 	            /**
 	             * Output for event numbering system changed.
 	             */
-	            this.numberingSystemChanged = new _angular_core.EventEmitter();
+	            this.numberingSystemChanged = new _angular_core.EventEmitter(true);
 	            /**
 	             * Output for event calendar changed.
 	             */
-	            this.calendarChanged = new _angular_core.EventEmitter();
+	            this.calendarChanged = new _angular_core.EventEmitter(true);
+	            /**
+	             * Output for event update Localization.
+	             */
+	            this.updateLocalization = new _angular_core.EventEmitter(true);
 	            /**
 	             * Enable/disable cookie.
 	             */
@@ -40220,11 +40224,13 @@ webpackJsonp([2],[
 	        LocaleService.prototype.setCurrentLanguage = function (language) {
 	            // Checks if the language has changed.
 	            if (this.languageCode != language) {
-	                // Assigns the value & sends an event.
+	                // Assigns the value.
 	                this.languageCode = language;
-	                this.languageCodeChanged.emit(language);
 	                // Sets the default locale.
 	                this.setDefaultLocale();
+	                // Sends the events.
+	                this.updateLocalization.emit(null); // Event for LocalizationService.
+	                this.languageCodeChanged.emit(language);
 	            }
 	        };
 	        /**
@@ -40248,29 +40254,40 @@ webpackJsonp([2],[
 	            }
 	            // Checks if language, country, script or extension have changed.
 	            if (this.languageCode != language || this.countryCode != country || this.scriptCode != script || this.numberingSystem != numberingSystem || this.calendar != calendar) {
-	                // Assigns the values & sends the events.
-	                if (this.languageCode != language) {
-	                    this.languageCode = language;
-	                    this.languageCodeChanged.emit(language);
-	                }
-	                if (this.countryCode != country) {
-	                    this.countryCode = country;
-	                    this.countryCodeChanged.emit(country);
-	                }
-	                if (this.scriptCode != script) {
-	                    this.scriptCode = script;
-	                    this.scriptCodeChanged.emit(script);
-	                }
-	                if (this.numberingSystem != numberingSystem) {
-	                    this.numberingSystem = numberingSystem;
-	                    this.numberingSystemChanged.emit(numberingSystem);
-	                }
-	                if (this.calendar != calendar) {
-	                    this.calendar = calendar;
-	                    this.calendarChanged.emit(calendar);
-	                }
+	                // Stores the changes.
+	                var changes = {};
+	                changes["languageCode"] = this.languageCode != language ? true : false;
+	                changes["countryCode"] = this.countryCode != country ? true : false;
+	                changes["scriptCode"] = this.scriptCode != script ? true : false;
+	                changes["numberingSystem"] = this.numberingSystem != numberingSystem ? true : false;
+	                changes["calendar"] = this.calendar != calendar ? true : false;
+	                // Assigns the values.
+	                this.languageCode = language;
+	                this.countryCode = country;
+	                this.scriptCode = script;
+	                this.numberingSystem = numberingSystem;
+	                this.calendar = calendar;
 	                // Sets the default locale.
 	                this.setDefaultLocale();
+	                // Sends the events.
+	                if (changes["languageCode"] || changes["countryCode"]) {
+	                    this.updateLocalization.emit(null);
+	                } // Event for LocalizationService.
+	                if (changes["languageCode"]) {
+	                    this.languageCodeChanged.emit(language);
+	                }
+	                if (changes["countryCode"]) {
+	                    this.countryCodeChanged.emit(country);
+	                }
+	                if (changes["scriptCode"]) {
+	                    this.scriptCodeChanged.emit(script);
+	                }
+	                if (changes["numberingSystem"]) {
+	                    this.numberingSystemChanged.emit(numberingSystem);
+	                }
+	                if (changes["calendar"]) {
+	                    this.calendarChanged.emit(calendar);
+	                }
 	            }
 	        };
 	        /**
@@ -40281,11 +40298,12 @@ webpackJsonp([2],[
 	        LocaleService.prototype.setCurrentCurrency = function (currency) {
 	            // Checks if the currency has changed.
 	            if (this.currencyCode != currency) {
-	                // Assigns the value & sends an event.
+	                // Assigns the value.
 	                this.currencyCode = currency;
-	                this.currencyCodeChanged.emit(currency);
 	                // Sets the storage "currency".
 	                this.setStorage("currency", this.currencyCode);
+	                // Sends an event.
+	                this.currencyCodeChanged.emit(currency);
 	            }
 	        };
 	        /**
@@ -40481,6 +40499,7 @@ webpackJsonp([2],[
 	            'scriptCodeChanged': [{ type: _angular_core.Output },],
 	            'numberingSystemChanged': [{ type: _angular_core.Output },],
 	            'calendarChanged': [{ type: _angular_core.Output },],
+	            'updateLocalization': [{ type: _angular_core.Output },],
 	        };
 	        return LocaleService;
 	    }());
@@ -40623,6 +40642,10 @@ webpackJsonp([2],[
 	             */
 	            this.translationChanged = new _angular_core.EventEmitter();
 	            /**
+	             * Enable/disable locale as language.
+	             */
+	            this.enableLocale = false;
+	            /**
 	             * The providers for the asynchronous loading.
 	             */
 	            this.providers = [];
@@ -40636,9 +40659,9 @@ webpackJsonp([2],[
 	            // Initializes the service state.
 	            this.serviceState = exports.ServiceState.isWaiting;
 	            // When the language changes, subscribes to the event & call updateTranslation method.
-	            this.locale.languageCodeChanged.subscribe(
+	            this.locale.updateLocalization.subscribe(
 	            // Generator or next.
-	            function (language) { return _this.updateTranslation(language); });
+	            function () { return _this.updateTranslation(); });
 	        }
 	        /**
 	         * Direct loading: adds new translation data.
@@ -40690,14 +40713,18 @@ webpackJsonp([2],[
 	         * Translates a key.
 	         *
 	         * @param key The key to be translated
-	         * @params args Parameters
+	         * @param args Parameters
+	         * @param lang The current language
 	         * @return The value of translation
 	         */
-	        LocalizationService.prototype.translate = function (key, args) {
+	        LocalizationService.prototype.translate = function (key, args, lang) {
+	            if (lang === void 0) {
+	                lang = this.languageCode;
+	            }
 	            var value;
-	            if (this.translationData[this.languageCode] != null) {
+	            if (this.translationData[lang] != null) {
 	                // Gets the translation by language code. 
-	                var translation = this.translationData[this.languageCode];
+	                var translation = this.translationData[lang];
 	                // Checks for composed key (see issue #21).
 	                var keys = key.split(".");
 	                do {
@@ -40726,26 +40753,40 @@ webpackJsonp([2],[
 	         * Translates a key.
 	         *
 	         * @param key The key to be translated
-	         * @params args Parameters
+	         * @param args Parameters
+	         * @param lang The current language
 	         * @return An observable of the value of translation
 	         */
-	        LocalizationService.prototype.translateAsync = function (key, args) {
+	        LocalizationService.prototype.translateAsync = function (key, args, lang) {
 	            var _this = this;
+	            if (lang === void 0) {
+	                lang = this.languageCode;
+	            }
 	            return new rxjs_Observable.Observable(function (observer) {
 	                // Gets the value of translation for the key.
-	                var value = _this.translate(key, args);
+	                var value = _this.translate(key, args, lang);
 	                observer.next(value);
 	                observer.complete();
 	            });
 	        };
 	        /**
-	         * Updates the language code and loads the translation data for the asynchronous loading.
+	         * Sets the use of locale as language for the service (see issue #24).
+	         */
+	        LocalizationService.prototype.useLocaleAsLanguage = function () {
+	            this.enableLocale = true;
+	        };
+	        /**
+	         * Gets language code and loads the translation data for the asynchronous loading.
 	         *
-	         * @param language The two-letter or three-letter code of the language: default is the current language
+	         * @param language The language for the service
 	         */
 	        LocalizationService.prototype.updateTranslation = function (language) {
 	            if (language === void 0) {
-	                language = this.locale.getCurrentLanguage();
+	                language = !this.enableLocale
+	                    ? this.locale.getCurrentLanguage()
+	                    : this.locale.getCurrentLanguage()
+	                        + "-"
+	                        + this.locale.getCurrentCountry();
 	            }
 	            if (language != "" && language != this.languageCode) {
 	                // Asynchronous loading.
@@ -40754,10 +40795,7 @@ webpackJsonp([2],[
 	                    this.getTranslation(language);
 	                }
 	                else {
-	                    // Updates the language code of the service.
-	                    this.languageCode = language;
-	                    // Updates the service state.
-	                    this.serviceState = exports.ServiceState.isReady;
+	                    this.translationComplete(language);
 	                }
 	            }
 	        };
@@ -40773,13 +40811,13 @@ webpackJsonp([2],[
 	         */
 	        LocalizationService.prototype.compare = function (key1, key2, extension, options) {
 	            // Checks for support for Intl.
-	            if (IntlSupport.Collator(this.languageCode) == false) {
+	            if (IntlSupport.Collator(this.locale.getCurrentLanguage()) == false) {
 	                return 0;
 	            }
 	            // Gets the value of translation for the keys.
 	            var value1 = this.translate(key1);
 	            var value2 = this.translate(key2);
-	            var locale = this.addExtension(this.languageCode, extension);
+	            var locale = this.addExtension(this.locale.getCurrentLanguage(), extension);
 	            return new Intl.Collator(locale).compare(value1, value2);
 	        };
 	        /**
@@ -40794,7 +40832,7 @@ webpackJsonp([2],[
 	         * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Collator
 	         */
 	        LocalizationService.prototype.sort = function (list, keyName, order, extension, options) {
-	            if (list == null || keyName == null || IntlSupport.Collator(this.languageCode) == false) {
+	            if (list == null || keyName == null || IntlSupport.Collator(this.locale.getCurrentLanguage()) == false) {
 	                return list;
 	            }
 	            // Gets the value of translation for the keys.
@@ -40807,7 +40845,7 @@ webpackJsonp([2],[
 	                // Updates the value in the list.
 	                item[translated] = value;
 	            }
-	            var locale = this.addExtension(this.languageCode, extension);
+	            var locale = this.addExtension(this.locale.getCurrentLanguage(), extension);
 	            // Intl.Collator.
 	            var collator = new Intl.Collator(locale, options); // It can be passed directly to Array.prototype.sort.
 	            list.sort(function (a, b) {
@@ -40858,7 +40896,7 @@ webpackJsonp([2],[
 	            if (options === void 0) {
 	                options = { usage: 'search' };
 	            }
-	            if (list == null || keyNames == null || s == "" || IntlSupport.Collator(this.languageCode) == false) {
+	            if (list == null || keyNames == null || s == "" || IntlSupport.Collator(this.locale.getCurrentLanguage()) == false) {
 	                return list;
 	            }
 	            // Gets the value of translation for the each column.
@@ -40875,7 +40913,7 @@ webpackJsonp([2],[
 	                    item[translated[i]] = value;
 	                }
 	            }
-	            var locale = this.languageCode;
+	            var locale = this.locale.getCurrentLanguage();
 	            // Intl.Collator.
 	            var collator = new Intl.Collator(locale, options);
 	            var matches = list.filter(function (v) {
@@ -40916,7 +40954,7 @@ webpackJsonp([2],[
 	            if (list == null) {
 	                return null;
 	            }
-	            if (keyNames == null || s == "" || IntlSupport.Collator(this.languageCode) == false) {
+	            if (keyNames == null || s == "" || IntlSupport.Collator(this.locale.getCurrentLanguage()) == false) {
 	                return new rxjs_Observable.Observable(function (observer) {
 	                    for (var _i = 0, list_3 = list; _i < list_3.length; _i++) {
 	                        var item = list_3[_i];
@@ -40940,7 +40978,7 @@ webpackJsonp([2],[
 	                        item[translated[i]] = value;
 	                    }
 	                }
-	                var locale = _this.languageCode;
+	                var locale = _this.locale.getCurrentLanguage();
 	                // Intl.Collator.
 	                var collator = new Intl.Collator(locale, options);
 	                for (var _a = 0, list_5 = list; _a < list_5.length; _a++) {
@@ -41037,12 +41075,7 @@ webpackJsonp([2],[
 	                    _this.counter--;
 	                    // Checks for the last one request.
 	                    if (_this.counter <= 0) {
-	                        // Updates the service state.
-	                        _this.serviceState = exports.ServiceState.isReady;
-	                        // Updates the language code of the service: all the translate pipe will invoke the trasform method.
-	                        _this.languageCode = language;
-	                        // Sends an event for the components.
-	                        _this.translationChanged.emit(null);
+	                        _this.translationComplete(language);
 	                    }
 	                });
 	            }
@@ -41050,6 +41083,14 @@ webpackJsonp([2],[
 	        // Adds or extends translation data.
 	        LocalizationService.prototype.addData = function (data, language) {
 	            this.translationData[language] = (typeof this.translationData[language] != "undefined") ? extend(this.translationData[language], data) : data;
+	        };
+	        LocalizationService.prototype.translationComplete = function (language) {
+	            // Updates the service state.
+	            this.serviceState = exports.ServiceState.isReady;
+	            // Updates the language code of the service: all the translate pipe will invoke the trasform method.
+	            this.languageCode = language;
+	            // Sends an event for the components.
+	            this.translationChanged.emit(null);
 	        };
 	        LocalizationService.decorators = [
 	            { type: _angular_core.Injectable },
@@ -41282,8 +41323,7 @@ webpackJsonp([2],[
 	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
 	                // Updates Unicode for numbers by default locale.
 	                for (var i = 0; i <= 9; i++) {
-	                    var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
-	                    this.numbers[i] = this.Unicode(localeDecimal.transform(i, '1.0-0'));
+	                    this.numbers[i] = this.Unicode(new Intl.NumberFormat(defaultLocale).format(i));
 	                }
 	            }
 	        }
@@ -41316,20 +41356,23 @@ webpackJsonp([2],[
 	            if (IntlSupport.NumberFormat(defaultLocale) == true) {
 	                // Updates Unicode for signs by default locale.
 	                var value = -0.9; // Reference value.
-	                var localeDecimal = new _angular_common.DecimalPipe(defaultLocale);
-	                var localeValue = localeDecimal.transform(value, '1.1-1');
+	                var localeValue = new Intl.NumberFormat(defaultLocale).format(value);
 	                // Checks Unicode character 'RIGHT-TO-LEFT MARK' (U+200F).
-	                var index;
-	                if (this.Unicode(localeValue.charAt(0)) != "\\u200F") {
-	                    // Left to right.
-	                    index = 0;
+	                if (this.Unicode(localeValue.charAt(0)) == "\\u200F") {
+	                    // Right to left.
+	                    this.minusSign = this.Unicode(localeValue.charAt(1));
+	                    this.decimalSeparator = this.Unicode(localeValue.charAt(3));
+	                }
+	                else if (this.Unicode(localeValue.charAt(0)) == this.Unicode(new Intl.NumberFormat(defaultLocale).format(0))) {
+	                    // IE & Edge reverse the order.
+	                    this.minusSign = this.Unicode(localeValue.charAt(3));
+	                    this.decimalSeparator = this.Unicode(localeValue.charAt(1));
 	                }
 	                else {
-	                    // Right to left.
-	                    index = 1;
+	                    // Left to right.
+	                    this.minusSign = this.Unicode(localeValue.charAt(0));
+	                    this.decimalSeparator = this.Unicode(localeValue.charAt(2));
 	                }
-	                this.minusSign = this.Unicode(localeValue.charAt(index));
-	                this.decimalSeparator = this.Unicode(localeValue.charAt(index + 2));
 	            }
 	        }
 	        DecimalCode.prototype.parse = function (s) {
@@ -41485,7 +41528,7 @@ webpackJsonp([2],[
 	                    }
 	                }
 	                // Gets the value of translation for the key string.
-	                var value = this.localization.translate(keyStr, args[0]);
+	                var value = this.localization.translate(keyStr, args[0], lang);
 	                return key.replace(keyStr, value);
 	            }
 	            return key;
