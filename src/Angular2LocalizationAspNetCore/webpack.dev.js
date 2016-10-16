@@ -69,12 +69,15 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: "style-loader!css-loader"
             },
-
             {
                 test: /\.scss$/,
-                exclude: /node_modules/,
-                loader: 'raw-loader!style-loader!css-loader!sass-loader'
+                loaders: ["style", "css", "sass"]
             },
+            //{
+            //    test: /\.scss$/,
+            //    exclude: /node_modules/,
+            //    loader: 'raw-loader!style-loader!css-loader!sass-loader'
+            //},
 
             {
                 test: /\.html$/,
