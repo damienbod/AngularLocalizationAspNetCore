@@ -7,7 +7,7 @@ import { ProductService } from './services/ProductService';
 @Component({
     selector: 'my-app',
     template: require( './app.component.html'),
-    styles: [require('./app.component.scss')]
+    styles: [String(require('./app.component.scss'))]
 })
 
 

@@ -36,11 +36,11 @@ webpackJsonp([0],{
 	var platform_browser_1 = __webpack_require__(/*! @angular/platform-browser */ 21);
 	var app_component_1 = __webpack_require__(/*! ./app.component */ 28);
 	var app_constants_1 = __webpack_require__(/*! ./app.constants */ 34);
-	var app_routes_1 = __webpack_require__(/*! ./app.routes */ 37);
+	var app_routes_1 = __webpack_require__(/*! ./app.routes */ 40);
 	var http_1 = __webpack_require__(/*! @angular/http */ 30);
-	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 67);
-	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 69);
-	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 71);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 70);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 72);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 74);
 	var ProductService_1 = __webpack_require__(/*! ./services/ProductService */ 33);
 	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 29);
 	var AppModule = (function () {
@@ -135,7 +135,7 @@ webpackJsonp([0],{
 	        core_1.Component({
 	            selector: 'my-app',
 	            template: __webpack_require__(/*! ./app.component.html */ 35),
-	            styles: [__webpack_require__(/*! ./app.component.scss */ 36)]
+	            styles: [String(__webpack_require__(/*! ./app.component.scss */ 36))]
 	        }), 
 	        __metadata('design:paramtypes', [angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], AppComponent);
@@ -260,23 +260,61 @@ webpackJsonp([0],{
 /*!********************************************!*\
   !*** ./angular2App/app/app.component.scss ***!
   \********************************************/
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "// style-loader: Adds some css to the DOM by adding a <style> tag\n\n// load the styles\nvar content = require(\"!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss\");\nif(typeof content === 'string') content = [[module.id, content, '']];\n// add the styles to the DOM\nvar update = require(\"!./../../node_modules/style-loader/addStyles.js\")(content, {});\nif(content.locals) module.exports = content.locals;\n// Hot Module Replacement\nif(module.hot) {\n\t// When the styles change, update the <style> tags\n\tif(!content.locals) {\n\t\tmodule.hot.accept(\"!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss\", function() {\n\t\t\tvar newContent = require(\"!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss\");\n\t\t\tif(typeof newContent === 'string') newContent = [[module.id, newContent, '']];\n\t\t\tupdate(newContent);\n\t\t});\n\t}\n\t// When the module is disposed, remove the <style> tags\n\tmodule.hot.dispose(function() { update(); });\n}"
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(/*! !./../../~/css-loader!./../../~/sass-loader!./app.component.scss */ 37);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(/*! ./../../~/style-loader/addStyles.js */ 39)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/sass-loader/index.js!./app.component.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
 
 /***/ },
 
 /***/ 37:
+/*!***************************************************************************!*\
+  !*** ./~/css-loader!./~/sass-loader!./angular2App/app/app.component.scss ***!
+  \***************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(/*! ./../../~/css-loader/lib/css-base.js */ 38)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, "body {\n  padding-top: 50px; }\n\n.starter-template {\n  padding: 40px 15px;\n  text-align: center; }\n\n.navigationLinkButton:hover {\n  cursor: pointer; }\n", ""]);
+	
+	// exports
+
+
+/***/ },
+
+/***/ 40:
 /*!***************************************!*\
   !*** ./angular2App/app/app.routes.ts ***!
   \***************************************/
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var router_1 = __webpack_require__(/*! @angular/router */ 38);
-	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 67);
-	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 69);
-	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 71);
+	var router_1 = __webpack_require__(/*! @angular/router */ 41);
+	var home_component_1 = __webpack_require__(/*! ./home/home.component */ 70);
+	var shop_component_1 = __webpack_require__(/*! ./shop/shop.component */ 72);
+	var shop_admin_component_1 = __webpack_require__(/*! ./shop-admin/shop-admin.component */ 74);
 	var appRoutes = [
 	    { path: '', component: home_component_1.HomeComponent },
 	    { path: 'home', component: home_component_1.HomeComponent },
@@ -288,7 +326,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 67:
+/***/ 70:
 /*!************************************************!*\
   !*** ./angular2App/app/home/home.component.ts ***!
   \************************************************/
@@ -315,7 +353,7 @@ webpackJsonp([0],{
 	    HomeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'homecomponent',
-	            template: __webpack_require__(/*! ./home.component.html */ 68)
+	            template: __webpack_require__(/*! ./home.component.html */ 71)
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], HomeComponent);
@@ -326,7 +364,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 68:
+/***/ 71:
 /*!**************************************************!*\
   !*** ./angular2App/app/home/home.component.html ***!
   \**************************************************/
@@ -336,7 +374,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 69:
+/***/ 72:
 /*!************************************************!*\
   !*** ./angular2App/app/shop/shop.component.ts ***!
   \************************************************/
@@ -403,7 +441,7 @@ webpackJsonp([0],{
 	    ShopComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopcomponent',
-	            template: __webpack_require__(/*! ./shop.component.html */ 70)
+	            template: __webpack_require__(/*! ./shop.component.html */ 73)
 	        }), 
 	        __metadata('design:paramtypes', [angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], ShopComponent);
@@ -414,7 +452,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 70:
+/***/ 73:
 /*!**************************************************!*\
   !*** ./angular2App/app/shop/shop.component.html ***!
   \**************************************************/
@@ -424,7 +462,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 71:
+/***/ 74:
 /*!************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.ts ***!
   \************************************************************/
@@ -446,8 +484,8 @@ webpackJsonp([0],{
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(/*! @angular/core */ 3);
-	var router_1 = __webpack_require__(/*! @angular/router */ 38);
-	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 72);
+	var router_1 = __webpack_require__(/*! @angular/router */ 41);
+	var ProductCreateEdit_1 = __webpack_require__(/*! ../services/ProductCreateEdit */ 75);
 	var angular2localization_1 = __webpack_require__(/*! angular2localization */ 29);
 	var ProductService_1 = __webpack_require__(/*! ../services/ProductService */ 33);
 	var ShopAdminComponent = (function (_super) {
@@ -510,7 +548,7 @@ webpackJsonp([0],{
 	    ShopAdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'shopadmincomponent',
-	            template: __webpack_require__(/*! ./shop-admin.component.html */ 73)
+	            template: __webpack_require__(/*! ./shop-admin.component.html */ 76)
 	        }), 
 	        __metadata('design:paramtypes', [router_1.Router, angular2localization_1.LocaleService, angular2localization_1.LocalizationService, ProductService_1.ProductService])
 	    ], ShopAdminComponent);
@@ -521,7 +559,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 72:
+/***/ 75:
 /*!*******************************************************!*\
   !*** ./angular2App/app/services/ProductCreateEdit.ts ***!
   \*******************************************************/
@@ -538,7 +576,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 73:
+/***/ 76:
 /*!**************************************************************!*\
   !*** ./angular2App/app/shop-admin/shop-admin.component.html ***!
   \**************************************************************/
