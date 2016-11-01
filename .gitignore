@@ -42,3 +42,5 @@ src/Angular2LocalizationAspNetCore/angular2App/vendor.js
 src/Angular2LocalizationAspNetCore/angular2App/vendor.js.map
 artifacts/obj/Angular2LocalizationAspNetCore/Debug
 src/Angular2LocalizationAspNetCore/npm-debug.log
+src/Angular2LocalizationAspNetCore/aot/node_modules
+src/Angular2LocalizationAspNetCore/aot
