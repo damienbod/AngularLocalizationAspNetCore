@@ -4,8 +4,8 @@ import { ProductService } from '../services/ProductService';
 import { Locale, LocaleService, LocalizationService } from 'angular2localization';
 
 @Component({
-    selector: 'shopcomponent',
-    template: require('./shop.component.html')
+    selector: 'shop-component',
+    templateUrl: 'shop.component.html'
 })
 
 export class ShopComponent extends Locale implements OnInit {
@@ -22,8 +22,14 @@ export class ShopComponent extends Locale implements OnInit {
     ) {
         super(null, localization);
         this.message = "shop.component";
-        this._locale.languageCodeChanged.subscribe(item => this.onLanguageCodeChangedDataRecieved(item));
-        this._locale.currencyCodeChanged.subscribe(currency => this.onChangedCurrencyRecieved(currency));     
+        this._locale.languageCodeChanged.subscribe(
+            (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
+        );
+        this._locale.currencyCodeChanged.subscribe(
+            (currency: string) => {
+                this.onChangedCurrencyRecieved(currency)
+            }
+        );
     }
 
     ngOnInit() {
@@ -49,13 +55,13 @@ export class ShopComponent extends Locale implements OnInit {
             );
     } 
 
-    private onLanguageCodeChangedDataRecieved(item) {
+    private onLanguageCodeChangedDataRecieved(item: string) {
         this.GetProducts();
         console.log("onCountryChangedDataRecieved Shop");
         console.log(item);
     }
 
-    private onChangedCurrencyRecieved(currency) {
+    private onChangedCurrencyRecieved(currency: string) {
         this.Currency = currency;
         console.log("onLanguageCodeChangedDataRecieved Shop");
         console.log(currency);

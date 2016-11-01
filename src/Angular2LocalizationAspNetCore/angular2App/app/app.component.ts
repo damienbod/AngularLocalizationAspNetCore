@@ -4,10 +4,13 @@
 import { Locale, LocaleService, LocalizationService } from 'angular2localization';
 import { ProductService } from './services/ProductService';
 
+// AoT compilation doesn't support 'require'.
+import './app.component.scss';
+import '../style/app.scss';
+
 @Component({
     selector: 'my-app',
-    template: require( './app.component.html'),
-    styles: [String(require('./app.component.scss'))]
+    templateUrl: 'app.component.html'
 })
 
 
@@ -30,7 +33,9 @@ export class AppComponent extends Locale {
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
         this.localization.updateTranslation(); // Need to update the translation.
 
-        this.locale.languageCodeChanged.subscribe(item => this.onLanguageCodeChangedDataRecieved(item));
+        this.locale.languageCodeChanged.subscribe(
+            (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
+        );
 
     }
 
@@ -43,7 +48,7 @@ export class AppComponent extends Locale {
         this.locale.setCurrentCurrency(currency);
     }
 
-    private onLanguageCodeChangedDataRecieved(item) {
+    private onLanguageCodeChangedDataRecieved(item: string) {
         console.log("onLanguageCodeChangedDataRecieved App");
         console.log(item);
     }

@@ -8,13 +8,15 @@ import { Configuration } from './app.constants';
 import { routing } from './app.routes';
 import { HttpModule, JsonpModule } from '@angular/http';
 
+import { LocaleModule, LocalizationModule } from 'angular2localization';
+
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
 import { ShopAdminComponent } from './shop-admin/shop-admin.component';
 
 import { ProductService } from './services/ProductService';
 
-import { LocaleModule, LocalizationModule } from 'angular2localization';
+
 
 
 @NgModule({

@@ -1,13 +1,11 @@
-"use strict";
-var router_1 = require('@angular/router');
-var home_component_1 = require('./home/home.component');
-var shop_component_1 = require('./shop/shop.component');
-var shop_admin_component_1 = require('./shop-admin/shop-admin.component');
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { ShopComponent } from './shop/shop.component';
+import { ShopAdminComponent } from './shop-admin/shop-admin.component';
 var appRoutes = [
-    { path: '', component: home_component_1.HomeComponent },
-    { path: 'home', component: home_component_1.HomeComponent },
-    { path: 'shop', component: shop_component_1.ShopComponent },
-    { path: 'shopAdmin', component: shop_admin_component_1.ShopAdminComponent }
+    { path: '', component: HomeComponent },
+    { path: 'home', component: HomeComponent },
+    { path: 'shop', component: ShopComponent },
+    { path: 'shopAdmin', component: ShopAdminComponent }
 ];
-exports.routing = router_1.RouterModule.forRoot(appRoutes);
-//# sourceMappingURL=app.routes.js.map
+export var routing = RouterModule.forRoot(appRoutes);

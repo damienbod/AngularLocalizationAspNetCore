@@ -6,8 +6,8 @@ import { Locale, LocaleService, LocalizationService } from 'angular2localization
 import { ProductService } from '../services/ProductService';
 
 @Component({
-    selector: 'shopadmincomponent',
-    template: require('./shop-admin.component.html')
+    selector: 'shop-admincomponent',
+    templateUrl: 'shop-admin.component.html'
 })
 
 export class ShopAdminComponent extends Locale implements OnInit  {
@@ -50,7 +50,9 @@ export class ShopAdminComponent extends Locale implements OnInit  {
 
         this.message = "shop-admin.component";
 
-        this._localeService.languageCodeChanged.subscribe(item => this.onLanguageCodeChangedDataRecieved(item));
+        this._localeService.languageCodeChanged.subscribe(
+            (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
+        );
         
     }
 
@@ -94,7 +96,7 @@ export class ShopAdminComponent extends Locale implements OnInit  {
     }
  
 
-    private onLanguageCodeChangedDataRecieved(item) {
+    private onLanguageCodeChangedDataRecieved(item: string) {
         console.log("onLanguageCodeChangedDataRecieved Shop Admin");
         console.log(item + " : "+ this._localeService.getCurrentLanguage());
     }
