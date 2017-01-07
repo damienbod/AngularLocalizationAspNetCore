@@ -22,10 +22,10 @@ export class ShopComponent extends Locale implements OnInit {
     ) {
         super(null, localization);
         this.message = 'shop.component';
-        this._locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item) });
+        this._locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
         this._locale.currencyCodeChanged.subscribe(
             (currency: string) => {
-                this.onChangedCurrencyRecieved(currency)
+                this.onChangedCurrencyRecieved(currency);
             }
         );
     }

@@ -45,7 +45,7 @@ export class ShopAdminComponent extends Locale implements OnInit  {
         this.message = 'shop-admin.component';
 
         this._localeService.languageCodeChanged.subscribe(
-            (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
+            (item: string) => { this.onLanguageCodeChangedDataRecieved(item); }
         );
     }
 
@@ -88,17 +88,17 @@ export class ShopAdminComponent extends Locale implements OnInit  {
                 this.router.navigate(['/shop']);
             }, error => {
                 this.saving = false;
-                console.log(error)
+                console.log(error);
             },
             () => this.saving = false);
     }
 
     private onLanguageCodeChangedDataRecieved(item: string) {
         console.log('onLanguageCodeChangedDataRecieved Shop Admin');
-        console.log(item + ' : '+ this._localeService.getCurrentLanguage());
+        console.log(item + ' : ' + this._localeService.getCurrentLanguage());
     }
 
     private initProduct() {
-        this.Product = new ProductCreateEdit();      
+        this.Product = new ProductCreateEdit();
     }
 }
