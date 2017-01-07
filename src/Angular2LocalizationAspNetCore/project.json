@@ -2,7 +2,7 @@
     "userSecretsId": "aspnet-WebApp_Auth-96d521e3-30ac-4a8f-967f-abc243174dce",
 
     "dependencies": {
-		"Microsoft.NETCore.App": {
+        "Microsoft.NETCore.App": {
             "version": "1.1.0",
             "type": "platform"
         },
@@ -44,13 +44,10 @@
             "type": "build"
         },
         "BundlerMinifier.Core": "2.2.301",
-
-
-
-        "Localization.SqlLocalizer": "1.0.4",
         "Microsoft.EntityFrameworkCore": "1.1.0",
         "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
-        "Microsoft.EntityFrameworkCore.Sqlite.Design": "1.1.0"
+        "Microsoft.EntityFrameworkCore.Sqlite.Design": "1.1.0",
+        "Localization.SqlLocalizer": "1.0.6"
     },
 
   
