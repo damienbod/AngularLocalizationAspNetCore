@@ -21,25 +21,23 @@ export class ShopComponent extends Locale implements OnInit {
         private _productService: ProductService
     ) {
         super(null, localization);
-        this.message = "shop.component";
-        this._locale.languageCodeChanged.subscribe(
-            (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
-        );
+        this.message = 'shop.component';
+        this._locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
         this._locale.currencyCodeChanged.subscribe(
             (currency: string) => {
-                this.onChangedCurrencyRecieved(currency)
+                this.onChangedCurrencyRecieved(currency);
             }
         );
     }
 
     ngOnInit() {
-        console.log("ngOnInit ShopComponent");  
+        console.log('ngOnInit ShopComponent');
         this.GetProducts();
 
         this.Currency = this._locale.getCurrentCurrency();
-        if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
-            this.Currency = "CHF";
-        } 
+        if (!(this.Currency === 'CHF' || this.Currency === 'EUR')) {
+            this.Currency = 'CHF';
+        }
     }
 
     public GetProducts() {
@@ -53,17 +51,17 @@ export class ShopComponent extends Locale implements OnInit {
                 console.log('ProductService:GetProducts completed');
             }
             );
-    } 
+    }
 
     private onLanguageCodeChangedDataRecieved(item: string) {
         this.GetProducts();
-        console.log("onCountryChangedDataRecieved Shop");
+        console.log('onCountryChangedDataRecieved Shop');
         console.log(item);
     }
 
     private onChangedCurrencyRecieved(currency: string) {
         this.Currency = currency;
-        console.log("onLanguageCodeChangedDataRecieved Shop");
+        console.log('onLanguageCodeChangedDataRecieved Shop');
         console.log(currency);
     }
 }

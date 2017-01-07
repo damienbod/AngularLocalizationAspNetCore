@@ -46,3 +46,9 @@ src/Angular2LocalizationAspNetCore/aot/node_modules
 src/Angular2LocalizationAspNetCore/aot
 src/Angular2LocalizationAspNetCore/angular2App/app/app.module.js
 src/Angular2LocalizationAspNetCore/angular2App/app/app.routes.js
+src/Angular2LocalizationAspNetCore/wwwroot
+.vs/Angular2LocalizationAspNetCore/v15/.suo
+src/Angular2LocalizationAspNetCore/angular2App/app/app.module.js.map
+src/Angular2LocalizationAspNetCore/angular2App/app/app.routes.js.map
+src/Angular2LocalizationAspNetCore/angular2App/main.js
+src/Angular2LocalizationAspNetCore/angular2App/main.js.map

@@ -15,8 +15,8 @@ export class ProductService {
     private isoCode: string;
 
     constructor(private _http: Http, private _configuration: Configuration, public _locale: LocaleService) {
-        this.actionUrl = `${_configuration.Server}api/Shop/`;    
-        this.actionUrlShopAdmin = `${_configuration.Server}api/ShopAdmin/`;      
+        this.actionUrl = `${_configuration.Server}api/Shop/`;
+        this.actionUrlShopAdmin = `${_configuration.Server}api/ShopAdmin/`;
     }
 
     private setHeaders() {
@@ -32,14 +32,14 @@ export class ProductService {
     public GetAvailableProducts = (): Observable<Product[]> => {
         console.log(this._locale.getCurrentLanguage());
         console.log(this._locale.getCurrentCountry());
-        this.isoCode = `${this._locale.getCurrentLanguage()}-${this._locale.getCurrentCountry()}`; 
+        this.isoCode = `${this._locale.getCurrentLanguage()}-${this._locale.getCurrentCountry()}`;
 
         this.setHeaders();
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
             headers: this.headers,
             body: '',
         }).map(res => res.json());
-    } 
+    }
 
     public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
         let item: string = JSON.stringify(product);
