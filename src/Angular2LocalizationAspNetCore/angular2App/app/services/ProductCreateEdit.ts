@@ -9,4 +9,4 @@ export class ProductCreateEdit {
     PriceEUR: number;
     PriceCHF: number;
     LocalizationRecords: LocalizationRecord[];
-} 
+}

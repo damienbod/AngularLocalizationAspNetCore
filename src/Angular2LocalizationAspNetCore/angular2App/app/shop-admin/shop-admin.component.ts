@@ -26,12 +26,6 @@ export class ShopAdminComponent extends Locale implements OnInit  {
     public Description_en: string;
 
     submitted = false;
-
-    onSubmit() {
-        this.submitted = true;
-        this.Create();
-    }
-
     // Reset the form with a new hero AND restore 'pristine' class state
     // by toggling 'active' flag which causes the form
     // to be removed/re-added in a tick via NgIf
@@ -48,22 +42,26 @@ export class ShopAdminComponent extends Locale implements OnInit  {
 
         super(null, localization);
 
-        this.message = "shop-admin.component";
+        this.message = 'shop-admin.component';
 
         this._localeService.languageCodeChanged.subscribe(
             (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
         );
-        
+    }
+
+    onSubmit() {
+        this.submitted = true;
+        this.Create();
     }
 
     ngOnInit() {
-        console.log("ngOnInit ShopAdminComponent");
+        console.log('ngOnInit ShopAdminComponent');
         // TODO Get product if Id exists
         this.initProduct();
 
         this.Currency = this._localeService.getCurrentCurrency();
-        if (!(this.Currency === "CHF" || this.Currency === "EUR")) {
-            this.Currency = "CHF";
+        if (!(this.Currency === 'CHF' || this.Currency === 'EUR')) {
+            this.Currency = 'CHF';
         }
     }
 
@@ -74,15 +72,15 @@ export class ShopAdminComponent extends Locale implements OnInit  {
         this.saving = true;
 
         this.Product.LocalizationRecords = [];
-        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "de-CH", Text: this.Name_de });
-        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "fr-CH", Text: this.Name_fr });
-        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "it-CH", Text: this.Name_it });
-        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: "en-US", Text: this.Name_en });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: 'de-CH', Text: this.Name_de });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: 'fr-CH', Text: this.Name_fr });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: 'it-CH', Text: this.Name_it });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Name, LocalizationCulture: 'en-US', Text: this.Name_en });
 
-        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "de-CH", Text: this.Description_de });
-        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "fr-CH", Text: this.Description_fr });
-        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "it-CH", Text: this.Description_it });
-        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: "en-US", Text: this.Description_en });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: 'de-CH', Text: this.Description_de });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: 'fr-CH', Text: this.Description_fr });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: 'it-CH', Text: this.Description_it });
+        this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: 'en-US', Text: this.Description_en });
 
         this._productService.CreateProduct(this.Product)
             .subscribe(data => {
@@ -94,16 +92,13 @@ export class ShopAdminComponent extends Locale implements OnInit  {
             },
             () => this.saving = false);
     }
- 
 
     private onLanguageCodeChangedDataRecieved(item: string) {
-        console.log("onLanguageCodeChangedDataRecieved Shop Admin");
-        console.log(item + " : "+ this._localeService.getCurrentLanguage());
+        console.log('onLanguageCodeChangedDataRecieved Shop Admin');
+        console.log(item + ' : '+ this._localeService.getCurrentLanguage());
     }
-
 
     private initProduct() {
         this.Product = new ProductCreateEdit();      
     }
-
 }

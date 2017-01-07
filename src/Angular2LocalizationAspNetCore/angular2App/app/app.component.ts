@@ -33,9 +33,7 @@ export class AppComponent extends Locale {
         this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
         this.localization.updateTranslation(); // Need to update the translation.
 
-        this.locale.languageCodeChanged.subscribe(
-            (item: string) => { this.onLanguageCodeChangedDataRecieved(item) }
-        );
+        this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item) });
 
     }
 
@@ -49,7 +47,7 @@ export class AppComponent extends Locale {
     }
 
     private onLanguageCodeChangedDataRecieved(item: string) {
-        console.log("onLanguageCodeChangedDataRecieved App");
+        console.log('onLanguageCodeChangedDataRecieved App');
         console.log(item);
     }
 }
