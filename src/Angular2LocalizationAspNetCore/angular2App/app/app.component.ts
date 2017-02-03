@@ -21,16 +21,6 @@ export class AppComponent {
         public localization: TranslationService,
         private _productService: ProductService
     ) {
-        this.locale.AddConfiguration()
-            .AddLanguages(['de', 'fr', 'it', 'en'])
-            .SetCookieExpiration(30)
-            .DefineLanguage('en').DefineDefaultLocale('en', 'US');
-        this.locale.init();
-
-        this.localization.AddConfiguration()
-            .AddProvider('./i18n/locale-');
-        this.localization.init(); // Need to update the translation.
-
         this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
