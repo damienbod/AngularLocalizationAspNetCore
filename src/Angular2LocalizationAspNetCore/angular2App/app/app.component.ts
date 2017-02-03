@@ -16,18 +16,6 @@ import '../style/app.scss';
 
 export class AppComponent {
 
-    ////constructor(public locale: LocaleService, public translation: TranslationService) {
-    ////    this.locale.AddConfiguration()
-    ////        .AddLanguages(['en', 'it'])
-    ////        .SetCookieExpiration(30)
-    ////        .DefineLanguage('en');
-    ////    this.locale.init();
-
-    ////    this.translation.AddConfiguration()
-    ////        .AddProvider('./assets/locale-');
-    ////    this.translation.init();
-    ////}
-
     constructor(
         public locale: LocaleService,
         public localization: TranslationService,
@@ -39,13 +27,15 @@ export class AppComponent {
             .DefineLanguage('en').DefineDefaultLocale('en', 'US');
         this.locale.init();
 
+        this.localization.AddConfiguration()
+            .AddProvider('./i18n/locale-');
         this.localization.init(); // Need to update the translation.
 
         this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
-        this.locale.setCurrentLanguage(language, country);
+        this.locale.setCurrentLanguage(language);
         this.locale.setCurrentCurrency(currency);
     }
 
