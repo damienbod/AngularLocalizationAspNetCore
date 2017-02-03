@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../services/Product';
 import { ProductService } from '../services/ProductService';
-import { Locale, LocaleService, LocalizationService } from 'angular2localization';
+import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 
 @Component({
     selector: 'shop-component',
     templateUrl: 'shop.component.html'
 })
 
-export class ShopComponent extends Locale implements OnInit {
+export class ShopComponent extends Localization implements OnInit {
 
     public message: string;
     public Products: Product[];
@@ -17,7 +17,7 @@ export class ShopComponent extends Locale implements OnInit {
 
     constructor(
         public _locale: LocaleService,
-        public localization: LocalizationService,
+        public localization: TranslationService,
         private _productService: ProductService
     ) {
         super(null, localization);

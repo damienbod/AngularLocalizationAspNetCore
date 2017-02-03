@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit} from '@angular/core';
 
 // Services.
-import { Locale, LocaleService, LocalizationService } from 'angular2localization';
+import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 import { ProductService } from './services/ProductService';
 
 // AoT compilation doesn't support 'require'.
@@ -14,30 +14,38 @@ import '../style/app.scss';
 })
 
 
-export class AppComponent extends Locale {
+export class AppComponent {
+
+    ////constructor(public locale: LocaleService, public translation: TranslationService) {
+    ////    this.locale.AddConfiguration()
+    ////        .AddLanguages(['en', 'it'])
+    ////        .SetCookieExpiration(30)
+    ////        .DefineLanguage('en');
+    ////    this.locale.init();
+
+    ////    this.translation.AddConfiguration()
+    ////        .AddProvider('./assets/locale-');
+    ////    this.translation.init();
+    ////}
 
     constructor(
         public locale: LocaleService,
-        public localization: LocalizationService,
+        public localization: TranslationService,
         private _productService: ProductService
     ) {
-        super(null, localization);
-        // Adds a new language (ISO 639 two-letter code).
-        this.locale.addLanguage('de');
-        this.locale.addLanguage('fr');
-        this.locale.addLanguage('it');
-        this.locale.addLanguage('en');
+        this.locale.AddConfiguration()
+            .AddLanguages(['de', 'fr', 'it', 'en'])
+            .SetCookieExpiration(30)
+            .DefineLanguage('en').DefineDefaultLocale('en', 'US');
+        this.locale.init();
 
-        this.locale.definePreferredLocale('en', 'US', 30);
-
-        this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
-        this.localization.updateTranslation(); // Need to update the translation.
+        this.localization.init(); // Need to update the translation.
 
         this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
-        this.locale.setCurrentLocale(language, country);
+        this.locale.setCurrentLanguage(language, country);
         this.locale.setCurrentCurrency(currency);
     }
 

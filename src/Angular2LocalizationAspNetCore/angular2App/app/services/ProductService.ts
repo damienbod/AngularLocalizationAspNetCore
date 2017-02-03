@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { ProductCreateEdit } from './ProductCreateEdit';
-import { LocaleService } from 'angular2localization';
+import { Localization } from 'angular-l10n';
 
 @Injectable()
 export class ProductService {
@@ -14,7 +14,7 @@ export class ProductService {
     private headers: Headers;
     private isoCode: string;
 
-    constructor(private _http: Http, private _configuration: Configuration, public _locale: LocaleService) {
+    constructor(private _http: Http, private _configuration: Configuration, public _locale: Localization) {
         this.actionUrl = `${_configuration.Server}api/Shop/`;
         this.actionUrlShopAdmin = `${_configuration.Server}api/ShopAdmin/`;
     }

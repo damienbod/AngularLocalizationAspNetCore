@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { Product } from '../services/Product';
 import { ProductCreateEdit } from  '../services/ProductCreateEdit';
-import { Locale, LocaleService, LocalizationService } from 'angular2localization';
+import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 import { ProductService } from '../services/ProductService';
 
 @Component({
@@ -10,7 +10,7 @@ import { ProductService } from '../services/ProductService';
     templateUrl: 'shop-admin.component.html'
 })
 
-export class ShopAdminComponent extends Locale implements OnInit  {
+export class ShopAdminComponent extends Localization implements OnInit  {
 
     public message: string;
     public Product: ProductCreateEdit = new ProductCreateEdit();
@@ -36,7 +36,7 @@ export class ShopAdminComponent extends Locale implements OnInit  {
     constructor(
         private router: Router,
         public _localeService: LocaleService,
-        public localization: LocalizationService,
+        public localization: TranslationService,
         private _productService: ProductService
     ) {
 
