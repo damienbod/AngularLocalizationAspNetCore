@@ -4,4 +4,4 @@ import 'bootstrap/dist/js/bootstrap';
 import './css/bootstrap.css';
 import './css/bootstrap-theme.css';
 
-import 'angular2localization';
+import 'angular-l10n';

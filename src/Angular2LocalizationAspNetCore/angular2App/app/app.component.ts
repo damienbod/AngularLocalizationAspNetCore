@@ -1,10 +1,6 @@
 ﻿import { Component, OnInit} from '@angular/core';
-
-// Services.
-import { Locale, LocaleService, LocalizationService } from 'angular2localization';
+import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 import { ProductService } from './services/ProductService';
-
-// AoT compilation doesn't support 'require'.
 import './app.component.scss';
 import '../style/app.scss';
 
@@ -13,31 +9,18 @@ import '../style/app.scss';
     templateUrl: 'app.component.html'
 })
 
+export class AppComponent extends Localization {
 
-export class AppComponent extends Locale {
-
-    constructor(
-        public locale: LocaleService,
-        public localization: LocalizationService,
+    constructor(public locale: LocaleService, public translation: TranslationService,
         private _productService: ProductService
     ) {
-        super(null, localization);
-        // Adds a new language (ISO 639 two-letter code).
-        this.locale.addLanguage('de');
-        this.locale.addLanguage('fr');
-        this.locale.addLanguage('it');
-        this.locale.addLanguage('en');
+        super(locale, translation);
 
-        this.locale.definePreferredLocale('en', 'US', 30);
-
-        this.localization.translationProvider('./i18n/locale-'); // Required: initializes the translation provider with the given path prefix.
-        this.localization.updateTranslation(); // Need to update the translation.
-
-        this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
+        this.locale.defaultLocaleChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
-        this.locale.setCurrentLocale(language, country);
+        this.locale.setDefaultLocale(language, country);
         this.locale.setCurrentCurrency(currency);
     }
 
