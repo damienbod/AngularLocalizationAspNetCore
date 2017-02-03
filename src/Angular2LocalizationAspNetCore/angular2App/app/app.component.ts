@@ -20,6 +20,8 @@ export class AppComponent extends Localization {
     ) {
         super(locale, translation);
 
+        this.translation.init();
+
         this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
