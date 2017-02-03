@@ -35,7 +35,7 @@ export class AppComponent {
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
-        this.locale.setCurrentLanguage(language);
+        this.locale.setDefaultLocale(language, country);
         this.locale.setCurrentCurrency(currency);
     }
 
