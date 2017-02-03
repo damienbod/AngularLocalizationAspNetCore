@@ -8,7 +8,7 @@ import { Configuration } from './app.constants';
 import { routing } from './app.routes';
 import { HttpModule, JsonpModule } from '@angular/http';
 
-import { LocaleModule, LocalizationModule } from 'angular2localization';
+import { TranslationModule } from 'angular-l10n';
 
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
@@ -27,8 +27,7 @@ import { ProductService } from './services/ProductService';
         routing,
         HttpModule,
         JsonpModule,
-        LocaleModule.forRoot(), // New instance of LocaleService.
-        LocalizationModule.forRoot() // New instance of LocalizationService.
+        TranslationModule.forRoot() // New instance of TranslationService.
     ],
     declarations: [
         AppComponent,
