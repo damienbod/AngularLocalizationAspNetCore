@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { ProductCreateEdit } from './ProductCreateEdit';
-import { Localization } from 'angular-l10n';
+import { LocaleService } from 'angular-l10n';
 
 @Injectable()
 export class ProductService {
@@ -14,7 +14,7 @@ export class ProductService {
     private headers: Headers;
     private isoCode: string;
 
-    constructor(private _http: Http, private _configuration: Configuration, public localization: Localization) {
+    constructor(private _http: Http, private _configuration: Configuration, public locale: LocaleService) {
         this.actionUrl = `${_configuration.Server}api/Shop/`;
         this.actionUrlShopAdmin = `${_configuration.Server}api/ShopAdmin/`;
     }
@@ -30,9 +30,9 @@ export class ProductService {
     // http://localhost:5000/api/Shop/AvailableProducts?culture=fr-CH
     // http://localhost:5000/api/Shop/AvailableProducts?culture=en-US
     public GetAvailableProducts = (): Observable<Product[]> => {
-        console.log(this.localization.locale.getCurrentLanguage());
-        console.log(this.localization.locale.getCurrentCountry());
-        this.isoCode = `${this.localization.locale.getCurrentLanguage()}-${this.localization.locale.getCurrentCountry()}`;
+        console.log(this.locale.getCurrentLanguage());
+        console.log(this.locale.getCurrentCountry());
+        this.isoCode = `${this.locale.getCurrentLanguage()}-${this.locale.getCurrentCountry()}`;
 
         this.setHeaders();
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {

@@ -20,9 +20,9 @@ export class ShopComponent extends Localization implements OnInit {
         public localization: TranslationService,
         private _productService: ProductService
     ) {
-        super(null, localization);
+        super(_locale, localization);
         this.message = 'shop.component';
-        this._locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
+        this._locale.defaultLocaleChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
         this._locale.currencyCodeChanged.subscribe(
             (currency: string) => {
                 this.onChangedCurrencyRecieved(currency);
