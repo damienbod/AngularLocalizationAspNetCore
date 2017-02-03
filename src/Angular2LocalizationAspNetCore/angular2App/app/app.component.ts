@@ -13,14 +13,13 @@ import '../style/app.scss';
     templateUrl: 'app.component.html'
 })
 
+export class AppComponent extends Localization {
 
-export class AppComponent {
-
-    constructor(
-        public locale: LocaleService,
-        public localization: TranslationService,
+    constructor(public locale: LocaleService, public translation: TranslationService,
         private _productService: ProductService
     ) {
+        super(locale, translation);
+
         this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 

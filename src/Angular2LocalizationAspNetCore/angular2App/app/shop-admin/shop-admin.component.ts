@@ -35,16 +35,15 @@ export class ShopAdminComponent extends Localization implements OnInit  {
 
     constructor(
         private router: Router,
-        public _localeService: LocaleService,
-        public localization: TranslationService,
+        public locale: LocaleService,
+        public translation: TranslationService,
         private _productService: ProductService
     ) {
-
-        super(null, localization);
+        super(locale, translation);
 
         this.message = 'shop-admin.component';
 
-        this._localeService.languageCodeChanged.subscribe(
+        this.locale.languageCodeChanged.subscribe(
             (item: string) => { this.onLanguageCodeChangedDataRecieved(item); }
         );
     }
@@ -59,7 +58,7 @@ export class ShopAdminComponent extends Localization implements OnInit  {
         // TODO Get product if Id exists
         this.initProduct();
 
-        this.Currency = this._localeService.getCurrentCurrency();
+        this.Currency = this.locale.getCurrentCurrency();
         if (!(this.Currency === 'CHF' || this.Currency === 'EUR')) {
             this.Currency = 'CHF';
         }
@@ -95,7 +94,7 @@ export class ShopAdminComponent extends Localization implements OnInit  {
 
     private onLanguageCodeChangedDataRecieved(item: string) {
         console.log('onLanguageCodeChangedDataRecieved Shop Admin');
-        console.log(item + ' : ' + this._localeService.getCurrentLanguage());
+        console.log(item + ' : ' + this.locale.getCurrentLanguage());
     }
 
     private initProduct() {
