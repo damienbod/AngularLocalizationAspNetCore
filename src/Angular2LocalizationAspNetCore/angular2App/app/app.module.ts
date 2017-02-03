@@ -29,7 +29,7 @@ export class LocalizationConfig {
             .AddLanguage('de', 'ltr')
             .SetCookieExpiration(30)
             .DefineDefaultLocale('en', 'US')
-            .DefineCurrency('USD');
+            .DefineCurrency('CHF');
         this.locale.init();
 
         this.translation.AddConfiguration()

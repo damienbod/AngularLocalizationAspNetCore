@@ -1,10 +1,6 @@
 ﻿import { Component, OnInit} from '@angular/core';
-
-// Services.
 import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 import { ProductService } from './services/ProductService';
-
-// AoT compilation doesn't support 'require'.
 import './app.component.scss';
 import '../style/app.scss';
 
@@ -21,6 +17,7 @@ export class AppComponent extends Localization {
         super(locale, translation);
 
         this.translation.init();
+        this.locale.setDefaultLocale('de', 'CHF');
 
         this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
