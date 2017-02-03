@@ -43,7 +43,7 @@ export class ShopAdminComponent extends Localization implements OnInit  {
 
         this.message = 'shop-admin.component';
 
-        this.locale.languageCodeChanged.subscribe(
+        this.locale.defaultLocaleChanged.subscribe(
             (item: string) => { this.onLanguageCodeChangedDataRecieved(item); }
         );
     }

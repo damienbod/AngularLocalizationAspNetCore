@@ -16,10 +16,7 @@ export class AppComponent extends Localization {
     ) {
         super(locale, translation);
 
-        this.translation.init();
-        this.locale.setDefaultLocale('de', 'CHF');
-
-        this.locale.languageCodeChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
+        this.locale.defaultLocaleChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
     public ChangeCulture(language: string, country: string, currency: string) {
