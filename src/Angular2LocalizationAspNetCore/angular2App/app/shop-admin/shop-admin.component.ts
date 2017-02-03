@@ -31,7 +31,7 @@ export class ShopAdminComponent extends Locale implements OnInit  {
     // to be removed/re-added in a tick via NgIf
     // TODO: Workaround until NgForm has a reset method (#6822)
     active = true;
-    saving: boolean = false;
+    saving = false;
 
     constructor(
         private router: Router,
