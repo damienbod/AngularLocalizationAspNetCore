@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Angular2LocalizationAspNetCore", "src\Angular2LocalizationAspNetCore\Angular2LocalizationAspNetCore.csproj", "{36339A2E-DED1-4CEC-8CE9-AFB4C3CF9D1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularLocalizationAspNetCore", "src\AngularLocalizationAspNetCore\Angular2LocalizationAspNetCore.csproj", "{36339A2E-DED1-4CEC-8CE9-AFB4C3CF9D1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
