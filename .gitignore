@@ -10,3 +10,4 @@ src/AngularLocalizationAspNetCore/wwwroot/dist/
 src/AngularLocalizationAspNetCore/angularApp/main.js.map
 src/AngularLocalizationAspNetCore/angularApp/polyfills.js.map
 src/AngularLocalizationAspNetCore/angularApp/vendor.js.map
+src/AngularLocalizationAspNetCore/node_modules
