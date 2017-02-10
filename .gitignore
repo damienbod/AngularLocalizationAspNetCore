@@ -11,3 +11,7 @@ src/AngularLocalizationAspNetCore/angularApp/main.js.map
 src/AngularLocalizationAspNetCore/angularApp/polyfills.js.map
 src/AngularLocalizationAspNetCore/angularApp/vendor.js.map
 src/AngularLocalizationAspNetCore/node_modules
+src/AngularLocalizationAspNetCore/aot
+src/AngularLocalizationAspNetCore/bin/Debug
+src/AngularLocalizationAspNetCore/obj
+src/AngularLocalizationAspNetCore/angularApp/main-aot.js
