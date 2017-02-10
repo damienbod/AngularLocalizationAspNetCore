@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EFCC1DD4-636E-4419-A127-6A75707C370A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22C08BB8-213A-4748-A51D-EFC2A8E74B4E}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularLocalizationAspNetCore", "src\AngularLocalizationAspNetCore\AngularLocalizationAspNetCore.csproj", "{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Debug|x64.ActiveCfg = Debug|x64
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Debug|x64.Build.0 = Debug|x64
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Debug|x86.ActiveCfg = Debug|x86
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Debug|x86.Build.0 = Debug|x86
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Release|x64.ActiveCfg = Release|x64
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Release|x64.Build.0 = Release|x64
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Release|x86.ActiveCfg = Release|x86
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A70570DF-ACE8-4BAD-846D-13AAFCA6FEAC} = {EFCC1DD4-636E-4419-A127-6A75707C370A}
+	EndGlobalSection
+EndGlobal
