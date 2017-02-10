@@ -7,3 +7,6 @@ src/AngularLocalizationAspNetCore/angularApp/app/**/*.map
 src/AngularLocalizationAspNetCore/angularApp/app/**/*.js
 src/AngularLocalizationAspNetCore/wwwroot/dist
 src/AngularLocalizationAspNetCore/wwwroot/dist/
+src/AngularLocalizationAspNetCore/angularApp/main.js.map
+src/AngularLocalizationAspNetCore/angularApp/polyfills.js.map
+src/AngularLocalizationAspNetCore/angularApp/vendor.js.map
