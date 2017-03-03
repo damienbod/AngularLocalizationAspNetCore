@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Design" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.0.0-msbuild3-final" />
-    <PackageReference Include="Localization.SqlLocalizer" Version="1.0.7" />
+    <PackageReference Include="Localization.SqlLocalizer" Version="1.0.8" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-msbuild3-final" />
