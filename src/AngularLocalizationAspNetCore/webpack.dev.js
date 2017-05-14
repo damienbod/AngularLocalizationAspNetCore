@@ -16,6 +16,8 @@ module.exports = {
         hints: false
     },
     entry: {
+        'polyfills': './angularApp/polyfills.ts',
+        'vendor': './angularApp/vendor.ts',
         'app': './angularApp/main.ts'
     },
 
@@ -38,6 +40,7 @@ module.exports = {
             poll: 1000
         }
     },
+
 
     module: {
         rules: [
@@ -76,7 +79,7 @@ module.exports = {
         exprContextCritical: false
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'] }),
+        new webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'polyfills'] }),
 
         new CleanWebpackPlugin(
             [
