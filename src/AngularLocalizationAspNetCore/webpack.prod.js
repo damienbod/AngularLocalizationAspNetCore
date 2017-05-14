@@ -11,14 +11,14 @@ console.log('@@@@@@@@@ USING PRODUCTION @@@@@@@@@@@@@@@');
 
 module.exports = {
 
-    entry: {
+     entry: {
         'vendor': './angularApp/vendor.ts',
         'polyfills': './angularApp/polyfills.ts',
         'app': './angularApp/main-aot.ts' // AoT compilation
     },
 
     output: {
-        path: './wwwroot/',
+        path: __dirname + '/wwwroot/',
         filename: 'dist/[name].[hash].bundle.js',
         chunkFilename: 'dist/[id].[hash].chunk.js',
         publicPath: '/'

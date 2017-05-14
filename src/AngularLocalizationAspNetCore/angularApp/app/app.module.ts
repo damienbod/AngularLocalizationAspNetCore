@@ -22,18 +22,18 @@ export class LocalizationConfig {
     constructor(public locale: LocaleService, public translation: TranslationService) { }
 
     load(): Promise<any> {
-        this.locale.AddConfiguration()
-            .AddLanguage('en', 'ltr')
-            .AddLanguage('it', 'ltr')
-            .AddLanguage('fr', 'ltr')
-            .AddLanguage('de', 'ltr')
-            .SetCookieExpiration(30)
-            .DefineDefaultLocale('en', 'US')
-            .DefineCurrency('CHF');
+        this.locale.addConfiguration()
+            .addLanguage('en', 'ltr')
+            .addLanguage('it', 'ltr')
+            .addLanguage('fr', 'ltr')
+            .addLanguage('de', 'ltr')
+            .setCookieExpiration(30)
+            .defineDefaultLocale('en', 'US')
+            .defineCurrency('CHF');
         this.locale.init();
 
-        this.translation.AddConfiguration()
-            .AddProvider('./i18n/locale-');
+        this.translation.addConfiguration()
+            .addProvider('./i18n/locale-');
 
         let promise: Promise<any> = new Promise((resolve: any) => {
             this.translation.translationChanged.subscribe(() => {
