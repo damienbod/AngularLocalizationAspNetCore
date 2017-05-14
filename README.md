@@ -13,7 +13,9 @@ Localization.SqlLocalizer [![NuGet Status](http://img.shields.io/nuget/v/Localiz
 Documentation: https://damienbod.com/2016/05/26/released-sql-localization-nuget-package-for-asp-net-core-dotnet/
 
 
-<a href="https://www.nuget.org/packages/Localization.SqlLocalizer/">NuGet</a> | <a href="https://github.com/damienbod/AspNet5Localization/issues">Issues</a> | <a href="https://github.com/damienbod/AspNet5Localization/tree/master/AspNet5Localization/src/Localization.SqlLocalizer">Code</a>
+<a href="https://www.nuget.org/packages/Localization.SqlLocalizer/">NuGet</a> | <a href="https://github.com/damienbod/AspNetCoreLocalization/issues">Issues</a> | <a href="https://github.com/damienbod/AspNetCoreLocalization/tree/master/src/Localization.SqlLocalizer">Code</a>
+
+2017.05.14: Localization.SqlLocalizer 1.0.10 , angular 4.1.0, latest dotnet core packages
 
 2017.02.10: Updated VS2017 msbuild, angular 2.4.6
 
