@@ -15,3 +15,4 @@ src/AngularLocalizationAspNetCore/aot
 src/AngularLocalizationAspNetCore/bin/Debug
 src/AngularLocalizationAspNetCore/obj
 src/AngularLocalizationAspNetCore/angularApp/main-aot.js
+src/AngularLocalizationAspNetCore/AngularLocalizationAspNetCore.csproj.user
