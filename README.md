@@ -15,10 +15,12 @@ Documentation: https://damienbod.com/2016/05/26/released-sql-localization-nuget-
 
 <a href="https://www.nuget.org/packages/Localization.SqlLocalizer/">NuGet</a> | <a href="https://github.com/damienbod/AspNetCoreLocalization/issues">Issues</a> | <a href="https://github.com/damienbod/AspNetCoreLocalization/tree/master/src/Localization.SqlLocalizer">Code</a>
 
-2017.05.14: Localization.SqlLocalizer 1.0.10 , angular 4.1.0, latest dotnet core packages
+2017-08-19: Localization.SqlLocalizer 2.0.0 , angular 4.3.5
 
-2017.02.10: Updated VS2017 msbuild, angular 2.4.6
+2017-05-14: Localization.SqlLocalizer 1.0.10 , angular 4.1.0, latest dotnet core packages
 
-2017.02.03: Updated to angular-l10n 2.0.0, VS2017 RC3 msbuild3, angular 2.4.5 and webpack 2.2.1
+2017-02-10: Updated VS2017 msbuild, angular 2.4.6
 
-2017.01.07: Updated to ASP.NET Core 1.1 and VS2017 with csproj, angular 2.4.1 and webpack 2.2.0-rc.3
+2017-02-03: Updated to angular-l10n 2.0.0, VS2017 RC3 msbuild3, angular 2.4.5 and webpack 2.2.1
+
+2017-01-07: Updated to ASP.NET Core 1.1 and VS2017 with csproj, angular 2.4.1 and webpack 2.2.0-rc.3
