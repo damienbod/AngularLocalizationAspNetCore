@@ -4,7 +4,7 @@ import { ProductService } from '../services/ProductService';
 import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 
 @Component({
-    selector: 'shop-component',
+    selector: 'app-shop-component',
     templateUrl: 'shop.component.html'
 })
 

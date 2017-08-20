@@ -1,9 +1,9 @@
 import { NgModule, APP_INITIALIZER, Injectable } from '@angular/core';
-import { CommonModule }   from '@angular/common';
-import { FormsModule }    from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent }  from './app.component';
+import { AppComponent } from './app.component';
 import { Configuration } from './app.constants';
 import { routing } from './app.routes';
 import { HttpModule, JsonpModule } from '@angular/http';
@@ -35,7 +35,7 @@ export class LocalizationConfig {
         this.translation.addConfiguration()
             .addProvider('./i18n/locale-');
 
-        let promise: Promise<any> = new Promise((resolve: any) => {
+        const promise: Promise<any> = new Promise((resolve: any) => {
             this.translation.translationChanged.subscribe(() => {
                 resolve(true);
             });
@@ -83,4 +83,4 @@ export function initLocalization(localizationConfig: LocalizationConfig): Functi
     bootstrap:    [AppComponent],
 })
 
-export class AppModule {}
+export class AppModule { }

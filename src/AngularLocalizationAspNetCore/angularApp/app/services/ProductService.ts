@@ -42,7 +42,7 @@ export class ProductService {
     }
 
     public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
-        let item: string = JSON.stringify(product);
+        const item: string = JSON.stringify(product);
         this.setHeaders();
         return this._http.post(this.actionUrlShopAdmin, item, {
             headers: this.headers

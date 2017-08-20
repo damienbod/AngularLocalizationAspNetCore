@@ -2,10 +2,10 @@
 import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 import { ProductService } from './services/ProductService';
 import './app.component.scss';
-import '../style/app.scss';
+import '../styles/app.scss';
 
 @Component({
-    selector: 'my-app',
+    selector: 'app-component',
     templateUrl: 'app.component.html'
 })
 
