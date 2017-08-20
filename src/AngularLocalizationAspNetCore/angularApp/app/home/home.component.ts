@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'home-component',
+    selector: 'app-home-component',
     templateUrl: 'home.component.html'
 })
 
@@ -17,3 +17,4 @@ export class HomeComponent implements OnInit {
         console.log('ngOnInit HomeComponent');
     }
 }
+

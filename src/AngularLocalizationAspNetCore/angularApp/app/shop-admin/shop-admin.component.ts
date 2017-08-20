@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { Product } from '../services/Product';
-import { ProductCreateEdit } from  '../services/ProductCreateEdit';
+import { ProductCreateEdit } from '../services/ProductCreateEdit';
 import { Localization, LocaleService, TranslationService } from 'angular-l10n';
 import { ProductService } from '../services/ProductService';
 
 @Component({
-    selector: 'shop-admincomponent',
+    selector: 'app-shop-admincomponent',
     templateUrl: 'shop-admin.component.html'
 })
 

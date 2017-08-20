@@ -13,13 +13,13 @@
       "es2015",
       "dom"
     ],
-    "types": [
-      "node"
+    "typeRoots": [
+      "./node_modules/@types/"
     ]
   },
-  "files": [
-    "angularApp/app/app.module.ts",
-    "angularApp/main.ts"
+  "exclude": [
+    "node_modules",
+    "angularApp/main-aot.ts"
   ],
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true
