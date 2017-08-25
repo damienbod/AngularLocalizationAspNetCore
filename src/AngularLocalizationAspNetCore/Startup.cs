@@ -45,7 +45,9 @@ namespace Angular2LocalizationAspNetCore
                 options.UseSqlite(
                     sqlConnectionString,
                     b => b.MigrationsAssembly("Angular2LocalizationAspNetCore")
-                )
+                ),
+                ServiceLifetime.Singleton,
+                ServiceLifetime.Singleton
             );
 
             services.AddDbContext<ProductContext>(options =>
@@ -120,19 +122,6 @@ namespace Angular2LocalizationAspNetCore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-
-        // Entry point for the application.
-        public static void Main(string[] args)
-        {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
         }
     }
 }
