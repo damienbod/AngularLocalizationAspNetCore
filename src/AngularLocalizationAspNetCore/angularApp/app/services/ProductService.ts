@@ -1,7 +1,9 @@
-﻿import { Injectable } from '@angular/core';
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { ProductCreateEdit } from './ProductCreateEdit';
@@ -38,7 +40,7 @@ export class ProductService {
         return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
             headers: this.headers,
             body: '',
-        }).map(res => res.json());
+        }).pipe(map(res => res.json()));
     }
 
     public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
@@ -46,11 +48,11 @@ export class ProductService {
         this.setHeaders();
         return this._http.post(this.actionUrlShopAdmin, item, {
             headers: this.headers
-        }).map((response: Response) => <ProductCreateEdit>response.json());
+        }).pipe(map((response: Response) => <ProductCreateEdit>response.json()));
     }
 
     private handleError(error: Response) {
         console.error(error);
-        return Observable.throw(error.json().error || 'Server error');
+        return observableThrowError(error.json().error || 'Server error');
     }
 }
