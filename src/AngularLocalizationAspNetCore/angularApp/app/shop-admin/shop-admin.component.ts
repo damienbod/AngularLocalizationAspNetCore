@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
-import { Product } from '../services/Product';
 import { ProductCreateEdit } from '../services/ProductCreateEdit';
 import { LocaleService, TranslationService, Language } from 'angular-l10n';
 import { ProductService } from '../services/ProductService';
@@ -81,7 +80,7 @@ export class ShopAdminComponent implements OnInit  {
         this.Product.LocalizationRecords.push({ Key: this.Product.Description, LocalizationCulture: 'en-US', Text: this.Description_en });
 
         this._productService.CreateProduct(this.Product)
-            .subscribe(data => {
+            .subscribe(() => {
                 this.saving = false;
                 this.router.navigate(['/shop']);
             }, error => {
