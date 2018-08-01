@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Configuration } from './app.constants';
 import { AppComponent } from './app.component';
 import { routing } from './app.routes';
-import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { HomeComponent } from './home/home.component';
 import { ShopComponent } from './shop/shop.component';
@@ -40,8 +40,7 @@ const l10nConfig: L10nConfig = {
         CommonModule,
         FormsModule,
         routing,
-        HttpModule,
-        JsonpModule,
+        HttpClientModule,
         TranslationModule.forRoot(l10nConfig),
     ],
     declarations: [
