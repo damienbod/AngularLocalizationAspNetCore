@@ -1,8 +1,8 @@
 ﻿export class Product {
-    Id: number;
-    Name: string;
-    Description: string;
-    ImagePath: string;
-    PriceEUR: number;
-    PriceCHF: number;
+    Id = 0;
+    Name = '';
+    Description = '';
+    ImagePath = '';
+    PriceEUR= '';
+    PriceCHF = 0;
 }

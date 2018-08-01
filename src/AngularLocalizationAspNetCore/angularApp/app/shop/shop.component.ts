@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../services/Product';
 import { ProductService } from '../services/ProductService';
-import { Localization, LocaleService, TranslationService } from 'angular-l10n';
+import { LocaleService, TranslationService, Language } from 'angular-l10n';
 
 @Component({
     selector: 'app-shop-component',
     templateUrl: 'shop.component.html'
 })
 
-export class ShopComponent extends Localization implements OnInit {
+export class ShopComponent implements OnInit {
 
+    @Language() lang = '';
     public message: string;
-    public Products: Product[];
-    public Currency: string;
-    public Price: string;
+    public Products: Product[] = [];
+    public Currency = '';
+    public Price = '';
 
     constructor(
         public _locale: LocaleService,
         public localization: TranslationService,
         private _productService: ProductService
     ) {
-        super(_locale, localization);
         this.message = 'shop.component';
         this._locale.defaultLocaleChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
         this._locale.currencyCodeChanged.subscribe(

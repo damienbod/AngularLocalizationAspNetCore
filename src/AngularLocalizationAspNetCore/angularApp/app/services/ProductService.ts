@@ -1,7 +1,7 @@
-﻿import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
 import { Configuration } from '../app.constants';
 import { Product } from './Product';
 import { ProductCreateEdit } from './ProductCreateEdit';
@@ -11,46 +11,33 @@ import { LocaleService } from 'angular-l10n';
 export class ProductService {
     private actionUrl: string;
     private actionUrlShopAdmin: string;
-    private headers: Headers;
-    private isoCode: string;
+    private headers: HttpHeaders;
+    private isoCode = '';
 
-    constructor(private _http: Http, private _configuration: Configuration, public locale: LocaleService) {
-        this.actionUrl = `${_configuration.Server}api/Shop/`;
-        this.actionUrlShopAdmin = `${_configuration.Server}api/ShopAdmin/`;
-    }
+    constructor(public locale: LocaleService, private http: HttpClient, configuration: Configuration ) {
+        this.actionUrl = `${configuration.Server}api/Shop/`;
+        this.actionUrlShopAdmin = `${configuration.Server}api/ShopAdmin/`;
 
-    private setHeaders() {
-        this.headers = new Headers();
-        this.headers.append('Content-Type', 'application/json');
-        this.headers.append('Accept', 'application/json');
+        this.headers = new HttpHeaders();
+        this.headers = this.headers.set('Content-Type', 'application/json');
+        this.headers = this.headers.set('Accept', 'application/json');
     }
 
     // http://localhost:5000/api/Shop/AvailableProducts?culture=de-CH
     // http://localhost:5000/api/Shop/AvailableProducts?culture=it-CH
     // http://localhost:5000/api/Shop/AvailableProducts?culture=fr-CH
     // http://localhost:5000/api/Shop/AvailableProducts?culture=en-US
-    public GetAvailableProducts = (): Observable<Product[]> => {
+    public GetAvailableProducts(): Observable<Product[]> {
         console.log(this.locale.getCurrentLanguage());
         console.log(this.locale.getCurrentCountry());
         this.isoCode = `${this.locale.getCurrentLanguage()}-${this.locale.getCurrentCountry()}`;
 
-        this.setHeaders();
-        return this._http.get(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, {
-            headers: this.headers,
-            body: '',
-        }).map(res => res.json());
+        return this.http.get<Product[]>(`${this.actionUrl}AvailableProducts?culture=${this.isoCode}`, { headers: this.headers });
     }
 
-    public CreateProduct = (product: ProductCreateEdit): Observable<ProductCreateEdit> => {
-        const item: string = JSON.stringify(product);
-        this.setHeaders();
-        return this._http.post(this.actionUrlShopAdmin, item, {
-            headers: this.headers
-        }).map((response: Response) => <ProductCreateEdit>response.json());
-    }
+    public CreateProduct(product: ProductCreateEdit): Observable<ProductCreateEdit> {
+        const item = JSON.stringify(product);
 
-    private handleError(error: Response) {
-        console.error(error);
-        return Observable.throw(error.json().error || 'Server error');
+        return this.http.post<ProductCreateEdit>(this.actionUrlShopAdmin, item, { headers: this.headers });
     }
 }
