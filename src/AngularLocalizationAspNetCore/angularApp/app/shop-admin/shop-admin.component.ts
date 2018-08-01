@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router} from '@angular/router';
 import { Product } from '../services/Product';
 import { ProductCreateEdit } from '../services/ProductCreateEdit';
-import { Localization, LocaleService, TranslationService } from 'angular-l10n';
+import { LocaleService, TranslationService, Language } from 'angular-l10n';
 import { ProductService } from '../services/ProductService';
 
 @Component({
@@ -10,8 +10,9 @@ import { ProductService } from '../services/ProductService';
     templateUrl: 'shop-admin.component.html'
 })
 
-export class ShopAdminComponent extends Localization implements OnInit  {
+export class ShopAdminComponent implements OnInit  {
 
+    @Language() lang = '';
     public message: string;
     public Product: ProductCreateEdit = new ProductCreateEdit();
     public Currency: string;
@@ -39,8 +40,6 @@ export class ShopAdminComponent extends Localization implements OnInit  {
         public translation: TranslationService,
         private _productService: ProductService
     ) {
-        super(locale, translation);
-
         this.message = 'shop-admin.component';
 
         this.locale.defaultLocaleChanged.subscribe(
