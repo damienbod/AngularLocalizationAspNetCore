@@ -1,6 +1,5 @@
-﻿import { Component, OnInit} from '@angular/core';
-import { Localization, LocaleService, TranslationService } from 'angular-l10n';
-import { ProductService } from './services/ProductService';
+﻿import { Component } from '@angular/core';
+import { LocaleService, TranslationService, Language } from 'angular-l10n';
 import './app.component.scss';
 import '../styles/app.scss';
 
@@ -9,13 +8,12 @@ import '../styles/app.scss';
     templateUrl: 'app.component.html'
 })
 
-export class AppComponent extends Localization {
+export class AppComponent {
 
-    constructor(public locale: LocaleService, public translation: TranslationService,
-        private _productService: ProductService
+    @Language() lang = '';
+
+    constructor(public locale: LocaleService, public translation: TranslationService
     ) {
-        super(locale, translation);
-
         this.locale.defaultLocaleChanged.subscribe((item: string) => { this.onLanguageCodeChangedDataRecieved(item); });
     }
 
