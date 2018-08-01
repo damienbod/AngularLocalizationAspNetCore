@@ -12,11 +12,9 @@ export class ProductService {
     private actionUrl: string;
     private actionUrlShopAdmin: string;
     private headers: HttpHeaders;
-
     private isoCode: string;
-	
-	constructor(public locale: LocaleService, private http: HttpClient, configuration: Configuration) {
 
+    constructor(public locale: LocaleService, private http: HttpClient, configuration: Configuration ) {
         this.actionUrl = `${configuration.Server}api/Shop/`;
         this.actionUrlShopAdmin = `${configuration.Server}api/ShopAdmin/`;
 
