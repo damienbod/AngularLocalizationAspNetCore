@@ -15,7 +15,7 @@ Documentation: https://damienbod.com/2016/05/26/released-sql-localization-nuget-
 
 <a href="https://www.nuget.org/packages/Localization.SqlLocalizer/">NuGet</a> | <a href="https://github.com/damienbod/AspNetCoreLocalization/issues">Issues</a> | <a href="https://github.com/damienbod/AspNetCoreLocalization/tree/master/src/Localization.SqlLocalizer">Code</a>
 
-2018-08-01: Updated Angular 6.1.0, .NNET Core 2.1.2
+2018-08-01: Updated Angular 6.1.0, .NET Core 2.1.2
 
 2017-08-25: Updated Localization.SqlLocalizer 2.0.1
 
