@@ -2,11 +2,11 @@
 import { LocalizationRecord } from './LocalizationRecord';
 
 export class ProductCreateEdit {
-    Id: number;
-    Name: string;
-    Description: string;
-    ImagePath: string;
-    PriceEUR: number;
-    PriceCHF: number;
-    LocalizationRecords: LocalizationRecord[];
+    Id = 0;
+    Name = '';
+    Description = '';
+    ImagePath = '';
+    PriceEUR = 0;
+    PriceCHF = 0;
+    LocalizationRecords: LocalizationRecord[] = [];
 }

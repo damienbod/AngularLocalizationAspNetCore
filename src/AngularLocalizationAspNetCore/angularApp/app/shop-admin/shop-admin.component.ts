@@ -14,16 +14,16 @@ export class ShopAdminComponent implements OnInit  {
     @Language() lang = '';
     public message: string;
     public Product: ProductCreateEdit = new ProductCreateEdit();
-    public Currency: string;
+    public Currency = '';
 
-    public Name_de: string;
-    public Name_fr: string;
-    public Name_it: string;
-    public Name_en: string;
-    public Description_de: string;
-    public Description_fr: string;
-    public Description_it: string;
-    public Description_en: string;
+    public Name_de = '';
+    public Name_fr = '';
+    public Name_it = '';
+    public Name_en = '';
+    public Description_de = '';
+    public Description_fr = '';
+    public Description_it = '';
+    public Description_en = '';
 
     submitted = false;
     // Reset the form with a new hero AND restore 'pristine' class state

@@ -12,9 +12,9 @@ export class ShopComponent implements OnInit {
 
     @Language() lang = '';
     public message: string;
-    public Products: Product[];
-    public Currency: string;
-    public Price: string;
+    public Products: Product[] = [];
+    public Currency = '';
+    public Price = '';
 
     constructor(
         public _locale: LocaleService,
