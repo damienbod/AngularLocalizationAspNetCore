@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Angular2LocalizationAspNetCore
 {
@@ -47,7 +48,7 @@ namespace Angular2LocalizationAspNetCore
 
             // Requires that LocalizationModelContext is defined
             services.AddSqlLocalization(options => options.UseTypeFullNames = true);
-            // services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.Configure<RequestLocalizationOptions>(
                 options =>
@@ -73,7 +74,9 @@ namespace Angular2LocalizationAspNetCore
 
         public void Configure(IApplicationBuilder app)
         {
-            
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
+
             var angularRoutes = new[] {
                 "/home",
                 "/forbidden",
