@@ -1,43 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using Angular2LocalizationAspNetCore.Models;
 using Angular2LocalizationAspNetCore.Providers;
 using Localization.SqlLocalizer.DbStringLocalizer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Angular2LocalizationAspNetCore
 {
     public class Startup
     {
-         public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-         public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IProductRequestProvider, ProductRequestProvider>();
             services.AddTransient<IProductCudProvider, ProductCudProvider>();
-            
+
             // init database for localization
             var sqlConnectionString = Configuration["DbStringLocalizer:ConnectionString"];
 
@@ -51,12 +43,12 @@ namespace Angular2LocalizationAspNetCore
             );
 
             services.AddDbContext<ProductContext>(options =>
-              options.UseSqlite( sqlConnectionString )
+              options.UseSqlite(sqlConnectionString)
             );
 
             // Requires that LocalizationModelContext is defined
             services.AddSqlLocalization(options => options.UseTypeFullNames = true);
-            // services.AddLocalization(options => options.ResourcesPath = "Resources");
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.Configure<RequestLocalizationOptions>(
                 options =>
@@ -73,33 +65,22 @@ namespace Angular2LocalizationAspNetCore
                         options.SupportedCultures = supportedCultures;
                         options.SupportedUICultures = supportedCultures;
                     });
-                    
-            services.AddMvc()
-                .AddViewLocalization()
-                .AddDataAnnotationsLocalization();
+
+            services.AddControllersWithViews()
+               .AddViewLocalization()
+               .AddDataAnnotationsLocalization()
+               .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
             var angularRoutes = new[] {
                 "/home",
-                "/shop",
+                "/forbidden",
+                "/shop"
             };
 
             app.Use(async (context, next) =>
@@ -112,15 +93,17 @@ namespace Angular2LocalizationAspNetCore
 
                 await next();
             });
-            app.UseDefaultFiles();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
